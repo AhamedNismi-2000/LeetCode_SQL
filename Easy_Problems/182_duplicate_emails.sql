@@ -11,17 +11,10 @@ Table: Person
 +-------------+---------+
 id is the primary key (column with unique values) for this table.
 Each row of this table contains an email. The emails will not contain uppercase letters.
- 
 
 Write a solution to report all the duplicate emails. Note that it's guaranteed that the email field is not NULL.
-
 Return the result table in any order.
-
 The result format is in the following example.
-
- 
-
-Example 1:
 
 Input: 
 Person table:
@@ -63,4 +56,14 @@ SELECT email
 FROM Person
 GROUP BY email
 HAVING COUNT(*) > 1
+
+
+-- Solution 2 
+
+SELECT p1.email AS Email
+FROM Person p1
+JOIN Person p2
+ON p1.email = p2.email
+AND p1.id <> p2.id;
+
 
