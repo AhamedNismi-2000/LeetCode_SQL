@@ -58,7 +58,7 @@ GROUP BY email
 HAVING COUNT(*) > 1
 
 
--- Solution 2 
+-- Solution 2  NOT Preferable 
 
 SELECT p1.email AS Email
 FROM Person p1
