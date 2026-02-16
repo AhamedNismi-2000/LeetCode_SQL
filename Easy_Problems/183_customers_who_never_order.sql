@@ -60,6 +60,8 @@ Output:
 
 */
 
+DROP TABLE IF EXISTS Customers;
+
 
 -- Create Customers table
 CREATE TABLE Customers (
@@ -85,3 +87,14 @@ CREATE TABLE Orders (
 INSERT INTO Orders (id, customerId) VALUES
 (1, 3),
 (2, 1);
+
+-- Solution 
+
+SELECT 
+   name Customers,
+    o.id order_id
+FROM Customers c
+LEFT JOIN orders o
+ON c.id=o.customerId
+WHERE o.id IS NULL 
+
