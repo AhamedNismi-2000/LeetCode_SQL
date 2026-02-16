@@ -61,7 +61,7 @@ Output:
 */
 
 DROP TABLE IF EXISTS Customers;
-
+DROP TABLE IF EXISTS Orders;
 
 -- Create Customers table
 CREATE TABLE Customers (

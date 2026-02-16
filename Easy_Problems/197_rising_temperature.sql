@@ -45,6 +45,8 @@ Explanation:
 */
 
 -- Create Weather table
+DROP TABLE IF EXISTS Weather
+
 CREATE TABLE Weather (
     id INT PRIMARY KEY,
     recordDate DATE,
@@ -57,3 +59,15 @@ INSERT INTO Weather (id, recordDate, temperature) VALUES
 (2, '2015-01-02', 25),
 (3, '2015-01-03', 20),
 (4, '2015-01-04', 30);
+
+
+--Solution All Join Are Working here 
+SELECT w1.id,
+       w1.temperature,
+       w1.recorddate
+FROM Weather w1 
+INNER JOIN Weather w2 ON
+w1.recorddate=w2.recorddate + INTERVAL '1 day'
+WHERE w1.temperature > w2.temperature 
+
+
