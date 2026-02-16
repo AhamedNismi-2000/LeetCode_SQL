@@ -70,4 +70,19 @@ INNER JOIN Weather w2 ON
 w1.recorddate=w2.recorddate + INTERVAL '1 day'
 WHERE w1.temperature > w2.temperature 
 
+-- Solution Using CTE 
+WITH prev_day AS (
+    SELECT
+        id,
+        temperature,
+        LAG(temperature) OVER (ORDER BY recorddate) AS prev_temp
+    FROM Weather
+)
+SELECT id
+FROM prev_day
+WHERE temperature > prev_temp;
+
+
+
+
 
