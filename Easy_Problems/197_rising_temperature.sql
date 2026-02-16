@@ -82,6 +82,22 @@ SELECT id
 FROM prev_day
 WHERE temperature > prev_temp;
 
+-- Solution Using Subquery
+
+SELECT id,
+       temperature,
+       recorddate,
+       prev_temp
+FROM (
+    SELECT 
+        id,
+        temperature,
+        recorddate,
+        LAG(temperature) OVER (ORDER BY recordDate) AS prev_temp
+    FROM Weather
+) t
+WHERE temperature > prev_temp;
+
 
 
 
