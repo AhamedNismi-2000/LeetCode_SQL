@@ -92,7 +92,8 @@ INSERT INTO Orders (id, customerId) VALUES
 
 SELECT 
    name Customers,
-    o.id order_id
+    o.id order_id,
+    customerid
 FROM Customers c
 LEFT JOIN orders o
 ON c.id=o.customerId
