@@ -76,7 +76,7 @@ INSERT INTO Activity (player_id, device_id, event_date, games_played) VALUES
 (3, 4, '2018-07-03', 5);
 
 
--- Solution 
+-- Solution 1
 
 
 SELECT player_id,
@@ -85,3 +85,16 @@ SELECT player_id,
 FROM Activity
 GROUP BY player_id
 ORDER BY player_id
+
+
+
+-- Solution 2 
+
+SELECT player_id, event_date AS first_login,prev_login
+FROM (
+    SELECT player_id,
+           event_date,
+           LAG(event_date) OVER(PARTITION BY player_id ORDER BY event_date) AS prev_login
+    FROM Activity
+) t
+WHERE prev_login IS NULL;
