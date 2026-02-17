@@ -49,6 +49,8 @@ Output:
 
 
 -- File: 584_find_customer_referee.sql
+DROP TABLE IF EXISTS Customer ;
+
 
 -- Create Customer table
 CREATE TABLE Customer (
@@ -65,3 +67,12 @@ INSERT INTO Customer (id, name, referee_id) VALUES
 (4, 'Bill', NULL),
 (5, 'Zack', 1),
 (6, 'Mark', 2);
+
+SELECT * FROM customer
+
+
+-- Solution 
+
+SELECT name 
+FROM Customer 
+WHERE referee_id IS NULL OR referee_id <> 2 
