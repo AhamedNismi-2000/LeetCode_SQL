@@ -98,3 +98,20 @@ FROM (
     FROM Activity
 ) t
 WHERE prev_login IS NULL;
+
+
+
+-- Solution 3 
+
+WITH prev_date AS (
+    SELECT player_id,
+           event_date,
+           ROW_NUMBER() OVER (PARTITION BY player_id ORDER BY event_date) AS rn 
+    FROM Activity
+
+)
+SELECT player_id,
+       event_date AS first_login,
+       rn 
+FROM  prev_date 
+WHERE rn=1
