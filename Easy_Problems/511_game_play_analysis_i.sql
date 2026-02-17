@@ -129,3 +129,19 @@ SELECT player_id,
        FROM prev_log
        GROUP BY player_id ,first_login
        ORDER BY player_id
+
+
+
+-- Solution 4 
+
+WITH prev_log AS (
+SELECT
+    player_id,
+    event_date,
+    MIN(event_date) OVER(PARTITION BY player_id ORDER BY event_date ) AS first_login
+    FROM Activity   
+)
+SELECT player_id,
+       first_login
+FROM prev_log
+WHERE event_date = first_login
