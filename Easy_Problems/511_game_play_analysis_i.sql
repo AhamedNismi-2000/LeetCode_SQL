@@ -52,9 +52,7 @@ Output:
 +-----------+-------------+
 
 */
-
-
-
+DROP TABLE IF EXISTS Activity
 
 -- Create Activity table
 CREATE TABLE Activity (
@@ -132,7 +130,7 @@ SELECT player_id,
 
 
 
--- Solution 4 
+-- Solution 5
 
 WITH prev_log AS (
 SELECT
