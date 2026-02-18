@@ -108,3 +108,11 @@ INSERT INTO Bonus (empId, bonus) VALUES
 
 SELECT * FROM employee
 SELECT * FROM bonus
+
+
+-- Solution 
+SELECT name,bonus 
+FROM Employee e 
+LEFT JOIN Bonus b 
+ON e.empId = b.empId
+WHERE bonus<1000 OR bonus IS NULL
