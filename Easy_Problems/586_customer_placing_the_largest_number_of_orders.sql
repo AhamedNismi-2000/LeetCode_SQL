@@ -63,8 +63,24 @@ INSERT INTO Orders (order_number, customer_number) VALUES
 (4, 3);
 
 
--- Solution 
+-- Solution 1
 SELECT customer_number 
 FROM orders 
 GROUP BY customer_number
 HAVING COUNT(*) > 1 
+
+
+
+-- Solution 2 
+
+WITH most_order AS (
+    SELECT 
+        customer_number,
+        ROW_NUMBER()  OVER(PARTITION BY customer_number ORDER BY order_number) AS row_num
+        FROM Orders
+)
+SELECT customer_number
+FROM most_order
+WHERE row_num > 1 
+
+
