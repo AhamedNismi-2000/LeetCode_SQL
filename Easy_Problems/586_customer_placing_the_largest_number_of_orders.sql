@@ -64,46 +64,35 @@ INSERT INTO Orders (order_number, customer_number) VALUES
 
 
 -- Solution 1
-SELECT customer_number 
-FROM orders 
+
+SELECT customer_number
+FROM Orders
 GROUP BY customer_number
-HAVING COUNT(*) > 1 
-
-
+ORDER BY COUNT(*) DESC
+LIMIT 1
 
 -- Solution 2 Using CTE 
 
-WITH most_order AS (
-    SELECT 
-        customer_number,
-        ROW_NUMBER()  OVER(PARTITION BY customer_number ORDER BY order_number) AS row_num
-        FROM Orders
+WITH high_order AS(
+    SELECT customer_number,
+    COUNT(*) OVER(PARTITION BY customer_number) AS order_count 
+    FROM Orders
 )
 SELECT customer_number
-FROM most_order
-WHERE row_num > 1 
-
+FROM high_order
+ORDER BY  order_count DESC
+LIMIT 1 ;
 
 -- Solution 2 Using Subquery
 
 SELECT customer_number
 FROM (
-    SELECT 
-         customer_number,
-         ROW_NUMBER()  OVER(PARTITION BY customer_number ) AS rn
+    SELECT customer_number,
+           COUNT(*) OVER (PARTITION BY customer_number) AS order_count
     FROM Orders
-)
-WHERE rn > 1
+) t
+ORDER BY order_count DESC
+LIMIT 1;
 
 
 
--- Solution 4 Using LAG For Demo Only 
-
-WITH high_order AS (
-SELECT customer_number,
-    LAG(customer_number) OVER(ORDER BY customer_number) AS lag
-    FROM Orders 
-)
-SELECT customer_number
-FROM high_order
-WHERE customer_number=lag
