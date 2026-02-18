@@ -94,3 +94,16 @@ FROM (
     FROM Orders
 )
 WHERE rn > 1
+
+
+
+-- Solution 4 Using LAG For Demo Only 
+
+WITH high_order AS (
+SELECT customer_number,
+    LAG(customer_number) OVER(ORDER BY customer_number) AS lag
+    FROM Orders 
+)
+SELECT customer_number
+FROM high_order
+WHERE customer_number=lag
