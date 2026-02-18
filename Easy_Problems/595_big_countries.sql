@@ -57,7 +57,7 @@ Output:
 
 
 
-
+DROP TABLE IF EXISTS world;
 
 -- Create World table
 CREATE TABLE World (
@@ -75,3 +75,13 @@ INSERT INTO World (name, continent, area, population, gdp) VALUES
 ('Algeria', 'Africa', 2381741, 37100000, 188681000000),
 ('Andorra', 'Europe', 468, 78115, 3712000000),
 ('Angola', 'Africa', 1246700, 20609294, 100990000000);
+
+
+-- Solution 
+SELECT 
+    name,
+    population,
+    area
+FROM World
+WHERE
+    area >= 3000000 OR population >= 25000000;
