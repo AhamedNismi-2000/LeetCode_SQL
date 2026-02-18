@@ -61,3 +61,10 @@ INSERT INTO Orders (order_number, customer_number) VALUES
 (2, 2),
 (3, 3),
 (4, 3);
+
+
+-- Solution 
+SELECT customer_number 
+FROM orders 
+GROUP BY customer_number
+HAVING COUNT(*) > 1 
