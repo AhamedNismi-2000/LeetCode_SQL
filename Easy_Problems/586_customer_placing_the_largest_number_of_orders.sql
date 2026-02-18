@@ -71,7 +71,7 @@ HAVING COUNT(*) > 1
 
 
 
--- Solution 2 
+-- Solution 2 Using CTE 
 
 WITH most_order AS (
     SELECT 
@@ -84,3 +84,13 @@ FROM most_order
 WHERE row_num > 1 
 
 
+-- Solution 2 Using Subquery
+
+SELECT customer_number
+FROM (
+    SELECT 
+         customer_number,
+         ROW_NUMBER()  OVER(PARTITION BY customer_number ) AS rn
+    FROM Orders
+)
+WHERE rn > 1
