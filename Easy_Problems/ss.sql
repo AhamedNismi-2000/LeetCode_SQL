@@ -75,10 +75,23 @@ INSERT INTO Courses (student, class) VALUES
 SELECT * FROM courses
 
 
--- Solution 
-
+-- Solution 1
 SELECT 
     class
 FROM courses
 GROUP BY class
-HAVING COUNT(*) >=5     
+HAVING COUNT(*) >= 5     
+
+
+
+-- Solution 2
+WITH high AS (
+      SELECT 
+         class,
+         COUNT(*) OVER (PARTITION BY class ORDER BY class DESC ) AS count
+         FROM courses
+)
+SELECT class,count
+FROM high 
+GROUP BY class,count
+HAVING count>=5
