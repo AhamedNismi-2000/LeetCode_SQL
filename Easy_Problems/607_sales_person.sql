@@ -99,6 +99,7 @@ Output:
 
 DROP TABLE IF EXISTS SalesPerson;
 DROP TABLE IF EXISTS Company;
+DROP TABLE IF EXISTS Orders;
 
 
 
@@ -154,9 +155,9 @@ INSERT INTO Orders (order_id, order_date, com_id, sales_id, amount) VALUES
 
 
 
-SELECT * FROM company
-SELECT * FROM orders
-SELECT * FROM salesperson
+SELECT * FROM company;
+SELECT * FROM orders;
+SELECT * FROM salesperson;
 
 
 -- Solution 1
@@ -180,14 +181,17 @@ WITH red_orders AS (
     JOIN company c ON o.com_id = c.com_id
     WHERE c.name = 'RED'
 )
-SELECT s.name AS sales_man, r.sales_id
-FROM salesperson s  NOT IN (
- JOIN red_orders r
-    ON s.sales_id = r.sales_id )
+SELECT s.name AS sales_man
+FROM salesperson s
+LEFT JOIN red_orders r
+    ON s.sales_id = r.sales_id
 WHERE r.sales_id IS NULL;
 
 
+
+
 -- Solution 3 
+
 SELECT s.name AS sales_man
 FROM salesperson s
 WHERE s.sales_id NOT IN (
@@ -196,3 +200,27 @@ WHERE s.sales_id NOT IN (
     JOIN company c ON o.com_id = c.com_id
     WHERE c.name = 'RED'
 );
+
+
+
+-- 
+WITH red AS (
+        SELECT DISTINCT c.name,
+               c.com_id,o.sales_id
+        FROM   company c
+        JOIN   orders  o 
+        ON     c.com_id = o.com_id
+        WHERE c.name  = 'RED'      
+)
+SELECT s.name
+FROM   salesperson s  
+LEFT JOIN red r ON
+s.sales_id = r.sales_id
+WHERE r.name IS NULL 
+
+
+
+
+
+
+
