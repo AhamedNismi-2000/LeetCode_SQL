@@ -1,8 +1,8 @@
 /* 
+607 Sales Person 
+
 
 Table: SalesPerson
-
-
 +-----------------+---------+
 | Column Name     | Type    |
 +-----------------+---------+
@@ -97,8 +97,11 @@ Output:
    */
 
 
+DROP TABLE IF EXISTS SalesPerson;
+DROP TABLE IF EXISTS Company;
 
-   -- File: 607_sales_person.sql
+
+
 
 -- Create SalesPerson table
 CREATE TABLE SalesPerson (
@@ -148,3 +151,6 @@ INSERT INTO Orders (order_id, order_date, com_id, sales_id, amount) VALUES
 (2, '2014-02-01', 4, 5, 5000),
 (3, '2014-03-01', 1, 1, 50000),
 (4, '2014-04-01', 1, 4, 25000);
+
+
+
