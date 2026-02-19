@@ -154,3 +154,21 @@ INSERT INTO Orders (order_id, order_date, com_id, sales_id, amount) VALUES
 
 
 
+SELECT * FROM company
+SELECT * FROM orders
+SELECT * FROM salesperson
+
+
+   -- Solution 
+
+SELECT s.name AS sales_man
+FROM salesperson s
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM orders o
+    JOIN company c ON o.com_id = c.com_id
+    WHERE o.sales_id = s.sales_id
+      AND c.name = 'RED'
+);
+
+
