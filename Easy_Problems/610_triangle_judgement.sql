@@ -44,7 +44,7 @@ Output:
 
 
 */
-
+DROP TABLE Triangle
 -- Create Table Triangle 
 
 CREATE TABLE Triangle(
@@ -56,5 +56,16 @@ CREATE TABLE Triangle(
 -- Insert Value Into Triangle 
 INSERT INTO Triangle (x , y , z) VALUES  
 (13 ,15,30),
-(10,20,30)
+(10,20,15)
 
+
+-- Solution 
+SELECT x,y,z,
+CASE
+    WHEN     x + y > z
+         AND x + z > y
+         AND y + z > x
+    THEN 'Yes'
+    ELSE 'No'
+    END AS triangle
+FROM Triangle     
