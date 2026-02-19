@@ -159,8 +159,7 @@ SELECT * FROM orders
 SELECT * FROM salesperson
 
 
-   -- Solution 
-
+-- Solution 1
 SELECT s.name AS sales_man
 FROM salesperson s
 WHERE NOT EXISTS (
@@ -175,13 +174,25 @@ WHERE NOT EXISTS (
 -- Solution 2 Using CTE 
 
 WITH red_orders AS (
-    SELECT DISTINCT o.sales_id
-    FROM orders o
+    SELECT DISTINCT 
+          o.sales_id
+    FROM   orders o
     JOIN company c ON o.com_id = c.com_id
     WHERE c.name = 'RED'
 )
+SELECT s.name AS sales_man, r.sales_id
+FROM salesperson s  NOT IN (
+ JOIN red_orders r
+    ON s.sales_id = r.sales_id )
+WHERE r.sales_id IS NULL;
+
+
+-- Solution 3 
 SELECT s.name AS sales_man
 FROM salesperson s
-LEFT JOIN red_orders r
-    ON s.sales_id = r.sales_id
-WHERE r.sales_id IS NULL;
+WHERE s.sales_id NOT IN (
+    SELECT o.sales_id
+    FROM orders o
+    JOIN company c ON o.com_id = c.com_id
+    WHERE c.name = 'RED'
+);
