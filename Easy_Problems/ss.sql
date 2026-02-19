@@ -73,3 +73,12 @@ INSERT INTO Courses (student, class) VALUES
 
 
 SELECT * FROM courses
+
+
+-- Solution 
+
+SELECT 
+    class
+FROM courses
+GROUP BY class
+HAVING COUNT(*) >=5     
