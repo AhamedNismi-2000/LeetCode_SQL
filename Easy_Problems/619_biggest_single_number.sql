@@ -97,3 +97,23 @@ INSERT INTO MyNumbers (num) VALUES
 (3),
 (3),
 (3);
+
+
+
+SELECT * FROM mynumbers
+
+
+-- Solution 1 Using Subquery 
+SELECT
+    MAX(num)
+FROM mynumbers
+WHERE num in (
+    SELECT 
+       num
+    FROM mynumbers
+    GROUP BY num
+    HAVING COUNT(*) = 1
+);
+
+
+
