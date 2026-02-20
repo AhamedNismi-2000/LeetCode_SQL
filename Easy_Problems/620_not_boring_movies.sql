@@ -64,3 +64,16 @@ INSERT INTO Cinema (id, movie, description, rating) VALUES
 (3, 'irish', 'boring', 6.2),
 (4, 'Ice song', 'Fantacy', 8.6),
 (5, 'House card', 'Interesting', 9.1);
+
+
+-- Solution 
+
+SELECT * FROM cinema
+
+SELECT id, 
+       movie, 
+       description, 
+       rating
+FROM cinema
+WHERE id%2=1 AND description <> 'boring'
+ORDER BY rating
