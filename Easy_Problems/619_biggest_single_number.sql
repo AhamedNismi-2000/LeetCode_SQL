@@ -105,11 +105,11 @@ SELECT * FROM mynumbers
 
 -- Solution 1 Using Subquery 
 SELECT
-    MAX(num)
+    MAX(num) 
 FROM mynumbers
 WHERE num in (
     SELECT 
-       num
+       num 
     FROM mynumbers
     GROUP BY num
     HAVING COUNT(*) = 1
@@ -127,3 +127,6 @@ HAVING COUNT(*) = 1
 )
 SELECT MAX(num) as num 
 FROM max
+
+
+SELECT * FROM mynumbers

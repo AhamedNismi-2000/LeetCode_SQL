@@ -44,7 +44,7 @@ Output:
 | 2  | B    | m   | 1500   |
 | 3  | C    | f   | 5500   |
 | 4  | D    | m   | 500    |
-+----+------+-----+--------+   dont give the answer
++----+------+-----+--------+   
 
 */
 
@@ -66,3 +66,16 @@ INSERT INTO Salary (id, name, sex, salary) VALUES
 (2, 'B', 'f', 1500),
 (3, 'C', 'm', 5500),
 (4, 'D', 'f', 500);
+
+
+
+
+    -- Solution 
+
+    UPDATE Salary
+    SET sex = CASE sex
+        WHEN 'm' THEN 'f'
+        ELSE 'm'
+    END::sex_enum;
+
+     SELECT * FROM Salary 
