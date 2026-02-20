@@ -116,4 +116,14 @@ WHERE num in (
 );
 
 
+-- Solution 2 Using CTE 
 
+
+WITH max AS (
+SELECT num
+FROM mynumbers
+GROUP BY num
+HAVING COUNT(*) = 1
+)
+SELECT MAX(num) as num 
+FROM max
