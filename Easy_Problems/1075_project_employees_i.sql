@@ -108,11 +108,40 @@ Output:
    SELECT * FROM employee;
    SELECT * FROM project
      
--- Solution 1 
+    -- Solution 1 
+    SELECT  project_id,
+            ROUND(AVG(experience_years),2) AS  average_years
+            FROM project p
+            JOIN employee e
+            ON p.employee_id=e.employee_id
+    GROUP BY project_id
 
-SELECT  project_id,
-        ROUND(AVG(experience_years),2) AS  average_years
+
+
+-- Solution 2 
+
+    WITH exp_yr AS(
+    SELECT  project_id,
+            AVG(experience_years) OVER (PARTITION BY project_id) AS average
+            FROM project p
+            JOIN employee e
+            ON p.employee_id=e.employee_id
+    )
+    SELECT project_id,
+          ROUND(average,2) AS average_years
+    FROM  exp_yr
+    GROUP BY project_id,ROUND(average,2)
+
+
+    WITH exp_yr AS (
+        SELECT
+            p.project_id,
+            AVG(e.experience_years) OVER (PARTITION BY p.project_id) AS average_years
         FROM project p
         JOIN employee e
-        ON p.employee_id=e.employee_id
-GROUP BY project_id
+            ON p.employee_id = e.employee_id
+    )
+    SELECT DISTINCT
+        project_id,
+        ROUND(average_years, 2) AS average_years
+    FROM exp_yr;
