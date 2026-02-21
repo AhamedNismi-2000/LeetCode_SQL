@@ -65,3 +65,14 @@ INSERT INTO ActorDirector (actor_id, director_id, timestamp) VALUES
 (2, 1, 5),
 (2, 1, 6);
 
+
+SELECT * FROM actordirector
+
+
+-- Solution 
+
+  SELECT actor_id,
+         director_id
+  FROM actordirector
+  GROUP BY actor_id,director_id
+  HAVING COUNT(*) >=3
