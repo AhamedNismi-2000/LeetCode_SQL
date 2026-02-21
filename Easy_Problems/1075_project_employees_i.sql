@@ -74,32 +74,45 @@ Output:
 -- File: 1075_project_employees_i.sql
 
 -- Create Employee table
-CREATE TABLE Employee (
-    employee_id INT PRIMARY KEY,
-    name VARCHAR(255),
-    experience_years INT NOT NULL
-);
+    CREATE TABLE Employee (
+        employee_id INT PRIMARY KEY,
+        name VARCHAR(255),
+        experience_years INT NOT NULL
+    );
 
--- Create Project table
-CREATE TABLE Project (
-    project_id INT,
-    employee_id INT,
-    PRIMARY KEY (project_id, employee_id)
-);
+    -- Create Project table
+    CREATE TABLE Project (
+        project_id INT,
+        employee_id INT,
+        PRIMARY KEY (project_id, employee_id)
+    );
 
--- Insert values into Employee table
-INSERT INTO Employee (employee_id, name, experience_years) VALUES
-(1, 'Khaled', 3),
-(2, 'Ali', 2),
-(3, 'John', 1),
-(4, 'Doe', 2);
+    -- Insert values into Employee table
+    INSERT INTO Employee (employee_id, name, experience_years) VALUES
+    (1, 'Khaled', 3),
+    (2, 'Ali', 2),
+    (3, 'John', 1),
+    (4, 'Doe', 2);
 
--- Insert values into Project table (Example 1)
-INSERT INTO Project (project_id, employee_id) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(2, 1),
-(2, 4);
+    -- Insert values into Project table (Example 1)
+    INSERT INTO Project (project_id, employee_id) VALUES
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (2, 1),
+    (2, 4);
 
 
+ -- Solution 
+
+   SELECT * FROM employee;
+   SELECT * FROM project
+     
+-- Solution 1 
+
+SELECT  project_id,
+        ROUND(AVG(experience_years),2) AS  average_years
+        FROM project p
+        JOIN employee e
+        ON p.employee_id=e.employee_id
+GROUP BY project_id
