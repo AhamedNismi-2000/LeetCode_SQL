@@ -113,12 +113,22 @@ VALUES
     (2, 2, 3, '2019-06-02', 1, 800),
     (3, 3, 4, '2019-05-13', 2, 2800);
 
-SELECT
-    *
-FROM
-    product;
 
-SELECT
-    *
-FROM
-    sales;
+    WITH find_max AS (
+    SELECT s.product_id, 
+        p.product_name,
+          MIN(sale_date) >= '2019-01-01' AND MAX(sale_date) <= '2019-03-31' AS max
+    FROM Sales s 
+    JOIN Product p
+    ON s.product_id=p.product_id      
+    GROUP BY s.product_id,p.product_name
+    )
+    SELECT product_name,
+           product_id
+    FROM find_max
+    WHERE max = TRUE
+  
+
+
+   
+    
