@@ -114,9 +114,11 @@ VALUES
     (3, 3, 4, '2019-05-13', 2, 2800);
 
 
+-- Solution 1 
+
     WITH find_max AS (
     SELECT s.product_id, 
-        p.product_name,
+         p.product_name,
           MIN(sale_date) >= '2019-01-01' AND MAX(sale_date) <= '2019-03-31' AS max
     FROM Sales s 
     JOIN Product p
@@ -129,6 +131,22 @@ VALUES
     WHERE max = TRUE
   
 
+-- Solution 2 
 
+WITH q1_products AS (
+    SELECT
+        s.product_id,
+        p.product_name
+    FROM Sales s
+    JOIN Product p
+        ON s.product_id = p.product_id
+    GROUP BY s.product_id, p.product_name
+    HAVING
+        MIN(s.sale_date) >= '2019-01-01'
+        AND
+        MAX(s.sale_date) <= '2019-03-31'
+)
+SELECT product_id, product_name
+FROM q1_products;
    
     
