@@ -85,3 +85,8 @@ INSERT INTO Activity (user_id, session_id, activity_date, activity_type) VALUES
 (3, 2, '2019-07-21', 'end_session'),
 (4, 3, '2019-06-25', 'open_session'),
 (4, 3, '2019-06-25', 'end_session');
+
+
+
+-- Solution 
+

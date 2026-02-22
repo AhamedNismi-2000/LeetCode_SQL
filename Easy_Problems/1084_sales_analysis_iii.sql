@@ -131,9 +131,8 @@ VALUES
     WHERE max = TRUE
   
 
--- Solution 2 Using CTE
+-- Solution 2 
 
-WITH q1_products AS (
     SELECT
         s.product_id,
         p.product_name
@@ -145,9 +144,7 @@ WITH q1_products AS (
         MIN(s.sale_date) >= '2019-01-01'
         AND
         MAX(s.sale_date) <= '2019-03-31'
-)
-SELECT product_id, product_name
-FROM q1_products;
+
    
     
 
