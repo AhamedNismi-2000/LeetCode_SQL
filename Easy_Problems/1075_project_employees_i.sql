@@ -133,6 +133,9 @@ Output:
     GROUP BY project_id,ROUND(average,2)
 
 
+
+
+
     WITH exp_yr AS (
         SELECT
             p.project_id,
