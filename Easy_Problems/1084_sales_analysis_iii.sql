@@ -114,7 +114,7 @@ VALUES
     (3, 3, 4, '2019-05-13', 2, 2800);
 
 
--- Solution 1 
+-- Solution 1  Using CTE
 
     WITH find_max AS (
     SELECT s.product_id, 
@@ -131,7 +131,7 @@ VALUES
     WHERE max = TRUE
   
 
--- Solution 2 
+-- Solution 2 Using CTE
 
 WITH q1_products AS (
     SELECT
@@ -150,3 +150,21 @@ SELECT product_id, product_name
 FROM q1_products;
    
     
+
+-- Solution 3 Using Sub Query           
+
+SELECT product_id, product_name
+FROM (
+    SELECT 
+        p.product_id,
+        p.product_name,
+        MIN(s.sale_date) AS min_date,
+        MAX(s.sale_date) AS max_date
+    FROM Sales s
+    JOIN Product p
+        ON s.product_id = p.product_id
+    GROUP BY p.product_id, p.product_name
+) AS temp
+WHERE min_date >= '2019-01-01'
+  AND max_date <= '2019-03-31';
+
