@@ -65,6 +65,8 @@ INSERT INTO Views (article_id, author_id, viewer_id, view_date) VALUES
 
 SELECT * FROM views
 
+
+-- Solution 
 SELECT DISTINCT author_id AS id 
 FROM views
 WHERE author_id = viewer_id
