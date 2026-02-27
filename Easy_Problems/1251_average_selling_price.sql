@@ -96,3 +96,21 @@ INSERT INTO UnitsSold (product_id, purchase_date, units) VALUES
 (1, '2019-03-01', 15),
 (2, '2019-02-10', 200),
 (2, '2019-03-22', 30);
+
+SELECT * FROM unitssold
+SELECT * FROM prices
+
+
+-- Solution 
+
+SELECT
+    p.product_id,
+    ROUND(
+        COALESCE(SUM(p.price * u.units) / SUM(u.units), 0),
+        2
+    ) AS average_price
+FROM Prices p
+LEFT JOIN UnitsSold u
+    ON p.product_id = u.product_id
+   AND u.purchase_date BETWEEN p.start_date AND p.end_date
+GROUP BY p.product_id;
