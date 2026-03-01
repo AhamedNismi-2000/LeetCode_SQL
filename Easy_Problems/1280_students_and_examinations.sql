@@ -172,4 +172,24 @@ INSERT INTO Examinations (student_id, subject_name) VALUES
         sub.subject_name;
 
 
-        
+
+ -- Solution 2 CTE 
+ WITH student_subs AS (
+    SELECT  s.student_id,
+            s.student_name,
+            sub.subject_name
+    FROM students s
+    CROSS JOIN subjects sub     
+ )       
+
+ SELECT ss.student_id,
+        ss.student_name,
+        ss.subject_name,
+        COUNT (e.subject_name) AS attended_exams
+ FROM student_subs ss
+ LEFT JOIN examinations e 
+ ON ss.student_id = e.student_id
+ AND ss.subject_name = e.subject_name    
+ GROUP BY ss.student_id,
+         ss.student_name,
+         ss.subject_name
