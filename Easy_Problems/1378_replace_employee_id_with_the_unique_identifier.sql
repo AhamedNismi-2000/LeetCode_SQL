@@ -104,4 +104,11 @@ SELECT * FROM employeeuni;
 
 DROP TABLE IF EXISTS employees,employeeuni CASCADE
 
+-- Solution 
 
+SELECT unique_id,
+       name
+FROM   employees e
+LEFT JOIN employeeuni en
+ON e.id=en.id
+ORDER BY name
