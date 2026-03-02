@@ -103,3 +103,6 @@ INSERT INTO Transactions (trans_id, account, amount, transacted_on) VALUES
 (5, 900003, 6000, '2020-08-07'),
 (6, 900003, 6000, '2020-09-07'),
 (7, 900003, -4000, '2020-09-11');
+
+
+DROP TABLE IF EXISTS transactions,users,visits CASCADE;
