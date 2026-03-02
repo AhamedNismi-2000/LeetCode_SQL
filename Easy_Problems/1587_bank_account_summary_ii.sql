@@ -106,3 +106,21 @@ INSERT INTO Transactions (trans_id, account, amount, transacted_on) VALUES
 
 
 DROP TABLE IF EXISTS transactions,users,visits CASCADE;
+
+
+
+SELECT * FROM users;
+SELECT * FROM transactions ;
+
+
+-- Solutoin 1
+
+    SELECT 
+            u.name,
+            SUM(amount) AS balance
+    FROM users u 
+    JOIN transactions t ON 
+    u.account=t.account
+    GROUP BY  u.name
+    HAVING SUM(amount) > 10000  
+
