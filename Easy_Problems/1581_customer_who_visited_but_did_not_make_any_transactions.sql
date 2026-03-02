@@ -121,4 +121,24 @@ DROP TABLE IF EXISTS users CASCADE;
 
 
 
-    
+
+ -- Solutoion 2 CTE 
+
+  WITH no_transsaction AS (
+        SELECT customer_id,
+               transaction_id,
+           COUNT(*) AS count_no_trans
+    FROM visits v LEFT JOIN
+    transactions t ON
+    v.visit_id=t.visit_id
+      GROUP BY customer_id,transaction_id
+      ORDER BY count_no_trans DESC
+      
+  )
+  SELECT customer_id,
+         count_no_trans
+  FROM no_transsaction 
+  WHERE transaction_id IS NULL        
+
+
+
