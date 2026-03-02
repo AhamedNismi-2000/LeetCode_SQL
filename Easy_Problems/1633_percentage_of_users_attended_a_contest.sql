@@ -134,7 +134,6 @@ INSERT INTO Register (contest_id, user_id) VALUES
      SELECT COUNT(user_id) as total 
      FROM   Users 
   )
-
   SELECT ur.contest_id,
          ROUND(ur.contribute * 100.0 / tr.total, 2) AS percentage   
   FROM user_reg ur
