@@ -110,3 +110,33 @@ INSERT INTO Register (contest_id, user_id) VALUES
 (210, 2),
 (207, 2),
 (210, 7);
+
+
+-- Solution 1
+ 
+    SELECT r.contest_id,
+        ROUND(COUNT(r.user_id) * 100.0 / (SELECT COUNT(*) FROM Users),2) AS percentage
+    FROM Register r
+    GROUP BY r.contest_id
+    ORDER BY percentage DESC, r.contest_id ASC;
+
+
+-- Solution 2 CTE 
+  
+  WITH user_reg AS (
+      SELECT contest_id,
+      COUNT(*) as contribute 
+      
+      FROM register
+      GROUP BY contest_id
+  ),
+  total_user AS(
+     SELECT COUNT(user_id) as total 
+     FROM   Users 
+  )
+
+  SELECT ur.contest_id,
+         ROUND(ur.contribute * 100.0 / tr.total, 2) AS percentage   
+  FROM user_reg ur
+  CROSS JOIN total_user  tr    
+  ORDER BY  percentage DESC 
