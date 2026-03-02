@@ -124,3 +124,22 @@ SELECT * FROM transactions ;
     GROUP BY  u.name
     HAVING SUM(amount) > 10000  
 
+
+  -- Solution CTE 
+
+  
+    WITH balance_amount  AS (
+        SELECT
+           u.name AS name ,
+           SUM(amount) AS balance
+    FROM users u 
+    JOIN transactions t ON 
+    u.account=t.account
+    GROUP BY  u.name
+    )
+    SELECT  name,
+            balance
+    FROM    balance_amount
+    WHERE    balance > 10000        
+
+    
