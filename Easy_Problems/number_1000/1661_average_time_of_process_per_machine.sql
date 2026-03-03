@@ -96,3 +96,21 @@ INSERT INTO Activity (machine_id, process_id, activity_type, timestamp) VALUES
 (2, 0, 'end', 4.512),
 (2, 1, 'start', 2.500),
 (2, 1, 'end', 5.000);
+
+
+-- Solution Using Subquery 
+
+    SELECT 
+        machine_id,
+        ROUND(AVG(end_time - start_time)::numeric, 3) AS processing_time
+    FROM (
+        SELECT
+            machine_id,
+            process_id,
+            MAX(CASE WHEN activity_type = 'end' THEN timestamp END) AS end_time,
+            MAX(CASE WHEN activity_type = 'start' THEN timestamp END) AS start_time
+        FROM Activity
+        GROUP BY machine_id, process_id
+        ORDER BY machine_id
+    ) t
+    GROUP BY machine_id;
