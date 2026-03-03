@@ -54,3 +54,17 @@ DROP TABLE Users
  (1,'aLice'),
  (2,'bOB');
 
+
+-- Solution 1 CTE 
+    WITH lower_name AS (
+    SELECT user_id,
+            LOWER(name) AS name
+        FROM      
+        Users
+    )
+    SELECT user_id,
+        INITCAP(name)
+    FROM lower_name    
+
+
+
