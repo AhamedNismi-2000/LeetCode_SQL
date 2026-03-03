@@ -114,3 +114,22 @@ INSERT INTO Activity (machine_id, process_id, activity_type, timestamp) VALUES
         ORDER BY machine_id
     ) t
     GROUP BY machine_id;
+
+
+-- Solution Using  Window Function 
+    SELECT 
+    machine_id,
+    ROUND(AVG(process_time)::numeric, 3) AS processing_time
+FROM (
+    SELECT
+        machine_id,
+        process_id,
+        timestamp -
+        LAG(timestamp) OVER (
+            PARTITION BY machine_id, process_id
+            ORDER BY timestamp
+        ) AS process_time
+    FROM Activity
+) t
+WHERE process_time IS NOT NULL
+GROUP BY machine_id;
