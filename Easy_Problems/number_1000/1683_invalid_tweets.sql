@@ -58,3 +58,10 @@ INSERT INTO Tweets (tweet_id, content) VALUES
 
 
 SELECT * FROM tweets
+
+
+-- Solution 
+
+SELECT tweet_id
+FROM tweets
+WHERE CHAR_LENGTH(content) > 15
