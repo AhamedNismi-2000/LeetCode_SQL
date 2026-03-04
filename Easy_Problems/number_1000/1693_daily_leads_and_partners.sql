@@ -74,3 +74,15 @@ INSERT INTO DailySales (date_id, make_name, lead_id, partner_id) VALUES
 ('2020-12-07', 'honda', 0, 1),
 ('2020-12-07', 'honda', 1, 2),
 ('2020-12-07', 'honda', 2, 1);
+
+
+
+-- Soultion 
+   SELECT
+       date_id,
+       make_name,
+       COUNT(DISTINCT lead_id) AS unique_leads,
+       COUNT(DISTINCT  partner_id) AS unique_partners
+       FROM dailysales
+       GROUP BY date_id, make_name
+       ORDER BY  date_id , make_name
