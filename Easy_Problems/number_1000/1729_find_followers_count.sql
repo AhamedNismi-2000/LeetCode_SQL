@@ -61,5 +61,8 @@ INSERT INTO Followers (user_id, follower_id) VALUES
 (2, 0),
 (2, 1);
 
-
-SELECT * FROM followers
+SELECT user_id,
+       COUNT(follower_id) AS followers_count
+       FROM followers
+       GROUP BY user_id 
+       ORDER BY user_id
