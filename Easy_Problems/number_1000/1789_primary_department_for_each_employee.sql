@@ -77,3 +77,17 @@ INSERT INTO Employee (employee_id, department_id, primary_flag) VALUES
 (4, 2, 'N'),
 (4, 3, 'Y'),
 (4, 4, 'N');
+
+
+  -- Solution 1
+
+ SELECT employee_id, 
+        department_id
+FROM Employee
+WHERE primary_flag = 'Y'
+   OR employee_id IN (
+        SELECT employee_id
+        FROM Employee
+        GROUP BY employee_id
+        HAVING COUNT(department_id) = 1
+   );
