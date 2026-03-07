@@ -72,7 +72,7 @@ Output:
 
 
 */
-
+DROP TABLE IF EXISTS Employees
 CREATE TABLE Employees (
     employee_id INT PRIMARY KEY,
     name VARCHAR(100),
@@ -84,7 +84,7 @@ INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
 (9, 'Hercy', NULL, 43),
 (6, 'Alice', 9, 41),
 (4, 'Bob', 9, 36),
-(2, 'Winston', NULL, 37),
+(2, 'Winston', NULL, 37);
 
 INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
 (1, 'Michael', NULL, 45),
@@ -108,3 +108,5 @@ JOIN Employees e2
 ON e1.employee_id = e2.reports_to
 GROUP BY e1.employee_id, e1.name
 ORDER BY e1.employee_id;
+
+
