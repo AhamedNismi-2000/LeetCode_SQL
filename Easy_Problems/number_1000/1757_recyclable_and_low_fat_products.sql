@@ -65,3 +65,4 @@ INSERT INTO Products (product_id, low_fats, recyclable) VALUES
   SELECT product_id
   FROM products
   WHERE low_fats='Y' AND recyclable='Y'
+
