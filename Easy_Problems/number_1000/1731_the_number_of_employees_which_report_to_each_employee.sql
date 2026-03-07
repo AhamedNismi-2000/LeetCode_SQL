@@ -86,6 +86,7 @@ INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
 (4, 'Bob', 9, 36),
 (2, 'Winston', NULL, 37),
 
+INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
 (1, 'Michael', NULL, 45),
 (3, 'Bob', 1, 42),
 (5, 'David', 2, 40),
@@ -93,3 +94,17 @@ INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
 (8, 'Grace', NULL, 48),
 (4, 'Charlie', 2, 34),
 (6, 'Eve', 3, 37);
+
+
+-- Solution 
+   
+    SELECT 
+    e1.employee_id,
+    e1.name,
+    COUNT(e2.employee_id) AS reports_count,
+    ROUND(AVG(e2.age)) AS average_age
+FROM Employees e1
+JOIN Employees e2
+ON e1.employee_id = e2.reports_to
+GROUP BY e1.employee_id, e1.name
+ORDER BY e1.employee_id;
