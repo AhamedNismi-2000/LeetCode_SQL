@@ -83,7 +83,7 @@ SELECT product_id,
 FROM Products
 WHERE store2 IS NOT NULL
 
-UNION ALL
+UNION ALL 
 
 SELECT product_id, 
        'store3' AS store, 
