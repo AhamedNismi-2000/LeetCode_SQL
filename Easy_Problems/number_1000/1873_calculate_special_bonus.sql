@@ -69,3 +69,13 @@ INSERT INTO Employees (employee_id, name, salary) VALUES
 (7, 'Addilyn', 7400),
 (8, 'Juan', 6100),
 (9, 'Kannon', 7700);
+
+
+ --Solution 
+
+    SELECT 
+       employee_id,
+       CASE WHEN employee_id%2 = 1 AND name NOT LIKE '%M%'
+       THEN salary
+       ELSE 0 END AS bonus 
+    FROM employees
