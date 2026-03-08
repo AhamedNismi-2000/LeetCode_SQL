@@ -79,3 +79,12 @@ INSERT INTO Logins (user_id, time_stamp) VALUES
 (2, '2019-08-25 07:59:08'),
 (14, '2019-07-14 09:00:00'),
 (14, '2021-01-06 11:59:59');
+
+  -- Solution 
+
+    SELECT user_id,
+          MAX(time_stamp) AS last_stamp
+    FROM logins
+    WHERE EXTRACT (YEAR FROM time_stamp) = 2020
+    GROUP BY user_id
+    ORDER BY user_id DESC
