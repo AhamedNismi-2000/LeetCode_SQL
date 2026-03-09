@@ -70,7 +70,7 @@ INSERT INTO Employees (employee_id, name, manager_id, salary) VALUES
 (11, 'Joziah', 6, 28485);
 
 
--- Solution 1 
+-- Solution 1
   
     SELECT employee_id    
         FROM employees
@@ -80,3 +80,21 @@ INSERT INTO Employees (employee_id, name, manager_id, salary) VALUES
                FROM Employees
               ) 
         ORDER BY employee_id      
+
+
+ -- Solution 2 CTE 
+
+    WITH manager AS (
+    SELECT employee_id,
+            name,
+            salary,
+            manager_id   
+            FROM employees
+            WHERE salary < 30000 
+    )
+    SELECT employee_id
+    FROM manager
+    WHERE manager_id NOT IN (
+       SELECT employee_id FROM employees
+    )
+    ORDER BY employee_id
