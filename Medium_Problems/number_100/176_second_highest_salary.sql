@@ -76,3 +76,13 @@ ORDER BY salary DESC
 LIMIT 1 OFFSET 1;
 
 
+ -- Solution 2 
+
+    WITH second_sal AS ( 
+    SELECT salary,
+    ROW_NUMBER() OVER(ORDER BY salary) AS number
+    FROM employee
+    )
+    SELECT salary AS SecondHighestSalary
+    FROM second_sal
+    WHERE number = 2
