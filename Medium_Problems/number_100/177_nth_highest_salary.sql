@@ -55,7 +55,7 @@ Output:
 +------------------------+
 
 */
-
+  DROP TABLE employee CASCADE 
 
   CREATE TABLE Employee (
       id INT PRIMARY KEY,
@@ -77,4 +77,19 @@ Output:
   (1, 100);
 
 
-  SELECT * FROM employee
+  -- Solution 
+
+CREATE  FUNCTION getHighestSalary(N INT)
+RETURNS INT AS $$
+BEGIN
+    RETURN (
+        SELECT DISTINCT salary
+        FROM Employee
+        ORDER BY salary DESC
+        OFFSET N-1
+        LIMIT 1 
+    );
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT getNthHighestSalary(2);
