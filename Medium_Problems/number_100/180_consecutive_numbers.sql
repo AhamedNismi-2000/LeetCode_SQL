@@ -64,4 +64,31 @@ Explanation: 1 is the only number that appears consecutively for at least three 
 
 
 
-    
+
+-- Solution LEAD() 
+
+   WITH consecutive AS (
+      SELECT num,
+      LEAD(num,1) OVER(ORDER BY id)  AS prev1,
+      LEAD(num,2) OVER(ORDER BY id)  AS prev2
+      FROM logs
+
+   )
+   SELECT num 
+   FROM consecutive
+   WHERE num = prev1 AND num = prev2
+   
+
+-- Solution LAG() 
+   WITH consecutive AS (
+      SELECT num,
+       LAG(num,1) OVER(ORDER BY id)  AS prev1,
+       LAG(num,2) OVER(ORDER BY id)  AS prev2
+      FROM logs
+
+   )
+   SELECT num 
+   FROM consecutive
+   WHERE num = prev1 AND num = prev2
+   
+
