@@ -66,6 +66,11 @@ INSERT INTO Scores (id, score) VALUES
 (6, 3.65);
 
   DROP TABLE IF EXISTS Score CASCADE 
-
+  
+  -- Solution 
+   
+   SELECT score,
+         DENSE_RANK() OVER(ORDER BY score DESC ) AS rank
+   FROM Scores 
 
   
