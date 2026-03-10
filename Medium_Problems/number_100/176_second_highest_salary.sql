@@ -88,8 +88,12 @@ LIMIT 1 OFFSET 1;
     WHERE number = 2
 
  -- Solutoin 3 
-    SELECT
-        (SELECT MAX(salary)
+ 
+       SELECT
+       (SELECT MAX(salary)
         FROM Employee
         WHERE salary < (SELECT MAX(salary) FROM Employee)
         ) AS SecondHighestSalary;   
+
+
+
