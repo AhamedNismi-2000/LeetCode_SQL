@@ -62,8 +62,7 @@ Explanation: 1 is the only number that appears consecutively for at least three 
     ('2'),
     ('2');
 
-
-
+ 
 
 -- Solution LEAD() 
 
@@ -72,7 +71,6 @@ Explanation: 1 is the only number that appears consecutively for at least three 
       LEAD(num,1) OVER(ORDER BY id)  AS prev1,
       LEAD(num,2) OVER(ORDER BY id)  AS prev2
       FROM logs
-
    )
    SELECT num 
    FROM consecutive
