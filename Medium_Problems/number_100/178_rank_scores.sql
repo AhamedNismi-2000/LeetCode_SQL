@@ -65,7 +65,7 @@ INSERT INTO Scores (id, score) VALUES
 (5, 4.00),
 (6, 3.65);
 
-  DROP TABLE IF EXISTS Score CASCADE 
+  
   
   -- Solution 
    
