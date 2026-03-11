@@ -76,6 +76,21 @@ INSERT INTO Employee (id, name, department, managerId) VALUES
     HAVING COUNT(e.id) >= 5;
 
 
+  -- Solution 2 CTE 
+  
+   WITH report AS (
+     SELECT e1.name,
+     COUNT(*) AS count
+     FROM employee e1
+     JOIN employee e2 
+     ON  e1.id = e2.managerid
+     GROUP BY e1.name
+   )   
+   SELECT name
+   FROM report 
+   WHERE count >= 5
+
+
 
 
 
