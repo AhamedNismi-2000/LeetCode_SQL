@@ -82,22 +82,22 @@ FROM first_log fl
 
 -- or 
 
-WITH first_log AS (
-    SELECT 
-        player_id,
-        MIN(event_date) AS log_in
-    FROM Activity
-    GROUP BY player_id
-)
+    WITH first_log AS (
+        SELECT 
+            player_id,
+            MIN(event_date) AS log_in
+        FROM Activity
+        GROUP BY player_id
+    )
 
-SELECT ROUND(
-    COUNT(*)::decimal / (SELECT COUNT(DISTINCT player_id) FROM Activity),
-    2
-) AS fraction
-FROM first_log fl
-JOIN Activity a
-  ON fl.player_id = a.player_id
- AND a.event_date = fl.log_in + INTERVAL '1 day';
+    SELECT ROUND(
+        COUNT(*)::decimal / (SELECT COUNT(DISTINCT player_id) FROM Activity),
+        2
+    ) AS fraction
+    FROM first_log fl
+    JOIN Activity a
+    ON fl.player_id = a.player_id
+    AND a.event_date = fl.log_in + INTERVAL '1 day';
 
 
 
