@@ -109,3 +109,24 @@ INSERT INTO Employee (id, name, salary, departmentId) VALUES
     SELECT Employee, Department, Salary
     FROM max_salary 
     WHERE Salary = max;
+
+
+--Solution 2
+
+    WITH max_salary AS (
+        SELECT departmentId,
+            MAX(salary) AS max 
+        FROM employee
+    GROUP BY departmentId 
+    
+    )
+    SELECT  d.name,
+            e.name,
+            max
+    FROM employee e 
+    JOIN department d 
+    ON e.departmentId = d.id 
+    JOIN max_salary ms 
+    ON   e.departmentId = ms.departmentId
+    WHERE e.salary = ms.max 
+            
