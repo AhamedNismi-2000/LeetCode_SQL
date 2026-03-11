@@ -67,7 +67,13 @@ INSERT INTO Employee (id, name, department, managerId) VALUES
 
 
 
+-- Solution 1 
 
+    SELECT e.name
+    FROM Employee e
+    JOIN Employee r ON e.id = r.managerId
+    GROUP BY e.id
+    HAVING COUNT(e.id) >= 5;
 
 
 
