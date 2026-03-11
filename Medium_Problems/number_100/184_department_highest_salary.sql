@@ -93,3 +93,19 @@ INSERT INTO Employee (id, name, salary, departmentId) VALUES
 (3, 'Henry', 80000, 2),
 (4, 'Sam', 60000, 2),
 (5, 'Max', 90000, 1);
+
+ 
+  -- Solution 1 
+   
+       WITH max_salary AS (
+        SELECT 
+            e.name AS Employee,
+            e.salary AS Salary,
+            d.name AS Department,
+            MAX(e.salary) OVER (PARTITION BY e.departmentId) AS max
+        FROM Employee e
+        JOIN Department d ON e.departmentId = d.id
+    )
+    SELECT Employee, Department, Salary
+    FROM max_salary 
+    WHERE Salary = max;
