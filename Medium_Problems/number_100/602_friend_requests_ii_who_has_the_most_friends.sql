@@ -63,28 +63,33 @@ INSERT INTO RequestAccepted (requester_id, accepter_id, accept_date) VALUES
 (3, 4, '2016-06-09');
 
 
- --Solution  CTE 
+ --Solution  CTE 1
  
     WITH friends AS (
         SELECT requester_id AS id
         FROM RequestAccepted
-
         UNION ALL
-
         SELECT accepter_id AS id
         FROM RequestAccepted
+    ),
+    friend_counts AS (
+        SELECT id, COUNT(*) AS num
+        FROM friends
+        GROUP BY id
     )
+    , max AS (
+        SELECT MAX(num) AS num
+        FROM friend_counts
+    )
+    SELECT fc.id, fc.num
+    FROM friend_counts fc
+    JOIN max m ON fc.num = m.num;
     
-    SELECT id,
-            COUNT(id) num
-    FROM friends
-    GROUP BY id
-    ORDER BY num DESC 
-    LIMIT 1 
   
 
 
-  
+
+
 -- Solution 2 Subquery 
  
 SELECT id, COUNT(*) AS num
