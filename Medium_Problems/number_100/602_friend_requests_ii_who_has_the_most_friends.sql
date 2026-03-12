@@ -61,3 +61,29 @@ INSERT INTO RequestAccepted (requester_id, accepter_id, accept_date) VALUES
 (1, 3, '2016-06-08'),
 (2, 3, '2016-06-08'),
 (3, 4, '2016-06-09');
+
+
+ --Solution  CTE 
+ 
+    WITH friends AS (
+        SELECT requester_id AS id
+        FROM RequestAccepted
+
+        UNION ALL
+
+        SELECT accepter_id AS id
+        FROM RequestAccepted
+    )
+    
+    SELECT id,
+            COUNT(id) num
+    FROM friends
+    GROUP BY id
+    ORDER BY num DESC 
+    LIMIT 1 
+  
+
+  
+  
+
+    
