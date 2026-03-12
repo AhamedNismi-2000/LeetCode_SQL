@@ -85,6 +85,26 @@ INSERT INTO RequestAccepted (requester_id, accepter_id, accept_date) VALUES
     FROM friend_counts fc
     JOIN max m ON fc.num = m.num;
     
+ 
+ --Solution  CTE 2
+
+    WITH friends AS (
+        SELECT requester_id AS id
+        FROM RequestAccepted
+        UNION ALL
+        SELECT accepter_id AS id
+        FROM RequestAccepted
+    ),
+    friend_counts AS (
+        SELECT id, COUNT(*) AS num
+        FROM friends
+        GROUP BY id
+    )
+     SELECT id,
+            num
+     FROM friend_counts
+     WHERE num = (SELECT MAX(num) FROM friend_counts )       
+    
   
 
 
