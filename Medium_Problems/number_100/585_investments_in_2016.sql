@@ -76,4 +76,20 @@ VALUES
     (3, 10, 30, 20, 20),
     (4, 10, 40, 40, 40);
 
-    
+    -- Solution 1 SubQuery 
+
+    SELECT ROUND(SUM(tiv_2016)::decimal,2)
+    FROM insurance
+    WHERE tiv_2015 IN  (
+        SELECT   
+            tiv_2015
+        FROM insurance
+        GROUP BY tiv_2015    
+        HAVING COUNT(*) > 1
+    ) AND 
+    (lon,lat) IN (
+      SELECT lat, lon
+      FROM Insurance
+      GROUP BY lat, lon
+      HAVING COUNT(*) = 1
+    )
