@@ -77,13 +77,13 @@ INSERT INTO RequestAccepted (requester_id, accepter_id, accept_date) VALUES
         FROM friends
         GROUP BY id
     )
-    , max AS (
+    , max_count AS (
         SELECT MAX(num) AS num
         FROM friend_counts
     )
-    SELECT fc.id, fc.num
+    SELECT *
     FROM friend_counts fc
-    JOIN max m ON fc.num = m.num;
+    JOIN max_count mc ON fc.num = mc.num;
     
  
  --Solution  CTE 2
@@ -107,19 +107,16 @@ INSERT INTO RequestAccepted (requester_id, accepter_id, accept_date) VALUES
     
   
 
-
-
-
 -- Solution 2 Subquery 
  
-SELECT id, COUNT(*) AS num
-FROM (
-    SELECT requester_id AS id
-    FROM RequestAccepted
-    UNION ALL
-    SELECT accepter_id AS id
-    FROM RequestAccepted
-) AS friends
-GROUP BY id
-ORDER BY num DESC
-LIMIT 1;
+    SELECT id, COUNT(*) AS num
+    FROM (
+        SELECT requester_id AS id
+        FROM RequestAccepted
+        UNION ALL
+        SELECT accepter_id AS id
+        FROM RequestAccepted
+    ) AS friends
+    GROUP BY id
+    ORDER BY num DESC
+    LIMIT 1;
