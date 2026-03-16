@@ -93,3 +93,22 @@ VALUES
       GROUP BY lat, lon
       HAVING COUNT(*) = 1
     )
+
+ -- Solution 2 CTE 
+
+    WITH same_tiv AS (
+      SELECT tiv_2015
+      FROM insurance
+      GROUP BY tiv_2015
+      HAVING COUNT(*) > 1 
+    ) ,
+    same_location AS (
+        SELECT lon,lat
+        FROM insurance
+        GROUP BY lon,lat
+        HAVING COUNT(*) = 1
+    )
+    SELECT ROUND(SUM(tiv_2016)::decimal,2)
+    FROM insurance 
+    WHERE tiv_2015 IN (SELECT tiv_2015 FROM same_tiv)
+    AND  (lat,lon) IN (SELECT lon,lat FROM same_location)
