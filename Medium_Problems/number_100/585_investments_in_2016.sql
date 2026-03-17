@@ -74,26 +74,27 @@ VALUES (1, 10, 5, 10, 10),
 
 -- Solution 1 SubQuery 
 
-SELECT ROUND(SUM(tiv_2016)::decimal, 2)
-FROM insurance
-WHERE tiv_2015 IN (
-        SELECT tiv_2015
-        FROM insurance
-        GROUP BY tiv_2015
-        HAVING COUNT(*) > 1
-    )
-    AND (lon, lat) IN (
-        SELECT lat,
-            lon
-        FROM Insurance
-        GROUP BY lat,
-            lon
-        HAVING COUNT(*) = 1
+    SELECT ROUND(SUM(tiv_2016)::decimal, 2) AS tiv_2016
+    FROM insurance
+    WHERE tiv_2015 IN (
+            SELECT tiv_2015
+            FROM insurance
+            GROUP BY tiv_2015
+            HAVING COUNT(*) > 1
+        )
+        AND (lon, lat) IN (
+            SELECT lat,
+                lon
+            FROM Insurance
+            GROUP BY lat,
+                lon
+            HAVING COUNT(*) = 1 )
 
 
 
-        
-    ) -- Solution 2 CTE 
+
+
+    -- Solution 2 CTE 
     WITH same_tiv AS (
         SELECT tiv_2015
         FROM insurance
@@ -108,15 +109,14 @@ WHERE tiv_2015 IN (
             lat
         HAVING COUNT(*) = 1
     )
-SELECT ROUND(SUM(tiv_2016)::decimal, 2)
+SELECT ROUND(SUM(tiv_2016)::decimal, 2) AS tiv_2016
 FROM insurance
 WHERE tiv_2015 IN (
         SELECT tiv_2015
         FROM same_tiv
     )
     AND (lat, lon) IN (
-        SELECT lon,
-            lat
+        SELECT lon,lat 
         FROM same_location
     )
     
