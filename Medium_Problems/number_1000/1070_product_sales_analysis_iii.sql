@@ -86,3 +86,15 @@ INSERT INTO Sales (sale_id, product_id, year, quantity, price) VALUES
     AND s.year=ms.first_year
   
 
+  -- Solution 2 SubQuery 
+
+    SELECT product_id,
+           year AS first_year,
+           quantity,
+           price
+FROM Sales 
+WHERE year = (
+    SELECT MIN(year)
+    FROM Sales s
+    WHERE product_id = s.product_id
+);
