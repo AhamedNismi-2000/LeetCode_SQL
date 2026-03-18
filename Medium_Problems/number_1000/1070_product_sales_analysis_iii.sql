@@ -67,3 +67,22 @@ INSERT INTO Sales (sale_id, product_id, year, quantity, price) VALUES
 (2, 100, 2009, 12, 5000),
 (7, 200, 2011, 15, 9000);
 
+
+ --Solution 1 CTE 
+
+    WITH min_sales AS (   
+      SELECT product_id,
+            MIN(year) AS first_year
+      FROM Sales
+      GROUP BY product_id
+  )
+  SELECT s.product_id,
+        ms.first_year,
+        s.quantity,
+        s.price
+  FROM Sales s
+  JOIN min_sales ms
+    ON s.product_id = ms.product_id
+    AND s.year=ms.first_year
+  
+
