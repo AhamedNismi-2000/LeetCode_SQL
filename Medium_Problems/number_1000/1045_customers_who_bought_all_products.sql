@@ -1,5 +1,5 @@
 /*
-1045. Customers Who Bought All Products
+1045 Customers Who Bought All Products
 
 
 Table: Customer
@@ -87,3 +87,16 @@ INSERT INTO Customer (customer_id, product_key) VALUES
 (3, 5),
 (3, 6),
 (1, 6);
+
+
+ -- Solution 1 SubQuery 
+
+        SELECT customer_id
+    FROM Customer c
+    JOIN Product p ON c.product_key = p.product_key
+    GROUP BY customer_id
+    HAVING COUNT(DISTINCT c.product_key) = (
+        SELECT COUNT(*)
+        FROM Product
+    )
+    ORDER BY customer_id;
