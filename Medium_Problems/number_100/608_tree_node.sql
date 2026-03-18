@@ -117,3 +117,5 @@ INSERT INTO Tree (id, p_id) VALUES
            ELSE 'Inner'
        END AS type
 FROM Tree t1;      
+
+
