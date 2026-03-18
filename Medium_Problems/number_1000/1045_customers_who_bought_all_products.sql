@@ -100,3 +100,18 @@ INSERT INTO Customer (customer_id, product_key) VALUES
         FROM Product
     )
     ORDER BY customer_id;
+
+    
+    --Solution 2 CTE 
+   
+     WITH total_product AS (
+        SELECT COUNT(product_key) AS total
+        FROM product
+     )
+     SELECT customer_id
+     FROM Customer c
+     GROUP BY customer_id
+     HAVING COUNT(customer_id) = (
+         SELECT total FROM total_product
+     )
+     ORDER BY customer_id
