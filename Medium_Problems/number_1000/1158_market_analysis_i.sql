@@ -138,12 +138,28 @@ INSERT INTO Orders (order_id, order_date, item_id, buyer_id, seller_id) VALUES
 (6, '2019-08-05', 2, 2, 4);
 
 
--- Solution 
+-- Solution 1
 
     SELECT u.user_id AS buyer_id,
         u.join_date,
         COUNT(
             CASE WHEN EXTRACT(YEAR FROM order_date) ='2019' THEN '1'
+            END) AS orders_in_2019
+    FROM Users u
+    LEFT JOIN Orders o
+    ON u.user_id = o.buyer_id
+    GROUP BY u.user_id, u.join_date
+    ORDER BY buyer_id;
+
+
+
+ --Solution 2 
+ 
+    SELECT u.user_id AS buyer_id,
+        u.join_date,
+        SUM(
+            CASE WHEN EXTRACT(YEAR FROM order_date) ='2019' THEN  1
+            ELSE 0
             END) AS orders_in_2019
     FROM Users u
     LEFT JOIN Orders o
