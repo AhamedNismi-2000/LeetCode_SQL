@@ -69,3 +69,11 @@ INSERT INTO Users (user_id, email) VALUES
 (3, 'charlie@example.net'),
 (4, 'david@domain.com'),
 (5, 'eve@invalid');
+
+
+ --Solution 
+
+SELECT user_id, email
+FROM Users
+WHERE email ~ '^[A-Za-z0-9_]+@[A-Za-z]+\.com$'
+ORDER BY user_id;
