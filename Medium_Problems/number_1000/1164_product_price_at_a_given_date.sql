@@ -115,7 +115,7 @@ ON p.product_id = pd.product_id;
 
 
   -- Solution 3 CTE + Window 
-    WITH ranked AS (
+    WITH latest AS (
         SELECT 
             product_id,
             new_price,
@@ -128,8 +128,8 @@ ON p.product_id = pd.product_id;
     )
     SELECT 
         DISTINCT p.product_id,
-        COALESCE(r.new_price, 10) AS price
+        COALESCE(l.new_price, 10) AS price
     FROM Products p
-    LEFT JOIN ranked r
-    ON p.product_id = r.product_id
-    AND r.rn = 1;
+    LEFT JOIN latest l
+    ON p.product_id = l.product_id
+    AND l.rn = 1;
