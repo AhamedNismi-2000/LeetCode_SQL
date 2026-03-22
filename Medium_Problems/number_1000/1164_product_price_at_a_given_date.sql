@@ -84,3 +84,31 @@ INSERT INTO Products (product_id, new_price, change_date) VALUES
        WHERE product_id = p.product_id
        AND change_date <= '2019-08-16'
        );
+
+
+     -- Solution 2 CTE 
+
+     WITH latest AS (
+    SELECT 
+        product_id,
+        MAX(change_date) AS last_date
+    FROM Products
+    WHERE change_date <= '2019-08-16'
+    GROUP BY product_id
+),
+price_data AS (
+    SELECT 
+        p.product_id,
+        p.new_price
+    FROM Products p
+    JOIN latest l
+    ON p.product_id = l.product_id
+    AND p.change_date = l.last_date
+)
+SELECT 
+    p.product_id,
+    COALESCE(pd.new_price, 10) AS price
+FROM 
+    (SELECT DISTINCT product_id FROM Products) p
+LEFT JOIN price_data pd
+ON p.product_id = pd.product_id;  
