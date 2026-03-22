@@ -115,19 +115,21 @@ ON p.product_id = pd.product_id;
 
 
   -- Solution 3 CTE + Window 
-    WITH latest AS (
-    SELECT 
-        product_id,
-        new_price,
-        ROW_NUMBER() 
-        OVER (PARTITION BY product_id ORDER BY product_id ) rn 
-        FROM products
+    WITH ranked AS (
+        SELECT 
+            product_id,
+            new_price,
+            ROW_NUMBER() OVER (
+                PARTITION BY product_id
+                ORDER BY change_date DESC
+            ) AS rn
+        FROM Products
         WHERE change_date <= '2019-08-16'
     )
-    SELECT DISTINCT p.product_id,
-        COALESCE(l.new_price ,10 ) AS price 
-    FROM (SELECT product_id FROM products) p
-    LEFT JOIN latest l
-    ON p.product_id =l.product_id
-    AND rn = 1        
-    
+    SELECT 
+        DISTINCT p.product_id,
+        COALESCE(r.new_price, 10) AS price
+    FROM Products p
+    LEFT JOIN ranked r
+    ON p.product_id = r.product_id
+    AND r.rn = 1;
