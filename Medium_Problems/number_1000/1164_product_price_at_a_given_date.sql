@@ -47,7 +47,7 @@ Output:
 
 */
 
--- filename: 1164_product_price_at_a_given_date.sql
+
 
 CREATE TABLE Products (
     product_id INT,
@@ -64,3 +64,23 @@ INSERT INTO Products (product_id, new_price, change_date) VALUES
 (2, 65, '2019-08-17'),
 (3, 20, '2019-08-18');
 
+
+
+
+-- Solution 1
+
+
+
+       SELECT 
+       p.product_id,
+       COALESCE(p2.new_price, 10) AS price
+       FROM 
+       (SELECT DISTINCT product_id FROM Products) p
+       LEFT JOIN Products p2
+       ON p.product_id = p2.product_id
+       AND p2.change_date = (
+       SELECT MAX(change_date)
+       FROM Products
+       WHERE product_id = p.product_id
+       AND change_date <= '2019-08-16'
+       );
