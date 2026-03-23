@@ -110,3 +110,20 @@ WITH order_rank AS (
         ELSE 0 
     END) * 100 / COUNT(*),2) AS immediate_percentage
     FROM first_orders
+
+
+ -- ### Solution 3 
+ 
+    WITH immediate_order AS (
+        SELECT 
+            customer_id
+        FROM delivery
+        GROUP BY customer_id
+        HAVING MIN(customer_pref_delivery_date) = MIN(order_date)
+    )
+    SELECT 
+        ROUND(
+            COUNT(customer_id) * 100.0 / (SELECT COUNT(DISTINCT customer_id) FROM delivery),
+            2
+        ) AS immediate_percentage
+    FROM immediate_order;
