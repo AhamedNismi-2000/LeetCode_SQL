@@ -79,7 +79,8 @@ INSERT INTO Delivery (delivery_id, customer_id, order_date, customer_pref_delive
 
 WITH order_rank AS (
      SELECT
-         *,
+         order_date,
+         customer_pref_delivery_date,
          ROW_NUMBER() OVER( PARTITION BY customer_id ORDER BY order_date) AS rn
      FROM delivery
 )
@@ -90,3 +91,22 @@ WITH order_rank AS (
    ) AS immediate_percentage
     FROM order_rank
     WHERE rn = 1 ; 
+
+
+ -- ### Solution 2 
+
+    WITH first_orders AS (
+    SELECT order_date,
+           customer_pref_delivery_date
+    FROM delivery d1
+    WHERE order_date = (
+        SELECT MIN(order_date)
+        FROM delivery d2
+        WHERE d1.customer_id =d2.customer_id  )
+       )  
+    SELECT 
+ ROUND(SUM(CASE 
+        WHEN order_date = customer_pref_delivery_date THEN 1 
+        ELSE 0 
+    END) * 100 / COUNT(*),2) AS immediate_percentage
+    FROM first_orders
