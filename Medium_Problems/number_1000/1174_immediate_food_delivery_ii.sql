@@ -75,3 +75,18 @@ INSERT INTO Delivery (delivery_id, customer_id, order_date, customer_pref_delive
 (7, 4, '2019-08-09', '2019-08-09');
 
 
+-- ### Solution 1 CTE 
+
+WITH order_rank AS (
+     SELECT
+         *,
+         ROW_NUMBER() OVER( PARTITION BY customer_id ORDER BY order_date) AS rn
+     FROM delivery
+)
+ SELECT 
+   ROUND(
+    COUNT(CASE WHEN order_date=customer_pref_delivery_date THEN 1 END )*100 /
+    COUNT(*),2
+   ) AS immediate_percentage
+    FROM order_rank
+    WHERE rn = 1 ; 
