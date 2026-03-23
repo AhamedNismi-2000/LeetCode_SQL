@@ -95,7 +95,7 @@ INSERT INTO Employee (id, name, salary, departmentId) VALUES
 (5, 'Max', 90000, 1);
 
  
-  -- Solution 1 
+  -- ### Solution 1 
    
        WITH max_salary AS (
         SELECT 
@@ -111,7 +111,7 @@ INSERT INTO Employee (id, name, salary, departmentId) VALUES
     WHERE Salary = max;
 
 
---Solution 2
+-- ### Solution 2
 
     WITH max_salary AS (
         SELECT departmentId,

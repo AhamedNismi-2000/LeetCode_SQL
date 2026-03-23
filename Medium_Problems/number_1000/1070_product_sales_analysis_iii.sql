@@ -68,7 +68,7 @@ INSERT INTO Sales (sale_id, product_id, year, quantity, price) VALUES
 (7, 200, 2011, 15, 9000);
 
 
- --Solution 1 CTE 
+ -- ### Solution 1 CTE 
 
     WITH min_sales AS (   
       SELECT product_id,
@@ -86,7 +86,7 @@ INSERT INTO Sales (sale_id, product_id, year, quantity, price) VALUES
     AND s.year=ms.first_year
   
 
-  -- Solution 2 SubQuery 
+  -- ### Solution 2 SubQuery 
 
     SELECT product_id,
            year AS first_year,

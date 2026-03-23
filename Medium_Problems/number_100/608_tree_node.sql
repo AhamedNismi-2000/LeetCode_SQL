@@ -91,7 +91,7 @@ INSERT INTO Tree (id, p_id) VALUES
 
 
 
- -- Solution 1
+ -- ### Solution 1
    
   SELECT id,
        CASE 
@@ -104,7 +104,7 @@ INSERT INTO Tree (id, p_id) VALUES
            ELSE 'Inner' END AS type 
        FROM Tree;
 
- -- Solution 2 
+ -- ### Solution 2 
 
    SELECT id,
        CASE 

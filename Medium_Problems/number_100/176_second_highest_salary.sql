@@ -69,14 +69,14 @@ INSERT INTO Employee (id, salary) VALUES
 (3, 300);
 
 
--- Solutoin 1 
+-- ### Solution 1 
 SELECT DISTINCT salary AS SecondHighestSalary
 FROM Employee
 ORDER BY salary DESC
 LIMIT 1 OFFSET 1;
 
 
- -- Solution 2 
+ -- ### Solution 2 
 
     WITH second_sal AS ( 
     SELECT salary,
@@ -87,7 +87,7 @@ LIMIT 1 OFFSET 1;
     FROM second_sal
     WHERE number = 2
 
- -- Solutoin 3 
+ -- ### Solution 3 
  
        SELECT
        (SELECT MAX(salary)

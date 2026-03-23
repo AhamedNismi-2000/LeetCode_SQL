@@ -66,7 +66,7 @@ INSERT INTO Seat (id, student) VALUES
 (5, 'Jeames');
 
 
---Solution
+-- ### Solution 1
 
 
 SELECT 

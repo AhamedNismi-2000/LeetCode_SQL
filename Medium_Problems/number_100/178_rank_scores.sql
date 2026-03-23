@@ -67,7 +67,7 @@ INSERT INTO Scores (id, score) VALUES
 
   
   
-  -- Solution 
+  -- ### Solution 
    
    SELECT score,
          DENSE_RANK() OVER(ORDER BY score DESC ) AS rank

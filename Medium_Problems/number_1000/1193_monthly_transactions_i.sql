@@ -66,7 +66,7 @@ INSERT INTO Transactions (id, country, state, amount, trans_date) VALUES
 (124, 'DE', 'approved', 2000, '2019-01-07');
 
 
--- Solution 1 
+-- ### Solution 1 
 SELECT 
     TO_CHAR(trans_date , 'YYYY-MM') AS month,
     country,
@@ -76,3 +76,4 @@ SELECT
     SUM(CASE WHEN state='approved' THEN amount ELSE 0 END ) AS approved_total_amount
 FROM transactions 
 GROUP BY  TO_CHAR(trans_date , 'YYYY-MM'), country;
+

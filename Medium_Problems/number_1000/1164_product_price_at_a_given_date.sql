@@ -67,7 +67,7 @@ INSERT INTO Products (product_id, new_price, change_date) VALUES
 
 
 
--- Solution 1
+-- ### Solution 1
 
 
 
@@ -86,7 +86,7 @@ INSERT INTO Products (product_id, new_price, change_date) VALUES
        );
 
 
-     -- Solution 2 CTE 
+     -- ### Solution 2 CTE 
 
      WITH latest AS (
     SELECT 
@@ -114,7 +114,7 @@ LEFT JOIN price_data pd
 ON p.product_id = pd.product_id;  
 
 
-  -- Solution 3 CTE + Window 
+  -- ### Solution 3 CTE + Window 
     WITH latest AS (
         SELECT 
             product_id,

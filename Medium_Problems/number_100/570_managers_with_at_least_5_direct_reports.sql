@@ -67,7 +67,7 @@ INSERT INTO Employee (id, name, department, managerId) VALUES
 
 
 
--- Solution 1 
+-- ### Solution 1 
 
     SELECT e.name
     FROM Employee e
@@ -76,7 +76,7 @@ INSERT INTO Employee (id, name, department, managerId) VALUES
     HAVING COUNT(e.id) >= 5;
 
 
-  -- Solution 2 CTE 
+  -- ### Solution 2 CTE 
   
    WITH report AS (
      SELECT e1.name,

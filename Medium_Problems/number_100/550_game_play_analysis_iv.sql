@@ -63,7 +63,7 @@ INSERT INTO Activity (player_id, device_id, event_date, games_played) VALUES
 (3, 4, '2018-07-03', 5);
 
 
--- Solution 1 
+-- ### Solution 1 
 WITH first_log AS (
     SELECT 
         player_id,
@@ -101,7 +101,7 @@ FROM first_log fl
 
 
 
--- Solution Using Self Join 
+-- ### Solution Using Self Join 
 -- Not Suitable for the large dataset need to find the MIN date  
 
     SELECT ROUND(

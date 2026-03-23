@@ -139,7 +139,7 @@ INSERT INTO Orders (order_id, order_date, item_id, buyer_id, seller_id) VALUES
 
 
 
--- Solution 1
+-- ### Solution 1
 
     SELECT u.user_id AS buyer_id,
         u.join_date,
@@ -154,7 +154,7 @@ INSERT INTO Orders (order_id, order_date, item_id, buyer_id, seller_id) VALUES
 
 
 
- --Solution 2 
+ --### Solution 2 
 
     SELECT u.user_id AS buyer_id,
         u.join_date,
@@ -169,7 +169,7 @@ INSERT INTO Orders (order_id, order_date, item_id, buyer_id, seller_id) VALUES
     ORDER BY buyer_id;
 
 
-  --Solution 3 SubQuery 
+  --### Solution 3 SubQuery 
 
     SELECT 
         u.user_id AS buyer_id,
@@ -184,7 +184,7 @@ INSERT INTO Orders (order_id, order_date, item_id, buyer_id, seller_id) VALUES
 
 
 
--- Solution 4 
+-- ### Solution 4 
 
     SELECT 
         u.user_id AS buyer_id,

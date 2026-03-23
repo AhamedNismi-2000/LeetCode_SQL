@@ -77,7 +77,7 @@ Output:
   (1, 100);
 
 
-  -- Solution 
+  -- ### Solution 
 
 CREATE  FUNCTION getHighestSalary(N INT)
 RETURNS INT AS $$

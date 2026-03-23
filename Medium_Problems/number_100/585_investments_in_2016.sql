@@ -72,7 +72,7 @@ VALUES (1, 10, 5, 10, 10),
     (4, 10, 40, 40, 40);
 
 
--- Solution 1 SubQuery 
+-- ### Solution 1 SubQuery 
 
     SELECT ROUND(SUM(tiv_2016)::decimal, 2) AS tiv_2016
     FROM insurance
@@ -94,7 +94,7 @@ VALUES (1, 10, 5, 10, 10),
 
 
 
-    -- Solution 2 CTE 
+    -- ### Solution 2 CTE 
     WITH same_tiv AS (
         SELECT tiv_2015
         FROM insurance
@@ -123,7 +123,7 @@ WHERE tiv_2015 IN (
     
     
     
-    -- Solution 2 CTE II  
+    -- ### Solution 2 CTE II  
 
     WITH same_tiv AS (
         SELECT pid

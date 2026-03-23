@@ -64,7 +64,7 @@ Explanation: 1 is the only number that appears consecutively for at least three 
 
  
 
--- Solution LEAD() 
+-- ### Solution LEAD() 
 
    WITH consecutive AS (
       SELECT num,
@@ -77,7 +77,7 @@ Explanation: 1 is the only number that appears consecutively for at least three 
    WHERE num = prev1 AND num = prev2
    
 
--- Solution LAG() 
+-- ### Solution LAG() 
    WITH consecutive AS (
       SELECT num,
        LAG(num,1) OVER(ORDER BY id)  AS prev1,

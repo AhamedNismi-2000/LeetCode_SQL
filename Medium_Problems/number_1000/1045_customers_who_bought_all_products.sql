@@ -89,7 +89,7 @@ INSERT INTO Customer (customer_id, product_key) VALUES
 (1, 6);
 
 
- -- Solution 1 SubQuery 
+ -- ### Solution 1 SubQuery 
 
         SELECT customer_id
     FROM Customer c

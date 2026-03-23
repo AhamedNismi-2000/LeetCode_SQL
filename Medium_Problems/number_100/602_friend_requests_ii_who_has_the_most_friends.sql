@@ -107,7 +107,7 @@ INSERT INTO RequestAccepted (requester_id, accepter_id, accept_date) VALUES
     
   
 
--- Solution 2 Subquery 
+-- ### Solution 2 Subquery 
  
     SELECT id, COUNT(*) AS num
     FROM (
