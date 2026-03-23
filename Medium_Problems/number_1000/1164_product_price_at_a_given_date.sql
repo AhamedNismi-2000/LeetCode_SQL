@@ -133,3 +133,5 @@ ON p.product_id = pd.product_id;
     LEFT JOIN latest l
     ON p.product_id = l.product_id
     AND l.rn = 1;
+
+    
