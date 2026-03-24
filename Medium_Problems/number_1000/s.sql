@@ -1,5 +1,5 @@
 /*
-1204. Last Person to Fit in the Bus
+1204 Last Person to Fit in the Bus
 
 
 Table: Queue
@@ -82,3 +82,18 @@ INSERT INTO Queue (person_id, person_name, weight, turn) VALUES
 (2, 'Marie', 200, 4);
 
 
+    -- ### Solution 1 CTE 
+    WITH total_weight AS (
+        SELECT 
+            person_id,
+            person_name,
+            weight,
+            turn,
+            SUM(weight) OVER(ORDER  BY turn ) AS total
+        FROM queue
+    )
+    SELECT person_name 
+    FROM total_weight
+    WHERE total <= 1000
+    ORDER BY total DESC
+    LIMIT 1 ;
