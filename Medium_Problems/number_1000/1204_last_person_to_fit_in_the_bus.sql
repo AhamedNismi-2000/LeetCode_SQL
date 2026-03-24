@@ -96,3 +96,19 @@ INSERT INTO Queue (person_id, person_name, weight, turn) VALUES
     WHERE total <= 1000
     ORDER BY total DESC
     LIMIT 1 ;
+
+    -- ### Solution 2 SubQuery 
+
+    SELECT 
+       person_name 
+    FROM  
+        ( SELECT 
+            person_id,
+            person_name,
+            weight,
+            turn,
+            SUM(weight) OVER(ORDER  BY turn ) AS total
+         FROM queue
+
+        )
+       WHERE total = 1000
