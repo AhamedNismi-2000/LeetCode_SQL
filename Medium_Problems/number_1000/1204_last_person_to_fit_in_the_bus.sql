@@ -64,7 +64,6 @@ Explanation: The folowing table is ordered by the turn for simplicity.
 
 */
 
--- filename: 1204_last_person_to_fit_in_the_bus.sql
 
 CREATE TABLE Queue (
     person_id INT PRIMARY KEY,
