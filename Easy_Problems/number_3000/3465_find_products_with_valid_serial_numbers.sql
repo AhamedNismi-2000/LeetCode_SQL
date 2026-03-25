@@ -76,3 +76,12 @@ INSERT INTO products (product_id, product_name, description) VALUES
 (3, 'Widget C', 'Product SN1234-56789 is available now'),
 (4, 'Widget D', 'No serial number here'),
 (5, 'Widget E', 'Check out SN4321-8765 in this description');
+
+ -- ### Solution 1
+SELECT 
+    product_id,
+    product_name,
+    description
+FROM products
+WHERE description ~ 'SN[0-9]{4}-[0-9]{4}([^0-9]|$)'
+ORDER BY product_id ASC;
