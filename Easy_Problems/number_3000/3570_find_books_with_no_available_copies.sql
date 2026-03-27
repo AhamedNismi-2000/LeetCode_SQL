@@ -141,5 +141,36 @@ INSERT INTO borrowing_records (record_id, book_id, borrower_name, borrow_date, r
 (9, 2, 'Ivan Clark', '2024-02-12', NULL),
 (10, 2, 'Jane Adams', '2024-02-15', NULL);
 
+-- ### Solution 1 CTE 
 
-  
+ WITH total_books AS (
+    SELECT 
+       book_id,
+       title,
+       author,
+       genre,
+       publication_year,
+       total_copies
+    FROM library_books 
+    
+ ),
+ return_books AS (
+    SELECT 
+        book_id,
+        COUNT(book_id) AS current_borrowers
+    FROM borrowing_records  
+    WHERE return_date IS NULL  
+    GROUP BY book_id
+    ORDER BY book_id
+ )
+ SELECT tb.book_id,
+        tb.title,
+        tb.author,
+        tb.genre,
+        tb.publication_year,
+        current_borrowers
+ FROM   total_books tb 
+ JOIN   return_books rb
+ ON     tb.book_id = rb.book_id
+ WHERE  rb.current_borrowers = tb.total_copies 
+ ORDER BY rb.current_borrowers DESC, tb.title ASC;
