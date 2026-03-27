@@ -161,7 +161,6 @@ INSERT INTO borrowing_records (record_id, book_id, borrower_name, borrow_date, r
     FROM borrowing_records  
     WHERE return_date IS NULL  
     GROUP BY book_id
-    ORDER BY book_id
  )
  SELECT tb.book_id,
         tb.title,
@@ -174,3 +173,28 @@ INSERT INTO borrowing_records (record_id, book_id, borrower_name, borrow_date, r
  ON     tb.book_id = rb.book_id
  WHERE  rb.current_borrowers = tb.total_copies 
  ORDER BY rb.current_borrowers DESC, tb.title ASC;
+
+
+
+   -- ### Solution 2 
+    
+SELECT 
+    lb.book_id,
+    lb.title,
+    lb.author,
+    lb.genre,
+    lb.publication_year,
+    COUNT(br.book_id) AS current_borrowers
+FROM library_books lb
+JOIN borrowing_records br
+    ON lb.book_id = br.book_id
+WHERE br.return_date IS NULL
+GROUP BY 
+    lb.book_id,
+    lb.title,
+    lb.author,
+    lb.genre,
+    lb.publication_year,
+    lb.total_copies
+HAVING COUNT(br.book_id) = lb.total_copies
+ORDER BY current_borrowers DESC, lb.title ASC;
