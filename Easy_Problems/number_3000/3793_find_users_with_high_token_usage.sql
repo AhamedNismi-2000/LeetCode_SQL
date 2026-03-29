@@ -104,3 +104,4 @@ INSERT INTO prompts (user_id, prompt, tokens) VALUES
    AND MAX(tokens) > AVG(tokens)
    ORDER BY avg_tokens DESC, user_id ASC;
 
+
