@@ -1,6 +1,6 @@
 /*
 
-3793. Find Users with High Token Usage
+3793 Find Users with High Token Usage
 
 
 Table: prompts
@@ -90,3 +90,17 @@ INSERT INTO prompts (user_id, prompt, tokens) VALUES
 (3, 'Generate interview Q&A', 250),
 (3, 'Write cover letter', 180),
 (3, 'Optimize Python code', 220);
+
+ -- ### Solution 1 
+
+   SELECT 
+        user_id,
+        COUNT(prompt) AS prompt_count,
+        ROUND(AVG(tokens),2) AS avg_tokens
+   FROM 
+       prompts
+   GROUP BY user_id    
+   HAVING COUNT(prompt) >=3  
+   AND MAX(tokens) > AVG(tokens)
+   ORDER BY avg_tokens DESC, user_id ASC;
+
