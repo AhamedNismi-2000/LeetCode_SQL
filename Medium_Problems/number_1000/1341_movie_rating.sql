@@ -136,3 +136,39 @@ INSERT INTO MovieRating (movie_id, user_id, rating, created_at) VALUES
 (3, 1, 3, '2020-02-22'),
 (3, 2, 4, '2020-02-25');
 
+-- ### Solution 1 CTE 
+    
+  WITH top_rater AS (
+    SELECT 
+       u.name AS results,
+       MAX(rating) AS max_rated 
+    FROM users u 
+    JOIN MovieRating mr
+    ON mr.user_id=u.user_id 
+    GROUP BY u.name 
+    ORDER BY u.name ASC
+    LIMIT 1 
+   ) , 
+   top_movie AS (
+    SELECT 
+          DISTINCT m.title AS results ,
+          AVG(rating) OVER(PARTITION BY mr.movie_id ORDER BY mr.movie_id) AS top_rated
+    FROM  movies m 
+    JOIN  MovieRating mr
+    ON    mr.movie_id=m.movie_id 
+    WHERE created_at BETWEEN '2020-02-01' AND '2020-02-29'
+    ORDER BY top_rated DESC, results ASC
+    LIMIT 1 
+   )
+   SELECT results FROM top_rater
+   UNION 
+   SELECT results FROM top_movie
+
+
+
+
+   
+    
+  
+
+
