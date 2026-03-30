@@ -141,7 +141,7 @@ INSERT INTO MovieRating (movie_id, user_id, rating, created_at) VALUES
   WITH top_rater AS (
     SELECT 
        u.name AS results,
-       MAX(rating) AS max_rated 
+       COUNT(u.user_id) AS highest 
     FROM users u 
     JOIN MovieRating mr
     ON mr.user_id=u.user_id 
@@ -163,6 +163,31 @@ INSERT INTO MovieRating (movie_id, user_id, rating, created_at) VALUES
    SELECT results FROM top_rater
    UNION 
    SELECT results FROM top_movie
+
+
+   -- ### Solution 2 
+    
+    (
+     SELECT  u.name AS results 
+     FROM    users u 
+     JOIN    MovieRating mr
+     ON      mr.user_id = u.user_id
+     GROUP BY u.name
+     ORDER BY COUNT(*) DESC , u.name ASC 
+     LIMIT 1 
+   )
+    UNION ALL 
+    (
+     SELECT m.title AS results
+     FROM Movies m 
+     JOIN MovieRating mr 
+     ON   m.movie_id = mr.movie_id
+     WHERE mr.created_at >= '2020-02-01'
+     AND   mr.created_at < '2020-03-01'
+     GROUP BY m.title   
+     ORDER BY AVG(rating) DESC ,m.title ASC 
+     LIMIT 1 
+    )
 
 
 
