@@ -149,4 +149,3 @@ SELECT
 FROM daily_totals
 ORDER BY visited_on
 OFFSET 6;
-
