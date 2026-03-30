@@ -104,6 +104,26 @@ INSERT INTO Customer (customer_id, name, visited_on, amount) VALUES
     OFFSET 6;
 
 
+  -- ### Solution 2 Current Row and Following 
+    SELECT
+        DISTINCT visited_on,
+        SUM(amount) OVER (
+            ORDER BY visited_on
+           RANGE BETWEEN CURRENT ROW AND INTERVAL '6 days' FOLLOWING
+        ) AS amount,
+        ROUND(
+            SUM(amount) OVER (
+                ORDER BY visited_on
+                RANGE BETWEEN CURRENT ROW AND INTERVAL '6 days' FOLLOWING
+            ) / 7.0, 2
+        ) AS average_amount
+    FROM customer
+    ORDER BY visited_on
+    LIMIT 4 ;
+
+
+
+
 
  -- Chat GPT Suggested This More Optimize Version Instead Of DISTINCT 
 
