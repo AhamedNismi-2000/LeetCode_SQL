@@ -86,3 +86,47 @@ INSERT INTO Customer (customer_id, name, visited_on, amount) VALUES
 (1, 'Jhon', '2019-01-10', 130),
 (3, 'Jade', '2019-01-10', 150);
       
+  -- ### Solution 1  Preceding and Current Row 
+    SELECT
+        DISTINCT visited_on,
+        SUM(amount) OVER (
+            ORDER BY visited_on
+            RANGE BETWEEN INTERVAL '6 days' PRECEDING AND CURRENT ROW
+        ) AS amount,
+        ROUND(
+            SUM(amount) OVER (
+                ORDER BY visited_on
+                RANGE BETWEEN INTERVAL '6 days' PRECEDING AND CURRENT ROW
+            ) / 7.0, 2
+        ) AS average_amount
+    FROM customer
+    ORDER BY visited_on
+    OFFSET 6;
+
+
+
+ -- Chat GPT Suggested This More Optimize Version Instead Of DISTINCT 
+
+  WITH daily_totals AS (
+    SELECT
+        visited_on,
+        SUM(amount) AS daily_amount
+    FROM customer
+    GROUP BY visited_on
+)
+SELECT
+    visited_on,
+    SUM(daily_amount) OVER (
+        ORDER BY visited_on
+        RANGE BETWEEN INTERVAL '6 days' PRECEDING AND CURRENT ROW
+    ) AS amount,
+    ROUND(
+        SUM(daily_amount) OVER (
+            ORDER BY visited_on
+            RANGE BETWEEN INTERVAL '6 days' PRECEDING AND CURRENT ROW
+        ) / 7.0, 2
+    ) AS average_amount
+FROM daily_totals
+ORDER BY visited_on
+OFFSET 6;
+
