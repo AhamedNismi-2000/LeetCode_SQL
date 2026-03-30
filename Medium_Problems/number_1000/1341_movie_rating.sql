@@ -149,10 +149,11 @@ INSERT INTO MovieRating (movie_id, user_id, rating, created_at) VALUES
     ORDER BY u.name ASC
     LIMIT 1 
    ) , 
+
    top_movie AS (
     SELECT 
           DISTINCT m.title AS results ,
-          AVG(rating) OVER(PARTITION BY mr.movie_id ORDER BY mr.movie_id) AS top_rated
+          ROUND(AVG(rating) OVER(PARTITION BY mr.movie_id ORDER BY mr.movie_id),2) AS top_rated
     FROM  movies m 
     JOIN  MovieRating mr
     ON    mr.movie_id=m.movie_id 
