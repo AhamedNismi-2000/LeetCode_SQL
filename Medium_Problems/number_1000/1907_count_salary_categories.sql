@@ -83,11 +83,12 @@ WITH categories AS (
             WHEN income < 20000                THEN 'Low Salary'
             WHEN income BETWEEN 20000 AND 50000 THEN 'Average Salary'
             WHEN income > 50000                THEN 'High Salary'
-        END AS category
+        END AS category,
+        account_id
  FROM accounts a  
 )
     SELECT c.category,
-           COUNT(ac.category) AS accounts_count
+           COUNT(ac.account_id) AS accounts_count
     FROM   categories c
     LEFT JOIN account_category ac
     ON ac.category = c.category
