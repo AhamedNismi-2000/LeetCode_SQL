@@ -94,9 +94,7 @@ INSERT INTO Stocks (stock_name, operation, operation_day, price) VALUES
          SUM(price) AS gain 
      FROM stocks   
      WHERE operation='Buy'
-     GROUP BY stock_name,operation  
-
-    
+     GROUP BY stock_name,operation    
  ),  capital_loss AS (
        SELECT 
          stock_name,
@@ -114,3 +112,17 @@ INSERT INTO Stocks (stock_name, operation, operation_day, price) VALUES
    JOIN capital_loss cl 
    ON cg.stock_name = cl.stock_name
    ORDER BY stock_name , capital_gain_loss 
+
+
+
+  -- ### Solution 2 
+   SELECT 
+      stock_name,
+      SUM(
+        CASE WHEN operation = 'Buy' THEN  -price
+             WHEN operation = 'Sell' THEN  price
+     END  
+     ) AS capital_gain_loss
+     FROM Stocks
+     GROUP BY stock_name 
+
