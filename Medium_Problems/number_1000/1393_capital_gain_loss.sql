@@ -85,3 +85,32 @@ INSERT INTO Stocks (stock_name, operation, operation_day, price) VALUES
 ('Handbags', 'Sell', 29, 7000),
 ('Corona Masks', 'Sell', 10, 10000);
 
+
+ -- ### Solution 1 CTE 
+ WITH capital_gain AS (
+     SELECT 
+         stock_name,
+         operation,
+         SUM(price) AS gain 
+     FROM stocks   
+     WHERE operation='Buy'
+     GROUP BY stock_name,operation  
+
+    
+ ),  capital_loss AS (
+       SELECT 
+         stock_name,
+         operation,
+         SUM(price) AS loss
+     FROM stocks   
+     WHERE operation='Sell'
+     GROUP BY stock_name,operation  
+ )
+ 
+   SELECT 
+      cg.stocK_name,
+      cl.loss - cg.gain  AS capital_gain_loss
+   FROM capital_gain cg 
+   JOIN capital_loss cl 
+   ON cg.stock_name = cl.stock_name
+   ORDER BY stock_name , capital_gain_loss 
