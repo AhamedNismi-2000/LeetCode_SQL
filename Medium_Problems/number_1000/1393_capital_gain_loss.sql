@@ -126,3 +126,12 @@ INSERT INTO Stocks (stock_name, operation, operation_day, price) VALUES
      FROM Stocks
      GROUP BY stock_name 
 
+-- ### Solution 3 WINDOW function 
+        SELECT 
+      DISTINCT stock_name,
+      SUM(
+        CASE WHEN operation = 'Buy' THEN  -price
+             WHEN operation = 'Sell' THEN  price
+     END  
+     ) OVER (PARTITION BY stocK_name ) AS capital_gain_loss
+     FROM Stocks
