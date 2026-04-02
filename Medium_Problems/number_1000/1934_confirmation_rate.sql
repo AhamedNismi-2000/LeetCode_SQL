@@ -109,6 +109,21 @@ INSERT INTO Confirmations (user_id, time_stamp, action) VALUES
 (2, '2021-01-22 00:00:00', 'confirmed'),
 (2, '2021-02-28 23:59:59', 'timeout');
 
+
+
+ -- ### Solution 1 
+    SELECT 
+        s.user_id,
+        ROUND(
+            COALESCE(SUM(CASE WHEN c.action = 'confirmed' THEN 1 END), 0) * 1.0
+            / NULLIF(COUNT(c.user_id), 0), 
+            2
+        ) AS confirmation_rate
+    FROM Signups s
+    LEFT JOIN Confirmations c
+        ON s.user_id = c.user_id
+    GROUP BY s.user_id; 
+
 -- ### Solution 2
  
     WITH confirmation AS (
