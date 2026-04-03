@@ -137,3 +137,30 @@ INSERT INTO Scores (student_id, subject, score, exam_date) VALUES
     HAVING MAX(CASE WHEN rn_latest = 1 THEN score END ) >  MAX(CASE WHEN rn_first = 1 THEN score END) 
     ORDER BY student_id, subject
   
+
+  --### Solution 3 CTE 
+
+WITH latest_date AS (
+    SELECT 
+        student_id,
+        subject,
+        score,
+        MIN(exam_date) OVER(PARTITION BY student_id,subject ) AS first_date,
+        MAX(exam_date) OVER(PARTITION BY student_id,subject ) AS last_date
+    FROM Scores  
+    )
+
+   SELECT 
+        s.student_id,
+        s.subject,
+        MAX(CASE WHEN s.exam_date = ld.first_date THEN s.score END ) first_score,   
+        MAX(CASE WHEN s.exam_date = ld.last_date THEN s.score END ) latest_score   
+   FROM Scores s 
+   JOIN latest_date ld 
+   ON s.student_id = ld.student_id
+   AND s.subject = ld.subject
+   GROUP BY s.student_id,s.subject
+   HAVING   MAX(CASE WHEN s.exam_date = ld.last_date THEN s.score END ) >
+            MAX(CASE WHEN s.exam_date = ld.first_date THEN s.score END ) 
+    ORDER BY s.student_id,s.subject
+
