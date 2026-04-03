@@ -94,7 +94,7 @@ INSERT INTO Scores (student_id, subject, score, exam_date) VALUES
               subject,
               score,
               ROW_NUMBER() OVER (PARTITION BY student_id,subject ORDER BY exam_date) rn_first,
-              ROW_NUMBER() OVER (PARTITION BY student_id,subject ORDER BY exam_date DESC) rn_last
+              ROW_NUMBER() OVER (PARTITION BY student_id,subject ORDER BY exam_date DESC) rn_latest
           FROM scores
     ) ,
     inter_table AS  (
@@ -102,7 +102,7 @@ INSERT INTO Scores (student_id, subject, score, exam_date) VALUES
         student_id,
         subject,
         MAX(CASE WHEN rn_first = 1 THEN score END ) first_score,
-        MAX(CASE WHEN rn_last = 1 THEN score END) last_score
+        MAX(CASE WHEN rn_latest = 1 THEN score END) latest_score
     FROM high_pref
     GROUP BY student_id,subject
     ORDER BY student_id, subject
@@ -110,6 +110,30 @@ INSERT INTO Scores (student_id, subject, score, exam_date) VALUES
     SELECT student_id,
            subject,
            first_score,
-           last_score
+           latest_score
     FROM inter_table
-    WHERE last_score > first_score       
+    WHERE latest_score > first_score       
+
+
+    --### Solution 2 CTE 
+    
+    WITH high_pref AS (
+          SELECT 
+              student_id,
+              subject,
+              score,
+              ROW_NUMBER() OVER (PARTITION BY student_id,subject ORDER BY exam_date) rn_first,
+              ROW_NUMBER() OVER (PARTITION BY student_id,subject ORDER BY exam_date DESC) rn_latest
+          FROM scores
+    ) 
+
+    SELECT 
+        student_id,
+        subject,
+        MAX(CASE WHEN rn_first = 1 THEN score END ) first_score,
+        MAX(CASE WHEN rn_latest = 1 THEN score END) latest_score
+    FROM high_pref
+    GROUP BY student_id,subject
+    HAVING MAX(CASE WHEN rn_latest = 1 THEN score END ) >  MAX(CASE WHEN rn_first = 1 THEN score END) 
+    ORDER BY student_id, subject
+  
