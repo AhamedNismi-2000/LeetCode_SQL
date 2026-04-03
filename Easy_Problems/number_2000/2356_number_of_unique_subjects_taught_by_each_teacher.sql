@@ -76,3 +76,12 @@ INSERT INTO Teacher (teacher_id, subject_id, dept_id) VALUES
 (2, 2, 1),
 (2, 3, 1),
 (2, 4, 1);
+
+  -- ### Solution 1 
+   
+    SELECT 
+       teacher_id,
+       COUNT(DISTINCT subject_id) AS cnt 
+    FROM teacher 
+    GROUP BY teacher_id   
+    
