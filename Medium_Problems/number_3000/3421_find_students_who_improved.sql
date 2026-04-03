@@ -84,3 +84,32 @@ INSERT INTO Scores (student_id, subject, score, exam_date) VALUES
 (103, 'Math', 90, '2023-01-15'),
 (104, 'Physics', 75, '2023-01-15'),
 (104, 'Physics', 85, '2023-02-15');
+
+
+ --### Solution 1 CTE 
+
+    WITH high_pref AS (
+          SELECT 
+              student_id,
+              subject,
+              score,
+              ROW_NUMBER() OVER (PARTITION BY student_id,subject ORDER BY exam_date) rn_first,
+              ROW_NUMBER() OVER (PARTITION BY student_id,subject ORDER BY exam_date DESC) rn_last
+          FROM scores
+    ) ,
+    inter_table AS  (
+    SELECT 
+        student_id,
+        subject,
+        MAX(CASE WHEN rn_first = 1 THEN score END ) first_score,
+        MAX(CASE WHEN rn_last = 1 THEN score END) last_score
+    FROM high_pref
+    GROUP BY student_id,subject
+    ORDER BY student_id, subject
+    )
+    SELECT student_id,
+           subject,
+           first_score,
+           last_score
+    FROM inter_table
+    WHERE last_score > first_score       
