@@ -79,3 +79,14 @@ INSERT INTO transactions (transaction_id, amount, transaction_date) VALUES
 (4, 300, '2024-07-02'),
 (5, 50, '2024-07-02'),
 (6, 120, '2024-07-03');
+
+
+  -- ### Solution 1 
+
+   SELECT 
+       transaction_date,
+       COALESCE(SUM(CASE WHEN amount%2=1 THEN amount END ),0) AS odd_sum ,
+       COALESCE(SUM(CASE WHEN amount%2=0 THEN amount END ),0) AS even_sum  -- In This Small DataSet No Need COALESCE Function But When The Dataset is Large it is Must be That Why here Add that Function 
+   FROM transactions
+   GROUP BY transaction_date
+   ORDER BY transaction_date
