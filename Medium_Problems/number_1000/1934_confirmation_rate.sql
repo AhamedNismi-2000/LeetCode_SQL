@@ -115,8 +115,8 @@ INSERT INTO Confirmations (user_id, time_stamp, action) VALUES
     SELECT 
         s.user_id,
         ROUND(
-            COALESCE(SUM(CASE WHEN c.action = 'confirmed' THEN 1 END), 0) * 1.0
-            / NULLIF(COUNT(c.user_id), 0), 
+            COALESCE(SUM(CASE WHEN c.action = 'confirmed' THEN 1 END) *1.0
+          / NULLIF(COUNT(c.user_id),0),0), 
             2
         ) AS confirmation_rate
     FROM Signups s
@@ -148,6 +148,9 @@ INSERT INTO Confirmations (user_id, time_stamp, action) VALUES
         ON s.user_id = c.user_id
     LEFT JOIN total_count tc
         ON tc.user_id = s.user_id;
+
+
+
 
 
 
