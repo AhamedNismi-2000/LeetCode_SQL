@@ -160,7 +160,7 @@ WITH latest_date AS (
    ON s.student_id = ld.student_id
    AND s.subject = ld.subject
    GROUP BY s.student_id,s.subject
-   HAVING   MAX(CASE WHEN s.exam_date = ld.last_date THEN s.score END ) >
+   HAVING  MAX(CASE WHEN s.exam_date = ld.last_date THEN s.score END ) >
             MAX(CASE WHEN s.exam_date = ld.first_date THEN s.score END ) 
     ORDER BY s.student_id,s.subject
 
