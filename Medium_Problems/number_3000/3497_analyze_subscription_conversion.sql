@@ -131,3 +131,14 @@ INSERT INTO UserActivity (user_id, activity_date, activity_type, activity_durati
 (4, '2023-04-07', 'cancelled', 0);
 
 
+-- ### Solution 1
+
+  SELECT user_id,
+  ROUND(AVG(CASE WHEN activity_type = 'free_trial' THEN activity_duration  END), 2) AS trial_avg_duration,
+  ROUND(AVG(CASE WHEN activity_type = 'paid' THEN activity_duration  END), 2 ) AS trial_avg_duration
+  FROM useractivity 
+  GROUP BY user_id
+  HAVING ROUND(AVG(CASE WHEN activity_type = 'paid' THEN activity_duration  END), 2 )
+  IS NOT NULL
+  ORDER BY user_id 
+
