@@ -12,7 +12,7 @@ Table: ProductPurchases
 +-------------+------+
 (user_id, product_id) is the unique key for this table.
 Each row represents a purchase of a product by a user in a specific quantity.
-Table: ProductInfo
+Table: ProductInfo/
 
 +-------------+---------+
 | Column Name | Type    | 
@@ -100,9 +100,6 @@ The result is ordered by customer_count in descending order. For pairs with the 
 
 */
 
-
-
-
 CREATE TABLE ProductPurchases (
     user_id INT,
     product_id INT,
@@ -141,3 +138,23 @@ INSERT INTO ProductInfo (product_id, category, price) VALUES
 (104, 'Kitchen', 50),
 (105, 'Sports', 75);
 
+-- ### Solution 1 
+    SELECT 
+        pp1.product_id AS product1_id,
+        pp2.product_id AS product2_id,
+        pi1.category    AS product1_category,
+        pi2.category    AS product2_category,
+        COUNT(DISTINCT pp1.user_id) AS customer_count
+    FROM ProductPurchases pp1
+    JOIN ProductPurchases pp2
+        ON pp1.user_id = pp2.user_id
+        AND pp1.product_id < pp2.product_id
+    JOIN ProductInfo pi1 ON pp1.product_id = pi1.product_id
+    JOIN ProductInfo pi2 ON pp2.product_id = pi2.product_id  
+    GROUP BY pp1.product_id, pp2.product_id,pi1.category, pi2.category 
+    HAVING COUNT(DISTINCT pp1.user_id) >= 3 
+  
+    ORDER BY customer_count DESC, product1_id, product2_id;
+
+
+    
