@@ -155,3 +155,34 @@ INSERT INTO products (product_id, product_name, category) VALUES
 (3, 'Cutting Board', 'Kitchen'),
 (4, 'Smart Speaker', 'Tech'),
 (5, 'Yoga Mat', 'Fitness');
+
+
+-- ### Solution 1 
+
+    WITH seasons AS (
+    SELECT 
+        product_id,
+        quantity,
+        price,
+        CASE
+            WHEN EXTRACT(MONTH FROM sale_date) IN (12, 1, 2) THEN 'Winter'
+            WHEN EXTRACT(MONTH FROM sale_date) IN (3, 4, 5) THEN 'Spring'
+            WHEN EXTRACT(MONTH FROM sale_date) IN (6, 7, 8) THEN 'Summer'
+            WHEN EXTRACT(MONTH FROM sale_date) IN (9, 10, 11) THEN 'Fall'
+        END AS season
+        FROM sales
+    )
+
+    SELECT 
+        season
+        category,
+        SUM(quantity) AS total_quantity,
+        SUM(quantity * price) AS total_revenue
+    FROM seasons s
+    JOIN products p
+        ON s.product_id = p.product_id
+    WHERE  quantity IN (SELECT MAX(quantity) OVER (PARTITION BY season)FROM seasons)   AND 
+           total_revenue IN (SELECT MAX(quantity * price) OVER (PARTITION season) FROM seasons)     
+    GROUP BY 
+        category,season,s.quantity  
+    
