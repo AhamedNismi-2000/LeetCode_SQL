@@ -151,6 +151,7 @@ INSERT INTO ProductInfo (product_id, category, price) VALUES
         AND pp1.product_id < pp2.product_id
     JOIN ProductInfo pi1 ON pp1.product_id = pi1.product_id
     JOIN ProductInfo pi2 ON pp2.product_id = pi2.product_id  
+
     GROUP BY pp1.product_id, pp2.product_id,pi1.category, pi2.category 
     HAVING COUNT(DISTINCT pp1.user_id) >= 3 
   
