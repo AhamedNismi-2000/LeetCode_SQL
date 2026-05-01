@@ -189,3 +189,61 @@ JOIN improvement i
 WHERE i.improvement_score IS NOT NULL
 AND i.improvement_score != 0
 ORDER BY i.improvement_score DESC , ee.name 
+
+
+ --- ### Solution 2 
+
+    WITH eligible_emp AS (
+        SELECT 
+            e.name,
+            pr.employee_id,
+            COUNT(pr.employee_id) AS total_review
+        FROM performance_reviews pr
+        JOIN employees e
+            ON pr.employee_id = e.employee_id
+        GROUP BY e.name, pr.employee_id
+        HAVING COUNT(pr.employee_id) >= 3
+    ),
+    recent_reviews AS (
+        SELECT *
+        FROM (
+            SELECT 
+                pr.*,
+                ROW_NUMBER() OVER ( PARTITION BY pr.employee_id ORDER BY pr.review_date DESC) AS rn
+            FROM performance_reviews pr
+        ) t
+        WHERE rn <= 3
+    ),
+
+    ordered_reviews AS (
+        SELECT 
+            rr.employee_id,
+            rr.rating,
+            rr.review_date,
+            LAG(rr.rating) OVER ( PARTITION BY rr.employee_id  ORDER BY rr.review_date
+            ) AS prev_rating
+        FROM recent_reviews rr
+    ),
+
+    improvement AS (
+        SELECT
+            employee_id,
+            MAX(rating) - MIN(rating) AS improvement_score,
+            MIN(CASE 
+                WHEN prev_rating IS NULL THEN 1
+                WHEN rating > prev_rating THEN 1
+                ELSE 0
+            END) AS is_increasing
+        FROM ordered_reviews
+        GROUP BY employee_id
+    )
+
+    SELECT 
+        ee.employee_id,
+        ee.name,
+        i.improvement_score
+    FROM eligible_emp ee
+    JOIN improvement i
+        ON ee.employee_id = i.employee_id
+    WHERE i.is_increasing = 1
+    ORDER BY i.improvement_score DESC, ee.name ASC;
