@@ -149,29 +149,43 @@ DROP TABLE IF EXISTS  CASCADE
   ---###  Solution 1 
 
    WITH eligible_emp AS (
-      SELECT 
+    SELECT 
         e.name,
         pr.employee_id,
         COUNT(pr.employee_id) AS total_review
-      FROM performance_reviews pr
-      JOIN employees e
-      ON pr.employee_id = e.employee_id
-      GROUP BY e.name,pr.employee_id
-      HAVING COUNT(pr.employee_id) >=3
-   )
+    FROM performance_reviews pr
+    JOIN employees e
+        ON pr.employee_id = e.employee_id
+    GROUP BY e.name, pr.employee_id
+    HAVING COUNT(pr.employee_id) >= 3
+),
 
- WITH reviews AS (
+recent_reviews AS (
     SELECT *
     FROM (
         SELECT 
             *,
-            ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY review_date DESC) AS rn,
-            LAG(rating)  OVER (PARTITION BY employee_id  ) AS increase_rating 
-        FROM performance_reviews 
+            ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY review_date DESC) AS rn
+        FROM performance_reviews
     ) t
-    WHERE rn <= 3 
-        )
+    WHERE rn <= 3
+),
 
+improvement AS (
+    SELECT
+        employee_id,
+        MAX(rating) - MIN(rating) AS improvement_score
+    FROM recent_reviews
+    GROUP BY employee_id
+)
 
-  
- 
+SELECT 
+    ee.employee_id,
+    ee.name,
+    i.improvement_score
+FROM eligible_emp ee
+JOIN improvement i
+    ON ee.employee_id = i.employee_id
+WHERE i.improvement_score IS NOT NULL
+AND i.improvement_score != 0
+ORDER BY i.improvement_score DESC , ee.name 
