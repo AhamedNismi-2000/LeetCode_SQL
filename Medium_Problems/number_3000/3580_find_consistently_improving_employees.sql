@@ -247,3 +247,41 @@ ORDER BY i.improvement_score DESC , ee.name
         ON ee.employee_id = i.employee_id
     WHERE i.is_increasing = 1
     ORDER BY i.improvement_score DESC, ee.name ASC;
+
+
+--- ### Solution 3 
+ 
+
+    WITH ranked_reviews AS (
+    SELECT * 
+    FROM (
+        SELECT *,
+            ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY review_date DESC) AS rn
+        FROM performance_reviews
+    ) ranked_reviews
+    WHERE rn <= 3
+),
+
+ranked_reviewed AS (
+    SELECT 
+        employee_id,
+        COUNT(*) AS review_cont,
+        MAX(CASE WHEN rn = 1 THEN rating END) AS rn1,
+        MAX(CASE WHEN rn = 2 THEN rating END) AS rn2,
+        MAX(CASE WHEN rn = 3 THEN rating END) AS rn3
+    FROM ranked_reviews
+    GROUP BY employee_id
+)
+
+    SELECT 
+        rr.employee_id,
+        e.name,
+        (rr.rn1 - rr.rn3) AS improvement_score
+    FROM ranked_reviewed rr
+    JOIN employees e 
+        ON rr.employee_id = e.employee_id
+    WHERE rr.review_cont >= 3 
+    AND rn1 > rn2 
+    AND rn2 > rn3
+    ORDER BY improvement_score DESC, e.name ASC;
+
