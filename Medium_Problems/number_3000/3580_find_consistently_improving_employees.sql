@@ -143,6 +143,35 @@ INSERT INTO performance_reviews (review_id, employee_id, review_date, rating) VA
 (16, 5, '2023-02-15', 3),
 (17, 5, '2023-05-15', 2);
 
-DROP TABLE IF EXISTS productinfo,productpurchases,products,sales CASCADE 
+DROP TABLE IF EXISTS  CASCADE 
 
 
+  ---###  Solution 1 
+
+   WITH eligible_emp AS (
+      SELECT 
+        e.name,
+        pr.employee_id,
+        COUNT(pr.employee_id) AS total_review
+      FROM performance_reviews pr
+      JOIN employees e
+      ON pr.employee_id = e.employee_id
+      GROUP BY e.name,pr.employee_id
+      HAVING COUNT(pr.employee_id) >=3
+   )
+
+ WITH reviews AS (
+    SELECT *
+    FROM (
+        SELECT 
+            *,
+            ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY review_date DESC) AS rn,
+            LAG(rating)  OVER (PARTITION BY employee_id  ) AS increase_rating 
+        FROM performance_reviews 
+    ) t
+    WHERE rn <= 3 
+        )
+
+
+  
+ 
