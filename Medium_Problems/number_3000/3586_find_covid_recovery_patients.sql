@@ -138,7 +138,7 @@ Output table is ordered by recovery_time in ascending order, and then by patient
     (12, 5, '2023-02-20', 'Negative');
 
 
-   ---### Solution 1 
+   --- ### Solution 1 
    
     WITH first_positive AS (
         SELECT 
@@ -165,9 +165,35 @@ Output table is ordered by recovery_time in ascending order, and then by patient
         p.patient_name,
         p.age,
         fna.negative_test_date - fp.positive_test_date AS recovery_time
+        ,  fna.negative_test_date , fp.positive_test_date
     FROM first_positive fp
     JOIN first_negative_after fna 
         ON fp.patient_id = fna.patient_id
     JOIN patients p 
         ON fp.patient_id = p.patient_id
-    ORDER BY recovery_time ASC, patient_name ASC;
+    ORDER BY recovery_time , patient_name ;
+
+  
+   --- ### Solution 2
+
+   WITH annotated AS (
+    SELECT
+        patient_id,
+        test_date,
+        result,
+        MIN(CASE WHEN result = 'Positive' THEN test_date END)
+            OVER (PARTITION BY patient_id) AS first_positive_date
+    FROM covid_tests
+)
+    SELECT
+        p.patient_id,
+        p.patient_name,
+        p.age,
+        MIN(a.test_date) - a.first_positive_date AS recovery_time
+    FROM annotated a
+    JOIN patients p ON a.patient_id = p.patient_id
+    WHERE a.result = 'Negative'
+    AND a.first_positive_date IS NOT NULL
+    AND a.test_date > a.first_positive_date   -- ← enforces "after"
+    GROUP BY p.patient_id, p.patient_name, p.age, a.first_positive_date
+    ORDER BY recovery_time, p.patient_name;
