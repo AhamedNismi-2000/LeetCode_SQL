@@ -139,6 +139,7 @@ INSERT INTO ProductInfo (product_id, category, price) VALUES
 (105, 'Sports', 75);
 
 -- ### Solution 1 
+
     SELECT 
         pp1.product_id AS product1_id,
         pp2.product_id AS product2_id,

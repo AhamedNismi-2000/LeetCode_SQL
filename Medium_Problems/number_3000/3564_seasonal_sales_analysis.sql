@@ -159,30 +159,53 @@ INSERT INTO products (product_id, product_name, category) VALUES
 
 -- ### Solution 1 
 
-    WITH seasons AS (
-    SELECT 
-        product_id,
-        quantity,
-        price,
-        CASE
-            WHEN EXTRACT(MONTH FROM sale_date) IN (12, 1, 2) THEN 'Winter'
-            WHEN EXTRACT(MONTH FROM sale_date) IN (3, 4, 5) THEN 'Spring'
-            WHEN EXTRACT(MONTH FROM sale_date) IN (6, 7, 8) THEN 'Summer'
-            WHEN EXTRACT(MONTH FROM sale_date) IN (9, 10, 11) THEN 'Fall'
-        END AS season
+    WITH season_sales AS (
+        SELECT 
+            sale_id,
+            product_id,
+            quantity,
+            price,
+            CASE
+                WHEN EXTRACT(MONTH FROM sale_date) IN (12, 1, 2) THEN 'Winter'
+                WHEN EXTRACT(MONTH FROM sale_date) IN (3, 4, 5) THEN 'Spring'
+                WHEN EXTRACT(MONTH FROM sale_date) IN (6, 7, 8) THEN 'Summer'
+                ELSE 'Fall'
+            END AS season
         FROM sales
+    ) 
+    , annotated AS (
+        SELECT 
+            ss.season,
+            p.category,
+            SUM(ss.quantity) AS total_quantity,
+            SUM(ss.quantity * ss.price) AS total_revenue
+        FROM products p
+        JOIN season_sales ss ON ss.product_id = p.product_id
+        GROUP BY ss.season, p.category
     )
-
+    , ranker AS (
     SELECT 
-        season
+        a.season,
+        a.category,
+        a.total_quantity,
+        RANK() OVER (
+            PARTITION BY a.season 
+            ORDER BY a.total_quantity DESC, 
+                    a.total_revenue DESC, 
+                    a.category ASC
+        ) AS rnk ,
+        a.total_revenue
+    FROM annotated a
+    )
+    SELECT 
+        season,
         category,
-        SUM(quantity) AS total_quantity,
-        SUM(quantity * price) AS total_revenue
-    FROM seasons s
-    JOIN products p
-        ON s.product_id = p.product_id
-    WHERE  quantity IN (SELECT MAX(quantity) OVER (PARTITION BY season)FROM seasons)   AND 
-           total_revenue IN (SELECT MAX(quantity * price) OVER (PARTITION season) FROM seasons)     
-    GROUP BY 
-        category,season,s.quantity  
+        total_quantity,
+        total_revenue
+    FROM ranker `
+    WHERE rnk = 1     
     
+        
+
+
+
