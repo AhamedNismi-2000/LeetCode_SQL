@@ -189,11 +189,7 @@ INSERT INTO products (product_id, product_name, category) VALUES
         a.category,
         a.total_quantity,
         RANK() OVER (
-            PARTITION BY a.season 
-            ORDER BY a.total_quantity DESC, 
-                    a.total_revenue DESC, 
-                    a.category ASC
-        ) AS rnk ,
+            PARTITION BY a.season ORDER BY a.total_quantity DESC, a.total_revenue DESC, a.category ASC) AS rnk ,
         a.total_revenue
     FROM annotated a
     )
@@ -202,9 +198,44 @@ INSERT INTO products (product_id, product_name, category) VALUES
         category,
         total_quantity,
         total_revenue
-    FROM ranker `
+    FROM ranker 
     WHERE rnk = 1     
     
+
+-- ### Solution 2 
+   WITH sales_analyse AS (
+    SELECT 
+        s.sale_id,
+        s.product_id,
+        s.quantity,
+        s.price,
+        CASE
+            WHEN EXTRACT(MONTH FROM s.sale_date) IN (12, 1, 2) THEN 'Winter'
+            WHEN EXTRACT(MONTH FROM s.sale_date) IN (3, 4, 5) THEN 'Spring'
+            WHEN EXTRACT(MONTH FROM s.sale_date) IN (6, 7, 8) THEN 'Summer'
+            ELSE 'Fall'
+        END AS season,
+        p.category
+    FROM sales s
+    JOIN products p ON s.product_id = p.product_id
+)
+
+SELECT 
+    season,
+    category,
+    total_quantity,
+    total_revenue
+FROM (
+    SELECT 
+        season,
+        category,
+        SUM(quantity) AS total_quantity,
+        SUM(quantity * price) AS total_revenue,
+        RANK() OVER (PARTITION BY season ORDER BY SUM(quantity) DESC,SUM(quantity * price) DESC, category ASC) AS rnk
+    FROM sales_analyse
+    GROUP BY season, category
+) temp
+WHERE rnk = 1;
         
 
 
