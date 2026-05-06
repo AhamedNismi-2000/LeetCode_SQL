@@ -172,7 +172,7 @@ The output table is ordered by efficiency improvement in descending order then b
             ROUND(AVG(CASE WHEN half_year = 'Second Half' THEN  distance_km/fuel_consumed  END ),2) AS second_half_avg 
         FROM good_driver
         GROUP BY  driver_id,driver_name 
-        HAVING COUNT(DISTINCT half_year) >= 2
+        HAVING COUNT(DISTINCT half_year) = 2
         
      
     ) temp
@@ -220,22 +220,52 @@ The output table is ordered by efficiency improvement in descending order then b
     ) temp
     WHERE  ROUND(second_half_avg - first_half_avg ,2) IS NOT NULL 
     ORDER BY efficiency_improvement DESC , driver_name ASC
-    
 
-    
-   
+
+
+    --- ### Solution Leetcode 
+ 
+ WITH good_driver AS (
+    SELECT 
+        t.driver_id,
+        d.driver_name,
+        CASE 
+            WHEN EXTRACT(MONTH FROM t.trip_date) BETWEEN 1 AND 6 THEN 'First Half'
+            ELSE 'Second Half'
+        END AS half_year,
+        t.distance_km,
+        t.fuel_consumed
+    FROM Trips t
+    JOIN Drivers d ON t.driver_id = d.driver_id
+),
+
+ temp AS (
+    SELECT  
+        driver_id,
+        driver_name,
+        AVG(CASE 
+            WHEN half_year = 'First Half' 
+            THEN distance_km / fuel_consumed 
+        END) AS first_half_avg,
         
-  
-        
+        AVG(CASE 
+            WHEN half_year = 'Second Half' 
+            THEN distance_km / fuel_consumed 
+        END) AS second_half_avg
+    FROM good_driver
+    GROUP BY driver_id, driver_name
+    HAVING COUNT(DISTINCT half_year) = 2
+)
 
-
-     
-
-    
-
-    
-   
-        
+SELECT 
+    driver_id,
+    driver_name,
+    ROUND(first_half_avg, 2) AS first_half_avg,
+    ROUND(second_half_avg, 2) AS second_half_avg,
+    ROUND(second_half_avg - first_half_avg, 2) AS efficiency_improvement
+FROM temp
+WHERE second_half_avg > first_half_avg
+ORDER BY efficiency_improvement DESC, driver_name ASC;
   
         
 
