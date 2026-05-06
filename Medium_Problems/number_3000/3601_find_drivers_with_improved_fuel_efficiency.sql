@@ -137,3 +137,59 @@ The output table is ordered by efficiency improvement in descending order then b
     (10, 4, '2023-07-22', 160.0, 12.8),
     (11, 4, '2023-11-30', 140.0, 11.0),
     (12, 5, '2023-02-28', 110.0, 11.5);
+
+
+    ---### Solution 1 
+
+    Calculate fuel efficiency as distance_km / fuel_consumed for each trip
+ --  First half: January to June, Second half: July to December
+    Only include drivers who have trips in both halves of the year
+    Calculate the efficiency improvement as (second_half_avg - first_half_avg)
+    Round all results to 2 decimal places
+    
+
+    WITH good_driver AS (
+    SELECT 
+        t.trip_id, 
+        t.driver_id, 
+        t.trip_date, 
+        t.distance_km, 
+        t.fuel_consumed,
+        d.driver_name,
+        CASE WHEN EXTRACT(MONTH FROM trip_date) BETWEEN 1 AND 6 THEN 'First Half' 
+             ELSE 'Second Half' END AS half_year 
+    FROM Trips t
+    JOIN Drivers d ON t.driver_id = d.driver_id 
+    )
+    SELECT 
+        driver_id,
+        driver_name,
+        first_half_avg,
+        second_half_avg,
+        ROUND(second_half_avg - first_half_avg ,2) AS efficiency_improvement
+  
+
+        
+    FROM (
+        SELECT  
+            driver_id,
+            driver_name,
+            ROUND(AVG(CASE WHEN half_year = 'First Half'  THEN   distance_km/fuel_consumed  END),2) AS first_half_avg,
+            ROUND(AVG(CASE WHEN half_year = 'Second Half' THEN  distance_km/fuel_consumed  END ),2) AS second_half_avg 
+        FROM good_driver
+        GROUP BY  driver_id,driver_name 
+        HAVING COUNT(DISTINCT half_year) >= 2
+        
+     
+    ) temp
+    ORDER BY efficiency_improvement DESC , driver_name ASC
+    
+
+    
+   
+        
+  
+        
+
+
+     
