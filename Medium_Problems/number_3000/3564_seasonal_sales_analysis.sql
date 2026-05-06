@@ -234,7 +234,7 @@ FROM (
         RANK() OVER (PARTITION BY season ORDER BY SUM(quantity) DESC,SUM(quantity * price) DESC, category ASC) AS rnk
     FROM sales_analyse
     GROUP BY season, category
-) temp
+) t
 WHERE rnk = 1;
         
 
