@@ -160,10 +160,7 @@ The output table is ordered by efficiency improvement in descending order then b
         driver_name,
         first_half_avg,
         second_half_avg,
-        ROUND(second_half_avg - first_half_avg ,2) AS efficiency_improvement
-  
-
-        
+        ROUND(second_half_avg - first_half_avg ,2) AS efficiency_improvement   
     FROM (
         SELECT  
             driver_id,
