@@ -170,6 +170,48 @@ INSERT INTO meetings (meeting_id, employee_id, meeting_date, meeting_type, durat
         ORDER BY meeting_heavy_weeks DESC , employee_name ASC
         
       
+-- ### Solution 2 
+    WITH notation AS (
+        SELECT 
+            e.employee_id,
+            e.employee_name,
+            e.department,
+            m.meeting_date,
+            m.duration_hours,
+            EXTRACT(YEAR FROM m.meeting_date) AS year,
+            EXTRACT(WEEK FROM m.meeting_date) AS week
+        FROM employees e 
+        JOIN meetings m 
+            ON e.employee_id = m.employee_id  
+    )
 
+    SELECT 
+        employee_id,
+        employee_name,
+        department,
+        COUNT(*) AS meeting_heavy_weeks
+    FROM (
+        SELECT 
+            employee_id,
+            employee_name,
+            department,
+            year,
+            week,
+            SUM(duration_hours) AS working_hours 
+        FROM notation
+        GROUP BY 
+            employee_id,
+            employee_name,
+            department,
+            year,
+            week
+        HAVING SUM(duration_hours) > 20
+    ) temp
+    GROUP BY 
+        employee_id,
+        employee_name,
+        department
+    HAVING COUNT(*) >= 2
+    ORDER BY meeting_heavy_weeks DESC, employee_name ASC;
 
-    
+        
