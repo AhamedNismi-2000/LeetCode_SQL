@@ -143,7 +143,7 @@ INSERT INTO meetings (meeting_id, employee_id, meeting_date, meeting_type, durat
         m.meeting_date,
         m.duration_hours,
         EXTRACT(WEEK FROM meeting_date) AS week,
-        EXTRACT(YEAR FROM meeting_date) AS year 
+        EXTRACT(YEAR FROM meeting_date) AS year -- this is ensure that the week fall on same year
     FROM employees e 
     JOIN meetings m 
     ON e.employee_id = m.employee_id  
