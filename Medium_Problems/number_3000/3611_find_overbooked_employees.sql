@@ -132,3 +132,41 @@ INSERT INTO meetings (meeting_id, employee_id, meeting_date, meeting_type, durat
 (11, 4, '2023-06-05', 'Team', 25.0),
 (12, 4, '2023-06-19', 'Client', 22.0),
 (13, 5, '2023-06-05', 'Training', 2.0);
+
+
+  -- ### Solution 1
+    WITH notation AS (
+    SELECT 
+        e.employee_id,
+        e.employee_name,
+        e.department,
+        m.meeting_date,
+        m.duration_hours,
+        EXTRACT(WEEK FROM meeting_date) AS week 
+    FROM employees e 
+    JOIN meetings m 
+    ON e.employee_id = m.employee_id  
+    )
+   
+    SELECT 
+       employee_id,
+       employee_name,
+       department,
+       COUNT( CASE WHEN working_hours >= 20 THEN  working_hours END) AS meeting_heavy_weeks 
+       
+    FROM (
+        SELECT 
+           employee_id,
+           employee_name,
+           department,
+           week,
+           SUM(duration_hours)  AS working_hours 
+        FROM notation
+        GROUP BY employee_id, employee_name,department,week 
+        ) temp
+        GROUP BY employee_id,employee_name,department
+        COUNT( CASE WHEN working_hours >= 20 THEN  working_hours END) = 2
+      
+
+
+    
