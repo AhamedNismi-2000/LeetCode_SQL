@@ -142,7 +142,8 @@ INSERT INTO meetings (meeting_id, employee_id, meeting_date, meeting_type, durat
         e.department,
         m.meeting_date,
         m.duration_hours,
-        EXTRACT(WEEK FROM meeting_date) AS week 
+        EXTRACT(WEEK FROM meeting_date) AS week,
+        EXTRACT(YEAR FROM meeting_date) AS year 
     FROM employees e 
     JOIN meetings m 
     ON e.employee_id = m.employee_id  
@@ -161,12 +162,12 @@ INSERT INTO meetings (meeting_id, employee_id, meeting_date, meeting_type, durat
            department,
            SUM(duration_hours) AS working_hours 
         FROM notation
-        GROUP BY employee_id, employee_name,department,week 
+        GROUP BY employee_id, employee_name,department,week,year 
         HAVING SUM(duration_hours) > 20 
      
         ) temp
         GROUP BY employee_id,employee_name,department
-        HAVING COUNT(*) = 2
+        HAVING COUNT(*) >= 2
         ORDER BY meeting_heavy_weeks DESC , employee_name ASC
         
       
