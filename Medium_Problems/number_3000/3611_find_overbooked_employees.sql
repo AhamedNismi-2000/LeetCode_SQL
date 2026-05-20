@@ -214,4 +214,52 @@ INSERT INTO meetings (meeting_id, employee_id, meeting_date, meeting_type, durat
     HAVING COUNT(*) >= 2
     ORDER BY meeting_heavy_weeks DESC, employee_name ASC;
 
+
+    ### Leetcode Solution 
+
+    WITH notation AS (
+    SELECT 
+        e.employee_id,
+        e.employee_name,
+        e.department,
+        m.meeting_date,
+        m.duration_hours,
+        YEAR(m.meeting_date) AS yr,
+        WEEK(m.meeting_date, 1) AS wk
+    FROM employees e 
+    JOIN meetings m 
+        ON e.employee_id = m.employee_id  
+),
+
+weekly AS (
+    SELECT 
+        employee_id,
+        employee_name,
+        department,
+        yr,
+        wk,
+        SUM(duration_hours) AS working_hours
+    FROM notation
+    GROUP BY 
+        employee_id,
+        employee_name,
+        department,
+        yr,
+        wk
+    HAVING SUM(duration_hours) > 20
+)
+
+SELECT 
+    employee_id,
+    employee_name,
+    department,
+    COUNT(*) AS meeting_heavy_weeks
+FROM weekly
+GROUP BY 
+    employee_id,
+    employee_name,
+    department
+HAVING COUNT(*) >= 2
+ORDER BY meeting_heavy_weeks DESC, employee_name ASC;
+
         
