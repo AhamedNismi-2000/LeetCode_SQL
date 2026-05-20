@@ -152,20 +152,23 @@ INSERT INTO meetings (meeting_id, employee_id, meeting_date, meeting_type, durat
        employee_id,
        employee_name,
        department,
-       COUNT( CASE WHEN working_hours >= 20 THEN  working_hours END) AS meeting_heavy_weeks 
-       
+       COUNT(*) AS meeting_heavy_weeks   
+    
     FROM (
         SELECT 
            employee_id,
            employee_name,
            department,
-           week,
-           SUM(duration_hours)  AS working_hours 
+           SUM(duration_hours) AS working_hours 
         FROM notation
         GROUP BY employee_id, employee_name,department,week 
+        HAVING SUM(duration_hours) > 20 
+     
         ) temp
         GROUP BY employee_id,employee_name,department
-        COUNT( CASE WHEN working_hours >= 20 THEN  working_hours END) = 2
+        HAVING COUNT(*) = 2
+        ORDER BY meeting_heavy_weeks DESC , employee_name ASC
+        
       
 
 
