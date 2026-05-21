@@ -133,6 +133,7 @@ INSERT INTO stores (store_id, store_name, location) VALUES
 (4, 'Corner Shop', 'Miami'),
 (5, 'Plaza Store', 'Seattle');
 
+
 INSERT INTO inventory (inventory_id, store_id, product_name, quantity, price) VALUES
 (1, 1, 'Laptop', 5, 999.99),
 (2, 1, 'Mouse', 50, 19.99),
