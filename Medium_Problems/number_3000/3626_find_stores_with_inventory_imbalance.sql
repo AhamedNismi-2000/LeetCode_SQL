@@ -1,7 +1,6 @@
 /*
 3626 Find Stores with Inventory Imbalance
 
-
 Table: stores
 +-------------+---------+
 | Column Name | Type    |
