@@ -153,16 +153,47 @@ INSERT INTO inventory (inventory_id, store_id, product_name, quantity, price) VA
 (15, 5, 'Lens', 12, 199.99);
 
 
--- ### Soluion 1
- WITH different_3products AS (
-  SELECT 
-      s.store_id,
-      s.store_name,
-      s.location,
-   FROM Stores s
-   JOIN Inventory i
-   ON s.store_id = i.store_id
-   GROUP BY s.store_id,s.store_name,s.location
-  HAVING COUNT(*) >= 3
- )
- 
+-- ### Soluion 1 
+
+    WITH different_products AS (
+    SELECT 
+        s.store_id,
+        s.store_name,
+        s.location
+    FROM Stores s
+    JOIN Inventory i
+    ON s.store_id = i.store_id
+    GROUP BY s.store_id,s.store_name,s.location
+    HAVING COUNT(*) >= 3
+    )
+    SELECT 
+         store_id,
+         store_name,
+         location,
+        MAX(CASE WHEN exp = 1 THEN product_name END)  most_exp_product,
+        MAX(CASE WHEN cheap = 1 THEN product_name END) cheap_product,
+        ROUND(MAX(CASE WHEN cheap = 1 THEN quantity END) / MAX(CASE WHEN exp = 1 THEN quantity END),2) AS imbalance_ratio
+
+    FROM (
+       SELECT 
+            dp.store_id,
+            dp.store_name,
+            dp.location,
+            i.price,
+            i.quantity,
+            i.product_name,
+          ROW_NUMBER() OVER (PARTITION BY i.store_id ORDER BY price DESC) AS exp,
+          ROW_NUMBER() OVER (PARTITION BY i.store_id ORDER BY price ) AS cheap
+          
+       FROM different_products dp
+       JOIN inventory  i
+       ON i.store_id = dp.store_id 
+    ) t 
+   GROUP BY  store_id,
+         store_name,
+         location
+   HAVING 
+MAX(CASE WHEN exp = 1 THEN quantity END)
+<
+MAX(CASE WHEN cheap = 1 THEN quantity END)      
+   ORDER BY  imbalance_ratio DESC , store_name       
