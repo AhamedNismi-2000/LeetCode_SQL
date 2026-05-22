@@ -1,6 +1,7 @@
 /*
 3626 Find Stores with Inventory Imbalance
 
+
 Table: stores
 +-------------+---------+
 | Column Name | Type    |
@@ -150,3 +151,18 @@ INSERT INTO inventory (inventory_id, store_id, product_name, quantity, price) VA
 (13, 4, 'Band', 25, 49.99),
 (14, 5, 'Camera', 8, 599.99),
 (15, 5, 'Lens', 12, 199.99);
+
+
+-- ### Soluion 1
+ WITH different_3products AS (
+  SELECT 
+      s.store_id,
+      s.store_name,
+      s.location,
+   FROM Stores s
+   JOIN Inventory i
+   ON s.store_id = i.store_id
+   GROUP BY s.store_id,s.store_name,s.location
+  HAVING COUNT(*) >= 3
+ )
+ 
