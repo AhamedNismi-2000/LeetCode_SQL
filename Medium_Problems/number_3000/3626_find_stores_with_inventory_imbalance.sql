@@ -164,7 +164,7 @@ INSERT INTO inventory (inventory_id, store_id, product_name, quantity, price) VA
     JOIN Inventory i
     ON s.store_id = i.store_id
     GROUP BY s.store_id,s.store_name,s.location
-    HAVING COUNT(*) >= 3
+    HAVING COUNT(DISTINCT i.product_name) >= 3
     )
     SELECT 
          store_id,
