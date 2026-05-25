@@ -168,4 +168,45 @@ INSERT INTO reading_sessions (session_id, book_id, reader_name, pages_read, sess
 (20, 5, 'Tara', 70, 2);
 
 
- DROP TABLE IF EXISTS   stores,employees,inventory,meetings CASCADE
+--### Solution 1 
+
+  WITH polarized_opinions AS (
+    SELECT 
+        book_id,
+        session_id,
+        session_rating,
+        reader_name,
+        MAX(session_rating) OVER (PARTITION BY book_id) AS max_rating,
+        MIN(session_rating) OVER (PARTITION BY book_id) AS min_rating
+    FROM reading_sessions
+), 
+    rating_spread AS (
+    SELECT 
+        book_id,
+        COUNT(session_id) AS total_sessions,
+        SUM(CASE WHEN session_rating <= 2 OR session_rating >= 4 THEN 1 ELSE 0 END ) AS extreme_ratings,
+        (max_rating - min_rating) AS rating_spread
+    FROM polarized_opinions
+    GROUP BY 
+        book_id, max_rating, min_rating
+    HAVING 
+        COUNT(session_id) >= 5
+        AND max_rating >= 4
+        AND min_rating <= 2
+)
+
+    SELECT 
+        b.book_id,
+        b.title,
+        b.author,
+        b.genre,
+        b.pages,
+        rs.rating_spread,
+        ROUND(rs.extreme_ratings * 1.0 / rs.total_sessions, 2) AS polarization_score
+    FROM books b
+    JOIN rating_spread rs
+        ON b.book_id = rs.book_id
+    WHERE ROUND(rs.extreme_ratings * 1.0 / rs.total_sessions, 2) >= 0.6
+    ORDER BY polarization_score DESC, b.title DESC;
+
+    
