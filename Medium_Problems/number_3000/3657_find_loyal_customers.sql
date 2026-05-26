@@ -127,3 +127,15 @@ INSERT INTO customer_transactions (
 (16, 104, '2024-03-01', 350.00, 'purchase'),
 (17, 104, '2024-03-10', 280.00, 'purchase'),
 (18, 104, '2024-03-15', 100.00, 'refund');
+
+
+ --- ### Solution 1 
+  
+     SELECT 
+        customer_id
+     FROM customer_transactions 
+     GROUP BY customer_id    
+     HAVING ROUND(SUM(CASE WHEN transaction_type = 'refund' THEN 1 ELSE 0 END ) * 100.0 / COUNT(*),2) < 20
+     AND MAX(transaction_date) - MIN(transaction_date) >= 30 AND SUM(CASE WHEN transaction_type = 'purchase' THEN 1 ELSE 0 END) >= 3
+     ORDER BY customer_id 
+   
