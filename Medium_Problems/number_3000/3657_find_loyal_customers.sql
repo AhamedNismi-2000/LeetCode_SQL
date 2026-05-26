@@ -139,3 +139,14 @@ INSERT INTO customer_transactions (
      AND MAX(transaction_date) - MIN(transaction_date) >= 30 AND SUM(CASE WHEN transaction_type = 'purchase' THEN 1 ELSE 0 END) >= 3
      ORDER BY customer_id 
    
+ --- ### Solution 2 Leetcode Expected Version
+
+   SELECT 
+    customer_id
+    FROM customer_transactions 
+    GROUP BY customer_id    
+    HAVING 
+        SUM(CASE WHEN transaction_type = 'purchase' THEN 1 ELSE 0 END) >= 3
+        AND DATEDIFF(MAX(transaction_date), MIN(transaction_date)) >= 30
+        AND SUM(CASE WHEN transaction_type = 'refund' THEN 1 ELSE 0 END) * 1.0 / COUNT(*) < 0.2
+    ORDER BY customer_id ASC;
