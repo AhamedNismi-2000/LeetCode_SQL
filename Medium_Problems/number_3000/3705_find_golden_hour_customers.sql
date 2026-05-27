@@ -9,7 +9,8 @@ Table: restaurant_orders
 | order_id         | int      |
 | customer_id      | int      |
 | order_timestamp  | datetime |
-| order_amount     | decimal  |
+| order_amount     | decimal  |3705 Find Golden Hour Customers
+
 | payment_method   | varchar  |
 | order_rating     | int      |
 +------------------+----------+
@@ -138,3 +139,59 @@ INSERT INTO restaurant_orders (
 (14, 105, '2024-03-01 12:15:00', 30.00, 'app', 4),
 (15, 105, '2024-03-02 13:00:00', 35.50, 'app', 5),
 (16, 105, '2024-03-03 11:45:00', 28.00, 'card', 4);
+
+
+  --- ### Solution 1 
+
+    -- Write a solution to find golden hour customers - customers who consistently order during peak hours and provide high satisfaction. A customer is a golden hour customer if they meet ALL the following criteria:
+
+    -- 1) Made at least 3 orders.
+
+   -- 2) At least 60% of their orders are during peak hours (11:00-14:00 or 18:00-21:00).
+
+   -- 3) Their average rating for rated orders is at least 4.0, round it to 2 decimal places.
+
+    -- 4) Have rated at least 50% of their orders.
+
+    -- 5) Return the result table ordered by average_rating in descending order, then by customer_id​​​​​​​ in descending order.
+
+
+    WITH peak_order AS (
+        SELECT
+            customer_id,
+            order_id,
+            EXTRACT(HOUR FROM order_timestamp) AS order_time  
+        FROM restaurant_orders  
+    ) ,
+        average_rating  AS (
+      SELECT       
+        customer_id,
+        SUM(CASE WHEN order_rating IS NOT NULL THEN 1 ELSE 0 END ) AS rated_orders,
+        COUNT(order_id) AS total_orders,
+        ROUND(AVG(order_rating),2) AS average_rating  
+    FROM  restaurant_orders
+    GROUP BY customer_id   
+
+        )
+        SELECT 
+            ar.customer_id,
+            ar.total_orders,
+            SUM(CASE WHEN po.order_time BETWEEN  11 AND 14 OR  po.order_time BETWEEN 18 AND 21  THEN 1 ELSE 0  END ) * 100.0
+             / ar.total_orders AS peak_hour_percentage,
+           ar.average_rating  
+         FROM peak_order po
+         JOIN average_rating ar
+         ON po.customer_id = ar.customer_id  
+         WHERE ar.total_orders >= 3 AND ar.average_rating >= 4
+         GROUP BY ar.customer_id,
+                  ar.total_orders,
+                  ar.average_rating,
+                  ar.rated_orders
+        HAVING
+          SUM(CASE WHEN po.order_time BETWEEN  11 AND 14 OR  po.order_time BETWEEN 18 AND 21  THEN 1 ELSE 0  END ) * 100.0 / ar.total_orders >= 60  
+          AND 
+          ar.rated_orders * 100.0 /  ar.total_orders >= 50
+
+        ORDER BY ar.average_rating  DESC , ar.customer_id DESC           
+
+   
