@@ -202,10 +202,10 @@ INSERT INTO restaurant_orders (
         customer_id,
         COUNT(order_id)  AS total_orders,
         SUM(CASE WHEN order_rating IS NOT NULL THEN 1 ELSE 0 END)  AS rated_orders,
-        ROUND(AVG(order_rating), 2)  AS average_rating,
+        ROUND(AVG(order_rating), 2)    AS average_rating,
         SUM(CASE 
-                WHEN EXTRACT(HOUR FROM order_timestamp) BETWEEN 11 AND 14
-                  OR EXTRACT(HOUR FROM order_timestamp) BETWEEN 18 AND 21
+                WHEN EXTRACT(HOUR FROM order_timestamp) BETWEEN 11 AND 13  
+                  OR EXTRACT(HOUR FROM order_timestamp) BETWEEN 18 AND 20  
                 THEN 1 ELSE 0 
             END)  AS peak_orders
     FROM restaurant_orders
@@ -214,12 +214,12 @@ INSERT INTO restaurant_orders (
     SELECT
         customer_id,
         total_orders,
-        ROUND(peak_orders * 100.0 / total_orders, 2) AS peak_hour_percentage,
+        ROUND(peak_orders * 100.0 / total_orders, 0) AS peak_hour_percentage,
         average_rating
     FROM customer_stats
     WHERE total_orders   >= 3
     AND average_rating >= 4.0
-    AND ROUND(peak_orders  * 100.0 / total_orders, 2) >= 60
-    AND rated_orders * 100.0 / total_orders >= 50
+    AND ROUND(peak_orders * 100.0 / total_orders, 0) >= 60
+    AND rated_orders   * 100.0 / total_orders  >= 50
     ORDER BY average_rating DESC, customer_id DESC;
-        
+            
