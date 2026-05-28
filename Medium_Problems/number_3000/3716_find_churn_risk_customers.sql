@@ -257,5 +257,40 @@ Note: days_as_subscriber is calculated from the first event date to the last eve
 
 -- Return the result table ordered by days_as_subscriber in descending order, then by user_id in ascending order.
 
+
+
+
+     WITH latest_event AS (
+        SELECT 
+           user_id,
+           event_type,
+           event_date,
+           plan_name AS current_plan,
+           monthly_amount AS current_monthly_amount,
+           ROW_NUMBER() OVER(PARTITION BY user_id ORDER BY event_date DESC ) AS rn
+        FROM subscription_events   
+     ) ,
+      customer_history AS (
+     SELECT 
+         user_id,
+         SUM(CASE WHEN event_type = 'downgrade' THEN 1 ELSE 0 END ) AS subscription_history,
+         MAX(monthly_amount) AS max_historical_amount,
+         MAX(event_date) AS last_date,
+         MIN(event_date) AS first_date
+    FROM subscription_events
+    GROUP BY user_id    
+      )
       SELECT 
-        
+         ch.user_id,
+         le.current_plan,
+         le.current_monthly_amount,
+         ch.max_historical_amount,
+        (ch.last_date - ch.first_date) AS days_as_subscriber 
+    FROM  latest_event le
+    JOIN  customer_history ch
+    ON le.user_id = ch.user_id
+    WHERE le.rn= 1 AND le.event_type != 'cancel' 
+    AND subscription_history >= 1 
+    AND current_monthly_amount * 100.0 / ch.max_historical_amount < 50
+    AND (ch.last_date - ch.first_date) >=60
+         
