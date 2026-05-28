@@ -293,6 +293,9 @@ Note: days_as_subscriber is calculated from the first event date to the last eve
     AND subscription_history >= 1 
     AND le.current_monthly_amount * 100.0 / ch.max_historical_amount < 50
     AND (ch.last_date - ch.first_date) >=60
+    ORDER BY days_as_subscriber DESC,ch.user_id ASC;
+
+
          
     --- ### Solution 2 Leetcode 
 
