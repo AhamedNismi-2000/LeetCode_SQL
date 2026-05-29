@@ -112,3 +112,32 @@ The Results table is ordered by reaction_ratio in descending order, then by user
     (3, 305, 'love');
 
 
+
+  --   Write a solution to identify emotionally consistent users based on the following requirements:
+
+-- For each user, count the total number of reactions they have given.
+
+-- Only include users who have reacted to at least 5 different content items.
+
+-- A user is considered emotionally consistent if at least 60% of their reactions are of the same type.
+
+-- Return the result table ordered by reaction_ratio in descending order and then by user_id in ascending order.
+
+
+  -- ### Solution 1 
+
+     SELECT 
+     * 
+     FROM reactions
+
+  WITH cte AS (
+      SELECT 
+          user_id,
+          reaction,
+          RANK() OVER (PARTITION BY user_id ORDER BY reaction) AS tt
+      FROM reactions     
+  )
+
+          
+         
+      
