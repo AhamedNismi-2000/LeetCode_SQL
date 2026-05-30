@@ -78,10 +78,10 @@ INSERT INTO products (product_id, product_name, description) VALUES
 (5, 'Widget E', 'Check out SN4321-8765 in this description');
 
  -- ### Solution 1
-SELECT 
-    product_id,
-    product_name,
-    description
-FROM products
-WHERE description ~ 'SN[0-9]{4}-[0-9]{4}([^0-9]|$)'
-ORDER BY product_id ASC;
+    SELECT 
+        product_id,
+        product_name,
+        description
+    FROM products
+    WHERE REGEXP_LIKE(description, '(^|[^A-Za-z0-9])SN[0-9]{4}-[0-9]{4}($|[^0-9A-Za-z])', 'c')
+    ORDER BY product_id ASC; 
