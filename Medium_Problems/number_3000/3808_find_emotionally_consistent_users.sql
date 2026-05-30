@@ -24,7 +24,7 @@ Note:
 reaction_ratio should be rounded to 2 decimal places
 The result format is in the following example.
 
- 
+
 
 Example:
 
@@ -78,23 +78,18 @@ reaction_ratio = 5 / 5 = 1.00
 Meets the consistency requirement
 The Results table is ordered by reaction_ratio in descending order, then by user_id in ascending order.
 
-*/
-
-
- 
-
-    CREATE TABLE reactions (
+ */
+CREATE TABLE
+    reactions (
         user_id INT,
         content_id INT,
         reaction VARCHAR(20),
         PRIMARY KEY (user_id, content_id)
     );
 
-    INSERT INTO reactions (
-        user_id,
-        content_id,
-        reaction
-    ) VALUES
+INSERT INTO
+    reactions (user_id, content_id, reaction)
+VALUES
     (1, 101, 'like'),
     (1, 102, 'like'),
     (1, 103, 'like'),
@@ -111,33 +106,38 @@ The Results table is ordered by reaction_ratio in descending order, then by user
     (3, 304, 'love'),
     (3, 305, 'love');
 
-
-
-  --   Write a solution to identify emotionally consistent users based on the following requirements:
-
+--   Write a solution to identify emotionally consistent users based on the following requirements:
 -- For each user, count the total number of reactions they have given.
-
 -- Only include users who have reacted to at least 5 different content items.
-
 -- A user is considered emotionally consistent if at least 60% of their reactions are of the same type.
-
 -- Return the result table ordered by reaction_ratio in descending order and then by user_id in ascending order.
 
 
-  -- ### Solution 1 
+-- ### Solution 1 
 
-     SELECT 
-     * 
-     FROM reactions
-
-  WITH cte AS (
-      SELECT 
-          user_id,
-          reaction,
-          RANK() OVER (PARTITION BY user_id ORDER BY reaction) AS tt
-      FROM reactions     
-  )
-
-          
-         
-      
+    WITH reaction_counts AS (
+        SELECT
+            user_id,
+            reaction,
+            COUNT(*) AS reaction_count
+        FROM reactions
+        GROUP BY user_id, reaction
+    ),
+    ranked_reactions AS (
+        SELECT
+            user_id,
+            reaction,
+            reaction_count,
+            SUM(reaction_count) OVER (PARTITION BY user_id) AS total_reactions,
+            RANK() OVER ( PARTITION BY user_id ORDER BY reaction_count DESC ) AS rn
+        FROM reaction_counts
+    )
+    SELECT
+        user_id,
+        reaction AS dominant_reaction,
+        ROUND(reaction_count * 1.0 / total_reactions, 2) AS reaction_ratio
+    FROM ranked_reactions
+    WHERE rn = 1
+        AND total_reactions >= 5
+        AND reaction_count * 1.0 / total_reactions >= 0.60
+    ORDER BY reaction_ratio DESC, user_id ASC;
