@@ -126,10 +126,29 @@ There are no employees with the exact same name, salary and department.  give ta
 
 -- Return the result table in any order.
 
+  -- ### Solution 1 
+
    SELECT * FROM department;
    SELECT * FROM employee
 
-   SELECT 
+ 
 
-    d.name AS department,
+   SELECT 
+        employee,
+        department,
+        salary
+   FROM (
+     SELECT 
+        e.name AS employee,
+        d.name AS department,
+        e.salary AS salary,
+        d.id,
+        DENSE_RANK() OVER(PARTITION BY d.id ORDER BY e.salary DESC) AS salary_rank
+   FROM employee e
+   JOIN department d 
+   ON e.departmentid = d.id 
+   ) temp
+  WHERE salary_rank <= 3 
+  ORDER BY department ASC , salary DESC
+
        
