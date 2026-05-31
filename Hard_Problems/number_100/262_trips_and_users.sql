@@ -138,3 +138,31 @@ On 2013-10-03:
     (8, 2, 12, 12, 'completed', '2013-10-03'),
     (9, 3, 10, 12, 'completed', '2013-10-03'),
     (10, 4, 13, 12, 'cancelled_by_driver', '2013-10-03');
+
+      -- ### Solution 1 
+
+  --  The cancellation rate is computed by dividing the number of canceled (by client or driver) 
+  --  requests with unbanned users by the total number of requests with unbanned users on that day.
+
+  --   Write a solution to find the cancellation rate of requests with unbanned users 
+  --   (both client and driver must not be banned) each day between "2013-10-01" and "2013-10-03" with at least one trip. 
+  --   Round Cancellation Rate to two decimal points.
+
+   SELECT * FROM users;
+   SELECT * FROM  trips
+
+
+     SELECT 
+       t.request_at AS day,
+       ROUND(SUM(CASE WHEN t.status = 'cancelled_by_driver' OR t.status = 'cancelled_by_client' THEN 1 ELSE 0 END ) * 1.0 /
+       COUNT(*),2)  AS cancellation_rate
+    FROM Trips t
+    JOIN Users u
+        ON t.client_id = u.users_id
+    JOIN Users d
+        ON t.driver_id = d.users_id   
+    WHERE WHERE d.banned = 'No'  AND u.banned = 'No'
+    AND 
+    t.request_at BETWEEN '2013-10-01' AND '2013-10-03'
+    GROUP BY t.request_at 
+    ORDER BY cancellation_rate
