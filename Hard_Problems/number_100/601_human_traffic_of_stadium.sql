@@ -58,18 +58,50 @@ The rows with ids 2 and 3 are not included because we need at least three consec
 
 
 
-CREATE TABLE Stadium (
-    id INT PRIMARY KEY,
-    visit_date DATE UNIQUE,
-    people INT
-);
+    CREATE TABLE Stadium (
+        id INT PRIMARY KEY,
+        visit_date DATE UNIQUE,
+        people INT
+    );
 
-INSERT INTO Stadium (id, visit_date, people) VALUES
-(1, '2017-01-01', 10),
-(2, '2017-01-02', 109),
-(3, '2017-01-03', 150),
-(4, '2017-01-04', 99),
-(5, '2017-01-05', 145),
-(6, '2017-01-06', 1455),
-(7, '2017-01-07', 199),
-(8, '2017-01-09', 188);
+    INSERT INTO Stadium (id, visit_date, people) VALUES
+    (1, '2017-01-01', 10),
+    (2, '2017-01-02', 109),
+    (3, '2017-01-03', 150),
+    (4, '2017-01-04', 99),
+    (5, '2017-01-05', 145),
+    (6, '2017-01-06', 1455),
+    (7, '2017-01-07', 199),
+    (8, '2017-01-09', 188);
+
+
+     -- ### Solution 1
+
+    -- Write a solution to display the records with three or more rows with consecutive id's,
+    -- and the number of people is greater than or equal to 100 for each.
+
+    -- Return the result table ordered by visit_date in ascending order.
+
+    WITH stats AS (
+            SELECT
+        id,
+        visit_date,
+        people,
+        id - ROW_NUMBER() OVER (ORDER BY id) AS grp
+    FROM Stadium
+    WHERE people >= 100
+
+    )
+    SELECT id,
+           visit_date,
+           people
+    FROM stats
+    WHERE grp IN (
+        SELECT grp
+        FROM stats
+        GROUP BY grp
+        HAVING COUNT(*) >= 3
+    );
+
+
+
