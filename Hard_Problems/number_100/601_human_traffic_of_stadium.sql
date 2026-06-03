@@ -18,7 +18,7 @@ As the id increases, the date increases as well.
 
 Write a solution to display the records with three or more rows with consecutive id's, and the number of people is greater than or equal to 100 for each.
 
-Return the result table ordered by visit_date in ascending order.
+Retugrp the result table ordered by visit_date in ascending order.
 
 The result format is in the following example.
 
@@ -80,7 +80,7 @@ The rows with ids 2 and 3 are not included because we need at least three consec
     -- Write a solution to display the records with three or more rows with consecutive id's,
     -- and the number of people is greater than or equal to 100 for each.
 
-    -- Return the result table ordered by visit_date in ascending order.
+    -- Retugrp the result table ordered by visit_date in ascending order.
 
     WITH stats AS (
             SELECT
@@ -104,4 +104,32 @@ The rows with ids 2 and 3 are not included because we need at least three consec
     );
 
 
+    ### Solution 2
+
+    WITH stats AS ( 
+        SELECT
+            id,
+            visit_date,
+            people,
+            id - ROW_NUMBER() OVER(ORDER BY id) AS grp
+        FROM stadium
+        WHERE people >= 100   
+    ), class AS (
+          SELECT
+              COUNT(*) AS user_count,
+              grp
+          FROM stats 
+          GROUP BY grp
+          HAVING COUNT(*) >= 3
+       )
+       SELECT 
+          s.id,
+          s.visit_date,
+          s.people
+       FROM stats s 
+       JOIN class c 
+       ON c.grp = s.grp    
+
+     
+       
 
