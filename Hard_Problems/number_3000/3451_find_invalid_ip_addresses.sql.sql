@@ -75,3 +75,27 @@ The output table is ordered by invalid_count, ip in descending order respectivel
         (5, '192.168.1', 500),
         (6, '256.1.2.3', 404),
         (7, '192.168.001.1', 200);
+
+
+        --- ### Solution 1 
+
+--  Write a solution to find invalid IP addresses. An IPv4 address is invalid if it meets any of these conditions:
+
+-- Contains numbers greater than 255 in any octet
+-- Has leading zeros in any octet (like 01.02.03.04)
+-- Has less or more than 4 octets
+-- Return the result table ordered by invalid_count, ip in descending order respectively. 
+
+
+    WITH ip_parts AS (
+        SELECT
+            ip,
+            split_part(ip, '.', 1) AS oct1,
+            split_part(ip, '.', 2) AS oct2,
+            split_part(ip, '.', 3) AS oct3,
+            split_part(ip, '.', 4) AS oct4,
+            LENGTH(ip) - LENGTH(REPLACE(ip, '.', '')) AS dot_count
+        FROM logs
+    )
+    SELECT *
+    FROM ip_parts;
