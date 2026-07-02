@@ -87,15 +87,29 @@ The output table is ordered by invalid_count, ip in descending order respectivel
 -- Return the result table ordered by invalid_count, ip in descending order respectively. 
 
 
-    WITH ip_parts AS (
-        SELECT
-            ip,
-            split_part(ip, '.', 1) AS oct1,
-            split_part(ip, '.', 2) AS oct2,
-            split_part(ip, '.', 3) AS oct3,
-            split_part(ip, '.', 4) AS oct4,
-            LENGTH(ip) - LENGTH(REPLACE(ip, '.', '')) AS dot_count
-        FROM logs
-    )
-    SELECT *
-    FROM ip_parts;
+   WITH ip_parts AS (
+    SELECT
+        ip,
+        split_part(ip, '.', 1) AS oct1,
+        split_part(ip, '.', 2) AS oct2,
+        split_part(ip, '.', 3) AS oct3,
+        split_part(ip, '.', 4) AS oct4,
+        LENGTH(ip) - LENGTH(REPLACE(ip, '.', '')) AS dot_count
+    FROM logs
+)
+SELECT
+    ip,
+    COUNT(*) AS invalid_count
+FROM ip_parts
+WHERE
+    dot_count <> 3
+    OR oct1::int > 255
+    OR oct2::int > 255
+    OR oct3::int > 255
+    OR oct4::int > 255
+    OR (LENGTH(oct1) > 1 AND LEFT(oct1, 1) = '0')
+    OR (LENGTH(oct2) > 1 AND LEFT(oct2, 1) = '0')
+    OR (LENGTH(oct3) > 1 AND LEFT(oct3, 1) = '0')
+    OR (LENGTH(oct4) > 1 AND LEFT(oct4, 1) = '0')
+GROUP BY ip
+ORDER BY invalid_count DESC, ip DESC;
