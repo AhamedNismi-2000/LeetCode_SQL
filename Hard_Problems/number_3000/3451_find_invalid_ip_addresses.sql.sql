@@ -113,3 +113,37 @@ WHERE
     OR (LENGTH(oct4) > 1 AND LEFT(oct4, 1) = '0')
 GROUP BY ip
 ORDER BY invalid_count DESC, ip DESC;
+
+
+--- ### Solution Leetcode Version
+
+   WITH ip_parts AS (
+    SELECT
+        ip,
+        SUBSTRING_INDEX(ip, '.', 1) AS oct1,
+        SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 2), '.', -1) AS oct2,
+        SUBSTRING_INDEX(SUBSTRING_INDEX(ip, '.', 3), '.', -1) AS oct3,
+        SUBSTRING_INDEX(ip, '.', -1) AS oct4,
+        LENGTH(ip) - LENGTH(REPLACE(ip, '.', '')) AS dot_count
+    FROM logs
+)
+SELECT
+    ip,
+    COUNT(*) AS invalid_count
+FROM ip_parts
+WHERE
+    dot_count <> 3
+    OR (
+        dot_count = 3 AND (
+            CAST(oct1 AS UNSIGNED) > 255
+            OR CAST(oct2 AS UNSIGNED) > 255
+            OR CAST(oct3 AS UNSIGNED) > 255
+            OR CAST(oct4 AS UNSIGNED) > 255
+            OR (LENGTH(oct1) > 1 AND LEFT(oct1, 1) = '0')
+            OR (LENGTH(oct2) > 1 AND LEFT(oct2, 1) = '0')
+            OR (LENGTH(oct3) > 1 AND LEFT(oct3, 1) = '0')
+            OR (LENGTH(oct4) > 1 AND LEFT(oct4, 1) = '0')
+        )
+    )
+GROUP BY ip
+ORDER BY invalid_count DESC, ip DESC;
