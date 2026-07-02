@@ -1,81 +1,110 @@
 # 🧠 LeetCode SQL Solutions
 
-This repository contains a collection of solved LeetCode SQL problems designed to strengthen database querying and analytical skills.
+This repository contains **95+ solved LeetCode SQL problems** designed to strengthen SQL querying, database concepts, and analytical thinking. Each solution is written for clarity, readability, and practical learning using **PostgreSQL**.
+
+---
+
+## 📊 Repository Progress
+
+* ✅ **Problems Solved:** 95+
+* 💻 **Database:** PostgreSQL
+* 🎯 **Goal:** Continuously solve and document LeetCode SQL problems
+* 📈 **Focus:** Clean, optimized, and interview-ready SQL queries
 
 ---
 
 ## 📌 Purpose of This Repository
 
-The main purpose of this repository is to:
+The primary objectives of this repository are to:
 
-- Improve SQL problem-solving ability  
-- Practice real-world database query scenarios  
-- Prepare for technical interviews  
-- Build strong foundations for Data Analyst and Backend roles  
-- Maintain a structured record of SQL learning progress  
+* Improve SQL problem-solving skills
+* Practice real-world database query scenarios
+* Prepare for technical interviews
+* Build a strong foundation for Data Analyst, Business Intelligence, and Backend Developer roles
+* Track continuous learning and SQL progress
 
-This repository reflects continuous practice and growth in SQL concepts.
+This repository reflects consistent practice and ongoing growth in SQL and database concepts.
 
 ---
 
 ## 🛠 What This Repository Includes
 
-Each solution in this repository contains:
+Each solution contains:
 
-- Table creation statements  
-- Sample data insertion  
-- A complete and optimized SQL query solution  
-- Clean formatting for easy readability and execution  
+* Table creation statements
+* Sample data insertion scripts
+* A complete and optimized SQL query solution
+* Clean formatting for easy readability and execution
 
-All problems are structured so they can be directly executed in a database environment for practice.
+All SQL scripts are structured to be executed directly in a PostgreSQL environment for hands-on practice.
 
 ---
 
-## 📚 Topics Covered
+## 📚 SQL Topics Covered
 
 The solutions cover a wide range of SQL concepts, including:
 
-- SELECT statements  
-- WHERE filtering  
-- GROUP BY and HAVING  
-- Aggregate functions (COUNT, SUM, AVG, etc.)  
-- JOIN operations  
-- Subqueries  
-- String functions  
-- Date and time functions  
-- Conditional logic  
-- Window functions  
+* SELECT statements
+* WHERE filtering
+* ORDER BY
+* GROUP BY and HAVING
+* Aggregate functions (COUNT, SUM, AVG, MIN, MAX)
+* INNER, LEFT, RIGHT, and SELF JOINs
+* Subqueries
+* Common Table Expressions (CTEs)
+* Window functions
+* CASE expressions
+* String functions
+* Date and time functions
+* Conditional logic
+* NULL handling
+* Set operations
+* Query optimization techniques
 
 ---
 
-## 🎯 Intended Audience
+## 👥 Intended Audience
 
 This repository is useful for:
 
-- Computer Science students  
-- Aspiring Data Analysts  
-- Backend Developer candidates  
-- Anyone preparing for SQL technical interviews  
-- Anyone looking to strengthen practical SQL skills  
+* Computer Science students
+* Aspiring Data Analysts
+* Business Intelligence professionals
+* Backend Developer candidates
+* Anyone preparing for SQL technical interviews
+* Anyone looking to strengthen practical SQL skills
 
 ---
 
 ## 🚀 Learning Approach
 
-The focus of this repository is:
+The focus of every solution is to:
 
-- Writing clean and readable queries  
-- Understanding multiple possible solutions  
-- Improving logical thinking  
-- Practicing real interview-style questions  
+* Write clean and readable SQL queries
+* Follow SQL best practices
+* Explore multiple approaches where applicable
+* Improve logical thinking and problem-solving
+* Practice interview-style database questions
+
+---
+
+## 📈 Repository Statistics
+
+| Metric          |                                Value |
+| --------------- | -----------------------------------: |
+| Problems Solved |                              **95+** |
+| Database        |                           PostgreSQL |
+| Difficulty      |                 Easy • Medium • Hard |
+| Purpose         | SQL Practice & Interview Preparation |
 
 ---
 
 ## 📌 Note
 
-There can be multiple correct solutions to the same SQL problem.  
-The solutions in this repository are written primarily for clarity, learning, and skill development.
+Many LeetCode SQL problems can be solved using multiple valid approaches. The solutions in this repository prioritize clarity, correctness, readability, and maintainability while following PostgreSQL syntax whenever possible.
 
 ---
 
-⭐ If you find this repository helpful, feel free to star it.
+## ⭐ Support
+
+If you find this repository helpful, consider giving it a ⭐. Your support motivates me to continue solving more SQL problems and improving this collection.
