@@ -1,4 +1,5 @@
- /*File: 183_customers_who_never_order.sql
+ /* 
+  183 customers who never order
 
 Table: Customers
 +-------------+---------+
@@ -88,14 +89,20 @@ INSERT INTO Orders (id, customerId) VALUES
 (1, 3),
 (2, 1);
 
--- Solution 
+### Solution 1 
 
-SELECT 
-   name Customers,
-    o.id order_id,
-    customerid
-FROM Customers c
-LEFT JOIN orders o
-ON c.id=o.customerId
-WHERE o.id IS NULL 
+    SELECT 
+    name Customers,
+        o.id order_id,
+        customerid
+    FROM Customers c
+    LEFT JOIN orders o
+    ON c.id=o.customerId
+    WHERE o.id IS NULL 
 
+ ### Solution 2 
+    SELECT name AS customers  
+    FROM Customers c 
+    LEFT JOIN orders o
+    ON c.id = o.customerId
+    WHERE o.customerid IS NULL 
