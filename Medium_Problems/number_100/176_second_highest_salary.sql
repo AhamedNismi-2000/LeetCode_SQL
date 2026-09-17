@@ -55,8 +55,7 @@
 
 
 */ 
-  
-  -- filename:
+DROP TABLE IF EXISTS employee  CASCADE
 
 CREATE TABLE Employee (
     id INT PRIMARY KEY,
@@ -94,6 +93,5 @@ LIMIT 1 OFFSET 1;
         FROM Employee
         WHERE salary < (SELECT MAX(salary) FROM Employee)
         ) AS SecondHighestSalary;   
-
 
 
