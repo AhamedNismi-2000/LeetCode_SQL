@@ -33,12 +33,7 @@ CREATE TABLE Employee (
 );
 
 -- Step 2: Insert sample values
-INSERT INTO Employee (id, name, salary, managerId) VALUES
-(1, 'Joe', 70000, 3),
-(2, 'Henry', 80000, 4),
-(3, 'Sam', 60000, NULL),
-(4, 'Max', 90000, NULL);
-
+w
 SELECT * FROM employee
 
 
@@ -50,9 +45,11 @@ INNER JOIN Employee m ON
 e.managerId = m.id 
 WHERE e.salary > m.salary 
 
-
-
-
-
-
-
+  ### Solution 2 
+  
+  SELECT 
+      e1.name Employee
+  FROM Employee e1 
+  JOIN Employee e2  
+  ON e1.managerId = e2.id
+  WHERE e1.salary > e2.salary    
