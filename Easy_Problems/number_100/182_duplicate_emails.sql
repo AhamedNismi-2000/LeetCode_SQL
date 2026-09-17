@@ -16,6 +16,7 @@ Write a solution to report all the duplicate emails. Note that it's guaranteed t
 Return the result table in any order.
 The result format is in the following example.
 
+
 Input: 
 Person table:
 +----+---------+
@@ -36,6 +37,10 @@ Explanation: a@b.com is repeated two times.
 -- Step 0: Drop the table if it exists
 DROP TABLE IF EXISTS Person;
 
+
+
+
+
 -- Step 1: Create the table
 CREATE TABLE Person (
     id INT PRIMARY KEY,
@@ -49,20 +54,35 @@ INSERT INTO Person (id, email) VALUES
 (3, 'a@b.com');
 
 
---Solution 
+### Solution 
 SELECT * FROM Person 
 
 SELECT email
 FROM Person
 GROUP BY email
-HAVING COUNT(*) > 1
+HAVING COUNT(*) > 
+
+### Solution 2 CTE 
+ WITH emailCnt AS (
+   SELECT COUNT(email) AS cnt,
+        email  
+   FROM  person 
+    GROUP BY email
+    )
+    SELECT 
+        email
+    FROM emailCnt 
+    WHERE cnt > 1     
 
 
--- Solution 2  NOT Preferable 
+
+### Solution 3  NOT Preferable 
 
 SELECT p1.email AS Email
 FROM Person p1
 JOIN Person p2
 ON p1.email = p2.email
 AND p1.id <> p2.id;
+
+
 
