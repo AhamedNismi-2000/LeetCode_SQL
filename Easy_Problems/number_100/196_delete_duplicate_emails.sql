@@ -1,12 +1,13 @@
 /*
-LeetCode Problem 196: Delete Duplicate Emails
+Leet
+Code Problem 196: Delete Duplicate Emails
 Difficulty: Easy
 
 Table: Person
 +-------------+---------+
 | Column Name | Type    |
 +-------------+---------+
-| id          | int     |
+| id          | int     |       
 | email       | varchar |
 +-------------+---------+
 id is the primary key (unique values).
@@ -49,11 +50,11 @@ INSERT INTO Person VALUES
 (2,'bob@example.com'),
 (3,'john@example.com');
 
-
 -- Solution 1 
 
 WITH cte AS (
     SELECT id,
+    email,
            ROW_NUMBER() OVER (
                PARTITION BY email
                ORDER BY id
@@ -77,7 +78,10 @@ WHERE id NOT IN (
     FROM Person
     GROUP BY email
 );
-
+  
+ 
+ 
+ 
 
 
 

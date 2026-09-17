@@ -61,8 +61,8 @@ Output:
 
 */
 
-DROP TABLE IF EXISTS Customers;
-DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS  Customers CASCADE;
+DROP TABLE IF EXISTS Orders CASCADE ;
 
 -- Create Customers table
 CREATE TABLE Customers (
