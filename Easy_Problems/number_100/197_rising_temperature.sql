@@ -45,7 +45,7 @@ Explanation:
 */
 
 -- Create Weather table
-DROP TABLE IF EXISTS Weather
+DROP TABLE IF EXISTS Weather CASCADE
 
 CREATE TABLE Weather (
     id INT PRIMARY KEY,
@@ -97,8 +97,3 @@ FROM (
     FROM Weather
 ) t
 WHERE temperature > prev_temp;
-
-
-
-
-
