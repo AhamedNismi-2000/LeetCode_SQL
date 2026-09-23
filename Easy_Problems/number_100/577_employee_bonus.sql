@@ -1,118 +1,127 @@
-/*
-Table: Employee
+    /*
 
-+-------------+---------+
-| Column Name | Type    |
-+-------------+---------+
-| empId       | int     |
-| name        | varchar |
-| supervisor  | int     |
-| salary      | int     |
-+-------------+---------+
-empId is the column with unique values for this table.
-Each row of this table indicates the name and the ID of an employee in addition to their salary and the id of their manager.
- 
+    577_employee_bonus3
 
-Table: Bonus
+    
+    Table: Employee
 
-+-------------+------+
-| Column Name | Type |
-+-------------+------+
-| empId       | int  |
-| bonus       | int  |
-+-------------+------+
-empId is the column of unique values for this table.
-empId is a foreign key (reference column) to empId from the Employee table.
-Each row of this table contains the id of an employee and their respective bonus.
- 
+    +-------------+---------+
+    | Column Name | Type    |
+    +-------------+---------+
+    | empId       | int     |
+    | name        | varchar |
+    | supervisor  | int     |
+    | salary      | int     |
+    +-------------+---------+
+    empId is the column with unique values for this table.
+    Each row of this table indicates the name and the ID of an employee in addition to their salary and the id of their manager.
+    
 
-Write a solution to report the name and bonus amount of each employee who satisfies either of the following:
+    Table: Bonus
 
-The employee has a bonus less than 1000.
-The employee did not get any bonus.
-Return the result table in any order.
+    +-------------+------+
+    | Column Name | Type |
+    +-------------+------+
+    | empId       | int  |
+    | bonus       | int  |
+    +-------------+------+
+    empId is the column of unique values for this table.
+    empId is a foreign key (reference column) to empId from the Employee table.
+    Each row of this table contains the id of an employee and their respective bonus.
+    
 
-The result format is in the following example.
+    Write a solution to report the name and bonus amount of each employee who satisfies either of the following:
 
- 
+    The employee has a bonus less than 1000.
+    The employee did not get any bonus.
+    Return the result table in any order.
 
-Example 1:
+    The result format is in the following example.
 
-Input: 
-Employee table:
-+-------+--------+------------+--------+
-| empId | name   | supervisor | salary |
-+-------+--------+------------+--------+
-| 3     | Brad   | null       | 4000   |
-| 1     | John   | 3          | 1000   |
-| 2     | Dan    | 3          | 2000   |
-| 4     | Thomas | 3          | 4000   |
-+-------+--------+------------+--------+
-Bonus table:
-+-------+-------+
-| empId | bonus |
-+-------+-------+
-| 2     | 500   |
-| 4     | 2000  |
-+-------+-------+
-Output: 
-+------+-------+
-| name | bonus |
-+------+-------+
-| Brad | null  |
-| John | null  |
-| Dan  | 500   |
-+------+-------+
-*/
+    
 
--- File: 577_employee_bonus.sql
+    Example 1:
 
+    Input: 
+    Employee table:
+    +-------+--------+------------+--------+
+    | empId | name   | supervisor | salary |
+    +-------+--------+------------+--------+
+    | 3     | Brad   | null       | 4000   |
+    | 1     | John   | 3          | 1000   |
+    | 2     | Dan    | 3          | 2000   |
+    | 4     | Thomas | 3          | 4000   |
+    +-------+--------+------------+--------+
+    Bonus table:
+    +-------+-------+
+    | empId | bonus |
+    +-------+-------+
+    | 2     | 500   |
+    | 4     | 2000  |
+    +-------+-------+
+    Output: 
+    +------+-------+
+    | name | bonus |
+    +------+-------+
+    | Brad | null  |
+    | John | null  |
+    | Dan  | 500   |
+    +------+-------+
+    */
 
-
-
-
-
-
-DROP TABLE IF EXISTS Employee;
-DROP TABLE IF EXISTS Bonus;
-
-
--- Create Employee table
-CREATE TABLE Employee (
-    empId INT PRIMARY KEY,
-    name VARCHAR(50),
-    supervisor INT,
-    salary INT
-);
-
--- Insert sample data into Employee
-INSERT INTO Employee (empId, name, supervisor, salary) VALUES
-(3, 'Brad', NULL, 4000),
-(1, 'John', 3, 1000),
-(2, 'Dan', 3, 2000),
-(4, 'Thomas', 3, 4000);
-
--- Create Bonus table
-CREATE TABLE Bonus (
-    empId INT PRIMARY KEY,
-    bonus INT,
-    FOREIGN KEY (empId) REFERENCES Employee(empId)
-);
-
--- Insert sample data into Bonus
-INSERT INTO Bonus (empId, bonus) VALUES
-(2, 500),
-(4, 2000);
+    -- File: 577_employee_bonus.sql
 
 
 
-SELECT * FROM employee
-SELECT * FROM bonus
 
 
--- Solution 
-SELECT name,bonus 
-FROM Employee e 
-LEFT JOIN Bonus b 
-ON e.empId = b.empId
-WHERE bonus<1000 OR bonus IS NULL
+
+
+    DROP TABLE IF EXISTS Employee CASCADE;
+    DROP TABLE IF EXISTS Bonus CASCADE ;
+
+
+    -- Create Employee table
+    CREATE TABLE Employee (
+        empId INT PRIMARY KEY,
+        name VARCHAR(50),
+        supervisor INT,
+        salary INT
+    );
+
+    -- Insert sample data into Employee
+    INSERT INTO Employee (empId, name, supervisor, salary) VALUES
+    (3, 'Brad', NULL, 4000),
+    (1, 'John', 3, 1000),
+    (2, 'Dan', 3, 2000),
+    (4, 'Thomas', 3, 4000);
+
+    -- Create Bonus table
+    CREATE TABLE Bonus (
+        empId INT PRIMARY KEY,
+        bonus INT,
+        FOREIGN KEY (empId) REFERENCES Employee(empId)
+    );
+
+    -- Insert sample data into Bonus
+    INSERT INTO Bonus (empId, bonus) VALUES
+    (2, 500),
+    (4, 2000);
+
+
+
+    SELECT * FROM employee
+    SELECT * FROM bonus
+
+
+    ### Solution 1
+    SELECT 
+        E.name,
+        B.bonus
+    FROM Employee E
+    LEFT JOIN Bonus B 
+    ON E.empId = B.empId
+    WHERE B.bonus IS NULL  OR B.bonus < 1000   
+    ORDER BY E.name 
+
+

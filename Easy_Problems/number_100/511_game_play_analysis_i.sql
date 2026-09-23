@@ -128,7 +128,7 @@
 
 
     ### Solutoin 5 
-    
+
     WITH prev_log AS (
     SELECT
         player_id,
