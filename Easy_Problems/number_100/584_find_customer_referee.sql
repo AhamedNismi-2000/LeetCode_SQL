@@ -1,78 +1,87 @@
-/*
-Table: Customer
+    /*
 
-+-------------+---------+
-| Column Name | Type    |
-+-------------+---------+
-| id          | int     |
-| name        | varchar |
-| referee_id  | int     |
-+-------------+---------+
-In SQL, id is the primary key column for this table.
-Each row of this table indicates the id of a customer, their name, and the id of the customer who referred them.
- 
+    584_find_customer_referee
 
-Find the names of the customer that are either:
+    Table: Customer
 
-referred by any customer with id != 2.
-not referred by any customer.
-Return the result table in any order.
+    +-------------+---------+
+    | Column Name | Type    |
+    +-------------+---------+
+    | id          | int     |
+    | name        | varchar |
+    | referee_id  | int     |
+    +-------------+---------+
+    In SQL, id is the primary key column for this table.
+    Each row of this table indicates the id of a customer, their name, and the id of the customer who referred them.
+    
 
-The result format is in the following example.
+    Find the names of the customer that are either:
 
- 
+    referred by any customer with id != 2.
+    not referred by any customer.
+    Return the result table in any order.
 
-Example 1:
+    The result format is in the following example.
 
-Input: 
-Customer table:
-+----+------+------------+
-| id | name | referee_id |
-+----+------+------------+
-| 1  | Will | null       |
-| 2  | Jane | null       |
-| 3  | Alex | 2          |
-| 4  | Bill | null       |
-| 5  | Zack | 1          |
-| 6  | Mark | 2          |
-+----+------+------------+
-Output: 
-+------+
-| name |
-+------+
-| Will |
-| Jane |
-| Bill |
-| Zack |
-+------+
-*/
+    
 
+    Example 1:
 
--- File: 584_find_customer_referee.sql
-DROP TABLE IF EXISTS Customer ;
-
-
--- Create Customer table
-CREATE TABLE Customer (
-    id INT PRIMARY KEY,
-    name VARCHAR(50),
-    referee_id INT
-);
-
--- Insert sample data into Customer
-INSERT INTO Customer (id, name, referee_id) VALUES
-(1, 'Will', NULL),
-(2, 'Jane', NULL),
-(3, 'Alex', 2),
-(4, 'Bill', NULL),
-(5, 'Zack', 1),
-(6, 'Mark', 2);
-
-SELECT * FROM customer
+    Input: 
+    Customer table:
+    +----+------+------------+
+    | id | name | referee_id |
+    +----+------+------------+
+    | 1  | Will | null       |
+    | 2  | Jane | null       |
+    | 3  | Alex | 2          |
+    | 4  | Bill | null       |
+    | 5  | Zack | 1          |
+    | 6  | Mark | 2          |
+    +----+------+------------+
+    Output: 
+    +------+
+    | name |
+    +------+
+    | Will |
+    | Jane |
+    | Bill |
+    | Zack |
+    +------+
+    */
 
 
--- Solution 
+    DROP TABLE IF EXISTS Customer CASCADE  ;
 
-SELECT name 
-FROM Customer 
-WHERE referee_id IS NULL OR referee_id <> 2 
+
+    -- Create Customer table
+    CREATE TABLE Customer (
+        id INT PRIMARY KEY,
+        name VARCHAR(50),
+        referee_id INT
+    );
+
+    -- Insert sample data into Customer
+    INSERT INTO Customer (id, name, referee_id) VALUES
+    (1, 'Will', NULL),
+    (2, 'Jane', NULL),
+    (3, 'Alex', 2),
+    (4, 'Bill', NULL),
+    (5, 'Zack', 1),
+    (6, 'Mark', 2);
+
+
+
+    SELECT * FROM customer
+
+
+    ### Solution  1 
+
+    SELECT name 
+    FROM Customer 
+    WHERE referee_id IS NULL OR referee_id <> 2 
+
+   ### Solution  2
+   SELECT name 
+    FROM Customer 
+    WHERE referee_id IS NULL OR referee_id != 2 
