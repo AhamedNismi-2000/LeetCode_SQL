@@ -71,7 +71,7 @@ WHERE id IN (
 
 SELECT * FROM Person
 
---Solution 2 Using 
+--- Solution 2 Using 
 DELETE FROM Person
 WHERE id NOT IN (
     SELECT MIN(id)

@@ -78,7 +78,7 @@
     (3, 4, '2018-07-03', 5);
 
 
-    ### Solution 1
+    --- Solution 1
 
     SELECT player_id,
         MIN(event_date) AS first_login
@@ -88,7 +88,7 @@
 
 
 
-    ### Solution 2
+    --- Solution 2
      
      SELECT 
         DISTINCT player_id,
@@ -98,7 +98,7 @@
 
 
 
-    ### Solution 3 
+    --- Solution 3 
 
     SELECT player_id, event_date AS first_login,prev_login
     FROM (
@@ -111,7 +111,7 @@
 
 
 
-    ### Solution 4 
+    --- Solution 4 
 
     WITH prev_date AS (
         SELECT player_id,
@@ -127,7 +127,7 @@
     WHERE rn=1
 
 
-    ### Solutoin 5 
+    --- Solutoin 5 
 
     WITH prev_log AS (
     SELECT
@@ -143,7 +143,7 @@
 
 
 
-    ### Solution 6
+   ---  Solution 6
 
     WITH prev_log AS (
     SELECT

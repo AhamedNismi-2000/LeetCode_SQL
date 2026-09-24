@@ -54,7 +54,7 @@ INSERT INTO Person (id, email) VALUES
 (3, 'a@b.com');
 
 
-### Solution 
+--- Solution 
 SELECT * FROM Person 
 
 SELECT email
@@ -62,7 +62,7 @@ FROM Person
 GROUP BY email
 HAVING COUNT(*) > 
 
-### Solution 2 CTE 
+--- Solution 2 CTE 
  WITH emailCnt AS (
    SELECT COUNT(email) AS cnt,
         email  
@@ -76,7 +76,7 @@ HAVING COUNT(*) >
 
 
 
-### Solution 3  NOT Preferable 
+--- Solution 3  NOT Preferable 
 
 SELECT p1.email AS Email
 FROM Person p1

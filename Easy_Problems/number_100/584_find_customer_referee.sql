@@ -75,13 +75,13 @@
     SELECT * FROM customer
 
 
-    ### Solution  1 
+    --- Solution  1 
 
     SELECT name 
     FROM Customer 
     WHERE referee_id IS NULL OR referee_id <> 2 
 
-   ### Solution  2
+   --- Solution  2
    SELECT name 
     FROM Customer 
     WHERE referee_id IS NULL OR referee_id != 2 

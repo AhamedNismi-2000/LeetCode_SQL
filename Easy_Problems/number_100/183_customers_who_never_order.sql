@@ -89,7 +89,7 @@ INSERT INTO Orders (id, customerId) VALUES
 (1, 3),
 (2, 1);
 
-### Solution 1 
+--- Solution 1 
 
     SELECT 
     name Customers,
@@ -100,7 +100,7 @@ INSERT INTO Orders (id, customerId) VALUES
     ON c.id=o.customerId
     WHERE o.id IS NULL 
 
- ### Solution 2 
+ --- Solution 2 
     SELECT name AS customers  
     FROM Customers c 
     LEFT JOIN orders o

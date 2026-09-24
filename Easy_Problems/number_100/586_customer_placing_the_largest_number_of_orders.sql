@@ -63,7 +63,7 @@
     (4, 3);
 
 
-    ### Solution 1
+    ---- Solution 1
 
     SELECT customer_number
     FROM Orders
@@ -71,7 +71,7 @@
     ORDER BY COUNT(*) DESC
     LIMIT 1
 
-    ### Solution 2 Using CTE 
+    ---- Solution 2 Using CTE 
 
     WITH high_order AS(
         SELECT customer_number,
@@ -83,7 +83,7 @@
     ORDER BY  order_count DESC
     LIMIT 1 ;
 
-    -- Solution 2 Using Subquery
+    ---- Solution 2 Using Subquery
 
     SELECT customer_number
     FROM (
@@ -95,7 +95,7 @@
     LIMIT 1;
 
 
-    ### Solution 4
+    ---  Solution 4
 
    SELECT 
        customer_number 

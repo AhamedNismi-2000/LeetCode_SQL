@@ -114,7 +114,7 @@
     SELECT * FROM bonus
 
 
-    ### Solution 1
+    --- Solution 1
     SELECT 
         E.name,
         B.bonus

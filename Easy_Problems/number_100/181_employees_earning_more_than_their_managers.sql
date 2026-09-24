@@ -45,7 +45,7 @@ INNER JOIN Employee m ON
 e.managerId = m.id 
 WHERE e.salary > m.salary 
 
-  ### Solution 2 
+  --- Solution 2 
   
   SELECT 
       e1.name Employee
