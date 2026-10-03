@@ -1,97 +1,113 @@
-/*  Table: Courses
+    /*  Table: Courses
 
 
-596. Classes With at Least 5 Students
+    596. Classes With at Least 5 Students
 
-+-------------+---------+
-| Column Name | Type    |
-+-------------+---------+
-| student     | varchar |
-| class       | varchar |
-+-------------+---------+
-(student, class) is the primary key (combination of columns with unique values) for this table.
-Each row of this table indicates the name of a student and the class in which they are enrolled.
- 
+    +-------------+---------+
+    | Column Name | Type    |
+    +-------------+---------+
+    | student     | varchar |
+    | class       | varchar |
+    +-------------+---------+
+    (student, class) is the primary key (combination of columns with unique values) for this table.
+    Each row of this table indicates the name of a student and the class in which they are enrolled.
+    
 
-Write a solution to find all the classes that have at least five students.
+    Write a solution to find all the classes that have at least five students.
 
-Return the result table in any order.
+    Return the result table in any order.
 
-The result format is in the following example.
+    The result format is in the following example.
 
- 
+    
 
-Example 1:
+    Example 1:
 
-Input: 
-Courses table:
-+---------+----------+
-| student | class    |
-+---------+----------+
-| A       | Math     |
-| B       | English  |
-| C       | Math     |
-| D       | Biology  |
-| E       | Math     |
-| F       | Computer |
-| G       | Math     |
-| H       | Math     |
-| I       | Math     |
-+---------+----------+
-Output: 
-+---------+
-| class   |
-+---------+
-| Math    |
-+---------+
-
-
-  */
+    Input: 
+    Courses table:
+    +---------+----------+
+    | student | class    |
+    +---------+----------+
+    | A       | Math     |
+    | B       | English  |
+    | C       | Math     |
+    | D       | Biology  |
+    | E       | Math     |
+    | F       | Computer |
+    | G       | Math     |
+    | H       | Math     |
+    | I       | Math     |
+    +---------+----------+
+    Output: 
+    +---------+
+    | class   |
+    +---------+
+    | Math    |
+    +---------+
 
 
-DROP TABLE IF EXISTS Courses
-
--- Create Courses table
-CREATE TABLE Courses (
-    student VARCHAR(50),
-    class   VARCHAR(50),
-    PRIMARY KEY (student, class)
-);
-
--- Insert sample data into Courses
-INSERT INTO Courses (student, class) VALUES
-('A', 'Math'),
-('B', 'English'),
-('C', 'Math'),
-('D', 'Biology'),
-('E', 'Math'),
-('F', 'Computer'),
-('G', 'Math'),
-('H', 'Math'),
-('I', 'Math');
+    */
 
 
+    DROP TABLE IF EXISTS Courses CASCADE 
 
-SELECT * FROM courses
+    -- Create Courses table
+    CREATE TABLE Courses (
+        student VARCHAR(50),
+        class   VARCHAR(50),
+        PRIMARY KEY (student, class)
+    );
 
-
--- Solution 1
-SELECT 
-    class
-FROM courses
-GROUP BY class
-HAVING COUNT(*) >= 5     
+    -- Insert sample data into Courses
+    INSERT INTO Courses (student, class) VALUES
+    ('A', 'Math'),
+    ('B', 'English'),
+    ('C', 'Math'),
+    ('D', 'Biology'),
+    ('E', 'Math'),
+    ('F', 'Computer'),
+    ('G', 'Math'),
+    ('H', 'Math'),
+    ('I', 'Math');
 
 
 
--- Solution 2
+    SELECT * FROM courses
+
+
+    --- Solution 1
+    SELECT 
+        class
+    FROM courses
+    GROUP BY class
+    HAVING COUNT(*) >= 5     
+
+
+
+    --- Solution 2
+    WITH high AS (
+        SELECT 
+            class,
+            COUNT(*) OVER (PARTITION BY class ORDER BY class DESC ) AS count
+            FROM courses
+    )
+    SELECT class,count
+    FROM high 
+    GROUP BY class,count
+    HAVING count>=5
+
+   
+   --- Solution 3 
+
 WITH high AS (
       SELECT 
-         class,
-         COUNT(*) OVER (PARTITION BY class ORDER BY class DESC ) AS count
-         FROM courses
-)
-SELECT class,count
-FROM high 
-GROUP BY class,count
-HAVING count>=5
+         COUNT(*) AS numbre_of_stud,
+         class
+      FROM courses
+      GROUP BY class  
+  )
+    SELECT 
+        class
+    FROM  high   
+    WHERE numbre_of_stud > 5   
+
