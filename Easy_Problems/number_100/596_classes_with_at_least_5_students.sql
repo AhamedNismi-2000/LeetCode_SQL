@@ -89,7 +89,7 @@
         SELECT 
             class,
             COUNT(*) OVER (PARTITION BY class ORDER BY class DESC ) AS count
-            FROM courses
+            FROM courses 
     )
     SELECT class,count
     FROM high 
@@ -109,5 +109,5 @@ WITH high AS (
     SELECT 
         class
     FROM  high   
-    WHERE numbre_of_stud > 5   
+    WHERE numbre_of_stud => 5   
 
