@@ -1,6 +1,6 @@
 # 🧠 LeetCode SQL Solutions
 
-This repository contains **95+ solved LeetCode SQL problems** designed to strengthen SQL querying, database concepts, and analytical thinking. Each solution is written for clarity, readability, and practical learning using **PostgreSQL**.
+This repository contains  **solved LeetCode SQL problems** designed to strengthen SQL querying, database concepts, and analytical thinking. Each solution is written for clarity, readability, and practical learning using **PostgreSQL**.
 
 ---
 
