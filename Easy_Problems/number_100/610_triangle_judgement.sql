@@ -44,14 +44,14 @@ Output:
 
 
 */
-DROP TABLE Triangle
+DROP TABLE Triangle CASCADE ;
 -- Create Table Triangle 
 
 CREATE TABLE Triangle(
     x INT,
     y INT,
     z INT
-)
+) 
 
 -- Insert Value Into Triangle 
 INSERT INTO Triangle (x , y , z) VALUES  
@@ -59,7 +59,7 @@ INSERT INTO Triangle (x , y , z) VALUES
 (10,20,15)
 
 
--- Solution 
+-- Solution 1
 SELECT x,y,z,
 CASE
     WHEN     x + y > z

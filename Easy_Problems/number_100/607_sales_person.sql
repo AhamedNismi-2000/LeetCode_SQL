@@ -97,9 +97,9 @@
     */
 
 
-    DROP TABLE IF EXISTS SalesPerson;
-    DROP TABLE IF EXISTS Company;
-    DROP TABLE IF EXISTS Orders;
+    DROP TABLE IF EXISTS SalesPerson CASCADE ;
+    DROP TABLE IF EXISTS Company CASCADE;
+    DROP TABLE IF EXISTS Orders  CASCADE;
 
 
 
