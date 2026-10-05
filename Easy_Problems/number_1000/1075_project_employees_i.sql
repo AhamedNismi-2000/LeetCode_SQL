@@ -102,7 +102,8 @@ Output:
     (2, 1),
     (2, 4);
 
- 
+  DROP TABLE IF EXISTS employee CASCADE ;  
+  DROP TABLE IF EXISTS project  CASCADE ;  
 
    SELECT * FROM employee;
    SELECT * FROM project
