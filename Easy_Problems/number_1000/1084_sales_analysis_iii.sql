@@ -165,3 +165,21 @@ FROM (
 WHERE min_date >= '2019-01-01'
   AND max_date <= '2019-03-31';
 
+
+  --- Solution 3 
+        WITH exeed AS(
+            SELECT 
+                product_id,
+                sale_date
+            FROM Sales 
+            WHERE sale_date > '2019-03-31'
+        )
+        SELECT 
+            p.product_id,
+            p.product_name
+        FROM product p 
+        LEFT JOIN exeed e 
+        ON e.product_id = p.product_id
+        WHERE e.product_id IS NULL 
+   
+
