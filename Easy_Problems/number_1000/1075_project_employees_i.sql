@@ -102,13 +102,12 @@ Output:
     (2, 1),
     (2, 4);
 
-
- -- Solution 
+ 
 
    SELECT * FROM employee;
    SELECT * FROM project
      
-    -- Solution 1 
+    --- Solution 1 
     SELECT  project_id,
             ROUND(AVG(experience_years),2) AS  average_years
             FROM project p
@@ -118,33 +117,32 @@ Output:
 
 
 
--- Solution 2 
+-- Solution 2 CTE
 
     WITH exp_yr AS(
     SELECT  project_id,
-            AVG(experience_years) OVER (PARTITION BY project_id) AS average
+            ROUND(AVG(experience_years) OVER (PARTITION BY project_id),2) AS average_years
             FROM project p
             JOIN employee e
             ON p.employee_id=e.employee_id
     )
     SELECT project_id,
-          ROUND(average,2) AS average_years
+           average_years
     FROM  exp_yr
-    GROUP BY project_id,ROUND(average,2)
+    GROUP BY project_id,average_years
 
 
 
+--- Solution Using SubQuery 3
 
-
-    WITH exp_yr AS (
-        SELECT
-            p.project_id,
-            AVG(e.experience_years) OVER (PARTITION BY p.project_id) AS average_years
+   SELECT DISTINCT 
+      project_id,
+      average_years
+   FROM (
+       SELECT 
+           project_id,
+           ROUND(AVG(experience_years) OVER(PARTITION BY project_id),2) AS average_years
         FROM project p
-        JOIN employee e
-            ON p.employee_id = e.employee_id
-    )
-    SELECT DISTINCT
-        project_id,
-        ROUND(average_years, 2) AS average_years
-    FROM exp_yr;
+        JOIN employee e 
+        ON p.employee_id = e.employee_id   
+   )  
