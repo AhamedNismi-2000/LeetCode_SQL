@@ -1,81 +1,80 @@
-/*
-627. Swap Sex of Employees    
+    /*
+    627. Swap Sex of Employees    
 
 
-Table: Salary
-+-------------+----------+
-| Column Name | Type     |
-+-------------+----------+
-| id          | int      |
-| name        | varchar  |
-| sex         | ENUM     |
-| salary      | int      |
-+-------------+----------+
-id is the primary key (column with unique values) for this table.
-The sex column is ENUM (category) value of type ('m', 'f').
-The table contains information about an employee.
- 
+    Table: Salary
+    +-------------+----------+
+    | Column Name | Type     |
+    +-------------+----------+
+    | id          | int      |
+    | name        | varchar  |
+    | sex         | ENUM     |
+    | salary      | int      |
+    +-------------+----------+
+    id is the primary key (column with unique values) for this table.
+    The sex column is ENUM (category) value of type ('m', 'f').
+    The table contains information about an employee.
+    
 
-Write a solution to swap all 'f' and 'm' values (i.e., change all 'f' values to 'm' and vice versa) with a single update statement and no intermediate temporary tables.
+    Write a solution to swap all 'f' and 'm' values (i.e., change all 'f' values to 'm' and vice versa) with a single update statement and no intermediate temporary tables.
 
-Note that you must write a single update statement, do not write any select statement for this problem.
+    Note that you must write a single update statement, do not write any select statement for this problem.
 
-The result format is in the following example.
+    The result format is in the following example.
 
- 
+    
 
-Example 1:
+    Example 1:
 
-Input: 
-Salary table:
-+----+------+-----+--------+
-| id | name | sex | salary |
-+----+------+-----+--------+
-| 1  | A    | m   | 2500   |
-| 2  | B    | f   | 1500   |
-| 3  | C    | m   | 5500   |
-| 4  | D    | f   | 500    |
-+----+------+-----+--------+
-Output: 
-+----+------+-----+--------+
-| id | name | sex | salary |
-+----+------+-----+--------+
-| 1  | A    | f   | 2500   |
-| 2  | B    | m   | 1500   |
-| 3  | C    | f   | 5500   |
-| 4  | D    | m   | 500    |
-+----+------+-----+--------+   
+    Input: 
+    Salary table:
+    +----+------+-----+--------+
+    | id | name | sex | salary |
+    +----+------+-----+--------+
+    | 1  | A    | m   | 2500   |
+    | 2  | B    | f   | 1500   |
+    | 3  | C    | m   | 5500   |
+    | 4  | D    | f   | 500    |
+    +----+------+-----+--------+
+    Output: 
+    +----+------+-----+--------+
+    | id | name | sex | salary |
+    +----+------+-----+--------+
+    | 1  | A    | f   | 2500   |
+    | 2  | B    | m   | 1500   |
+    | 3  | C    | f   | 5500   |
+    | 4  | D    | m   | 500    |
+    +----+------+-----+--------+   
 
-*/
-
-
-
-CREATE TYPE sex_enum AS ENUM ('m', 'f');
-
-
-CREATE TABLE Salary (
-    id INT PRIMARY KEY,
-    name VARCHAR(255),
-    sex sex_enum,
-    salary INT
-);
-
-
-INSERT INTO Salary (id, name, sex, salary) VALUES
-(1, 'A', 'm', 2500),
-(2, 'B', 'f', 1500),
-(3, 'C', 'm', 5500),
-(4, 'D', 'f', 500);
+    */
 
 
 
+    CREATE TYPE sex_enum AS ENUM ('m', 'f');
 
-    -- Solution 
 
-    UPDATE Salary
-    SET sex = CASE sex
-        WHEN 'm' THEN 'f'
-        ELSE 'm'
-    END::sex_enum;
+    CREATE TABLE Salary (
+        id INT PRIMARY KEY,
+        name VARCHAR(255),
+        sex sex_enum,
+        salary INT
+    );
 
-     SELECT * FROM Salary 
+
+    INSERT INTO Salary (id, name, sex, salary) VALUES
+    (1, 'A', 'm', 2500),
+    (2, 'B', 'f', 1500),
+    (3, 'C', 'm', 5500),
+    (4, 'D', 'f', 500);
+
+
+
+        -- Solution 1 
+
+        UPDATE Salary
+        SET sex = CASE sex
+            WHEN 'm' THEN 'f'
+            ELSE 'm'
+        END::sex_enum;
+
+        SELECT * FROM Salary 
