@@ -69,6 +69,12 @@ Output:
 
 
  */
+
+  DROP TABLE IF EXISTS Product CASCADE;
+  DROP TABLE IF EXISTS Sales CASCADE;
+
+
+
 -- Create Product table
 CREATE TABLE
     Product (
@@ -172,7 +178,7 @@ WHERE min_date >= '2019-01-01'
                 product_id,
                 sale_date
             FROM Sales 
-            WHERE sale_date > '2019-03-31'
+            WHERE sale_date > '2019-03-31' OR sale_date < '2019-01-01'
         )
         SELECT 
             p.product_id,
@@ -181,5 +187,5 @@ WHERE min_date >= '2019-01-01'
         LEFT JOIN exeed e 
         ON e.product_id = p.product_id
         WHERE e.product_id IS NULL 
-   
+
 
