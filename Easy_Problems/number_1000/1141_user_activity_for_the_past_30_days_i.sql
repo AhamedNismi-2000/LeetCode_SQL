@@ -61,10 +61,7 @@
     */
     
     
-    
-
-
-    -- File: 1141_user_activity_for_the_past_30_days_i.sql
+    DROP TABLE IF EXISTS Activity CASCADE;
 
     -- Create Activity table
     CREATE TABLE Activity (
