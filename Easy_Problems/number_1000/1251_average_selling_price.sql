@@ -68,7 +68,8 @@
     */
 
 
-
+   DROP TABLE IF EXISTS Prices CASCADE ;
+   DROP TABLE IF EXISTS UnitsSold CASCADE ;
 
 
     -- Create Prices table

@@ -156,7 +156,7 @@ INSERT INTO Examinations (student_id, subject_name) VALUES
     SELECT
         s.student_id,
         s.student_name,
-        sub.subject_name,
+        t.subject_name,
         COUNT(e.subject_name) AS attended_exams
     FROM Students s
     CROSS JOIN Subjects sub
