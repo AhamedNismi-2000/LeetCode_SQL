@@ -71,7 +71,7 @@
     ('Cat', 'Sphynx', 7, 4);
 
 
-     DROP TABLE IF EXISTS Queries CASCADE ;
+    DROP TABLE IF EXISTS Queries CASCADE ;
 
     SELECT * FROM queries
 
