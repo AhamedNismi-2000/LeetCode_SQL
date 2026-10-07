@@ -75,9 +75,19 @@ Output:
 +--------------------+---------+
 
 */
+   
+
+ 
+    
 
 
 -- Products table
+   
+   DROP TABLE IF EXISTS Products CASCADE;
+   DROP TABLE IF EXISTS Orders CASCADE;
+
+
+
 CREATE TABLE Products (
     product_id INT PRIMARY KEY,
     product_name VARCHAR(255),
@@ -99,19 +109,7 @@ CREATE TABLE Orders (
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
-INSERT INTO Orders (product_id, order_date, unit) VALUES
-(1, '2020-02-05', 60),
-(1, '2020-02-10', 70),
-(2, '2020-01-18', 30),
-(2, '2020-02-11', 80),
-(3, '2020-02-17', 2),
-(3, '2020-02-24', 3),
-(4, '2020-03-01', 20),
-(4, '2020-03-04', 30),
-(4, '2020-03-04', 60),
-(5, '2020-02-25', 50),
-(5, '2020-02-27', 50),
-(5, '2020-03-01', 50);
+
 
 
 SELECT * FROM orders;
@@ -147,5 +145,5 @@ WHERE total_units >= 100;
       ON p.product_id = o.product_id
     WHERE o.order_date BETWEEN '2020-02-01' AND '2020-02-29'
     GROUP BY p.product_name
-    HAVING SUM(o.unit) >=1000
+    HAVING SUM(o.unit) >=100
 
