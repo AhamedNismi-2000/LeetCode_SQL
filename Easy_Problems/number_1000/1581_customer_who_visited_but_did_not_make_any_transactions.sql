@@ -76,6 +76,8 @@ Customer with id = 96 visited the mall once and did not make any transactions.
 As we can see, users with IDs 30 and 96 visited the mall one time without making any transactions. Also, user 54 visited the mall twice and did not make any transactions.
 
 */
+   DROP TABLE IF EXISTS Visits CASCADE;
+   DROP TABLE IF EXISTS Transactions CASCADE;
 
  CREATE TABLE Visits (
     visit_id INT PRIMARY KEY,
@@ -105,16 +107,14 @@ INSERT INTO Transactions (transaction_id, visit_id, amount) VALUES
 (13, 2, 970);
 
 
-DROP TABLE IF EXISTS users CASCADE;
-
 
 -- Solution  1 
 
     SELECT customer_id,
            COUNT(*) AS count_no_trans
-    FROM visits v LEFT JOIN
-    transactions t ON
-    v.visit_id=t.visit_id
+    FROM visits v
+    LEFT JOIN transactions t 
+    ON v.visit_id=t.visit_id
     WHERE transaction_id IS NULL 
     GROUP BY customer_id
     ORDER BY count_no_trans DESC
@@ -128,17 +128,28 @@ DROP TABLE IF EXISTS users CASCADE;
         SELECT customer_id,
                transaction_id,
            COUNT(*) AS count_no_trans
-    FROM visits v LEFT JOIN
-    transactions t ON
-    v.visit_id=t.visit_id
-      GROUP BY customer_id,transaction_id
-      ORDER BY count_no_trans DESC
+    FROM visits v 
+    LEFT JOIN transactions t 
+    ON v.visit_id=t.visit_id
+    GROUP BY customer_id,transaction_id
+    ORDER BY count_no_trans DESC
       
   )
   SELECT customer_id,
          count_no_trans
   FROM no_transsaction 
-  WHERE transaction_id IS NULL        
+  WHERE transaction_id IS NULL     
+
+ --- Solution 3
+
+   SELECT 
+     v.customer_id,
+     SUM(CASE WHEN transaction_id IS NULL THEN 1 ELSE 0 END ) AS count_no_trans
+  FROM Visits v 
+  LEFT JOIN Transactions t
+  ON v.visit_id = t.visit_id
+  WHERE transaction_id IS NULL
+  GROUP BY v.customer_id   
 
 
 
