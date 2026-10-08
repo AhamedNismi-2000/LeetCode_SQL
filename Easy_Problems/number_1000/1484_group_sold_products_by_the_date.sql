@@ -52,6 +52,7 @@ For 2020-06-01, Sold items were (Pencil, Bible), we sort them lexicographically 
 For 2020-06-02, the Sold item is (Mask), we just return it.
 
 */
+  DROP TABLE IF EXISTS Activities CASCADE ;
 
 -- Activities table
 CREATE TABLE Activities (

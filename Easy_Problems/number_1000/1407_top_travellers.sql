@@ -87,6 +87,11 @@ Donald did not have any rides, the distance traveled by him is 0.
 
 -- Users table
 
+  
+
+  DROP TABLE IF EXISTS users CASCADE ;
+  DROP TABLE IF EXISTS Rides CASCADE ;
+
 CREATE TABLE Users (
     id INT PRIMARY KEY,
     name VARCHAR(255)

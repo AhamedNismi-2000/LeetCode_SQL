@@ -58,7 +58,7 @@ The mail of user 6 does not have the leetcode domain.
 The mail of user 7 starts with a period.
 
 */
-
+   DROP TABLE IF EXISTS Users Cascade ;
 
 CREATE TABLE Users (
     user_id INT PRIMARY KEY,

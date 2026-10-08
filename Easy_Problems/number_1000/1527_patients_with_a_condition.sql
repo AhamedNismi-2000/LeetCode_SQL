@@ -46,6 +46,9 @@ Output:
 Explanation: Bob and George both have a condition that starts with DIAB1.
 
 */
+  DROP TABLE IF EXISTS  Patients CASCADE ;
+
+ 
 
 
 CREATE TABLE Patients (
@@ -63,7 +66,7 @@ INSERT INTO Patients (patient_id, patient_name, conditions) VALUES
 
 
 
--- Solution 
+-- Solution 1
 
 SELECT 
     patient_id,
