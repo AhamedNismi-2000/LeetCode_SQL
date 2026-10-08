@@ -6,7 +6,7 @@ This repository contains  **solved LeetCode SQL problems** designed to strengthe
 
 ## 📊 Repository Progress
 
-* ✅ **Problems Solved:** 95+
+* ✅ **Problems Solved:** 100+
 * 💻 **Database:** PostgreSQL
 * 🎯 **Goal:** Continuously solve and document LeetCode SQL problems
 * 📈 **Focus:** Clean, optimized, and interview-ready SQL queries
@@ -92,7 +92,7 @@ The focus of every solution is to:
 
 | Metric          |                                Value |
 | --------------- | -----------------------------------: |
-| Problems Solved |                              **95+** |
+| Problems Solved |                              **100+** |
 | Database        |                           PostgreSQL |
 | Difficulty      |                 Easy • Medium • Hard |
 | Purpose         | SQL Practice & Interview Preparation |
