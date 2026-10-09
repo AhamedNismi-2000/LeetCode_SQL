@@ -221,6 +221,25 @@ GROUP BY machine_id;
    GROUP BY machine_id
 
 
+  --- Solution 5
+    WITH process AS (
+    SELECT 
+        machine_id,
+        process_id,
+        timestamp,
+        LAG(timestamp) OVER (PARTITION BY machine_id , process_id ) AS process_time
+    FROM Activity
+    )
+    SELECT 
+        machine_id,
+        ROUND(AVG(timestamp::numeric - process_time::numeric),3)::numeric AS processing_time
+    FROM process
+    GROUP BY machine_id
+
+
+
+
+
 
 
 
