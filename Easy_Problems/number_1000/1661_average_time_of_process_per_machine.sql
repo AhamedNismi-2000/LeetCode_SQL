@@ -70,6 +70,12 @@ Machine 1's average time is ((1.550 - 0.550) + (1.420 - 0.430)) / 2 = 0.995
 Machine 2's average time is ((4.512 - 4.100) + (5.000 - 2.500)) / 2 = 1.456
 
 */
+   SELECT * FROM Activity
+
+
+
+ DROP TABLE IF EXISTS Activity CASCADE ;
+ DROP TYPE IF EXISTS activity_enum CASCADE
 
 CREATE TYPE activity_enum AS ENUM ('start', 'end');
 
@@ -161,6 +167,7 @@ GROUP BY machine_id;
       SELECT 
          machine_id,
          process_id,
+         timestamp,
          timestamp - 
          LAG(timestamp) OVER (PARTITION BY machine_id,process_id 
          ) AS process_time
@@ -171,4 +178,32 @@ GROUP BY machine_id;
           ROUND(AVG(process_time)::numeric,3) AS processing_time
    FROM  time_con
    GROUP BY machine_id
+
+
+
+ --- Solution 3 
+ 
+    WITH process AS (
+    SELECT 
+        machine_id,
+        process_id,
+        CASE WHEN activity_type = 'start' THEN timestamp 
+        WHEN activity_type='end' THEN timestamp END AS time
+    FROM Activity
+    )
+    , process_2 AS (
+    SELECT 
+    machine_id,process_id,
+    MAX(time) - MIN(time) AS process_time
+    FROM process
+    GROUP BY machine_id,process_id 
+    ORDER BY machine_id,process_id
+    )
+    SELECT 
+     machine_id,
+     AVG(process_time)
+    FROM process_2
+    GROUP BY machine_id 
+
+
 
