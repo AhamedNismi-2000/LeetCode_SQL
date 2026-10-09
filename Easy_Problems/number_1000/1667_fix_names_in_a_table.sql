@@ -41,8 +41,10 @@ Output:
 +---------+-------+
 
 
-*/
-DROP TABLE Users
+*/ 
+   
+
+DROP TABLE IF EXISTS  Users CASCADE ;
 
  CREATE TABLE Users(
      user_id INT,
