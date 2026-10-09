@@ -104,7 +104,25 @@ INSERT INTO Activity (machine_id, process_id, activity_type, timestamp) VALUES
 (2, 1, 'end', 5.000);
 
 
--- Solution Using Subquery 
+
+  --- Solution 1 
+
+    WITH process_start_end  AS (
+        SELECT 
+        machine_id,
+        process_id,
+        MIN(timestamp) OVER(PARTITION BY machine_id,process_id ) AS start_time,
+        MAX(timestamp) OVER(PARTITION BY machine_id,process_id ) AS end_time
+        FROM Activity  
+    )
+
+    SELECT machine_id,
+        ROUND(AVG(end_time-start_time)::numeric,3) AS processing_time
+    FROM process_start_end
+    GROUP BY machine_id       
+
+
+-- Solution 2  Using Subquery 
 
     SELECT 
         machine_id,
@@ -123,7 +141,7 @@ INSERT INTO Activity (machine_id, process_id, activity_type, timestamp) VALUES
 
 
 
-    --  Solution Using CTE 
+    --  Solution  2 Using CTE 
     WITH time_con AS (
          SELECT
             machine_id,
@@ -139,11 +157,34 @@ INSERT INTO Activity (machine_id, process_id, activity_type, timestamp) VALUES
           FROM time_con
           GROUP BY machine_id
 
+    --- Solution 3 
+
+        WITH process AS (
+        SELECT 
+            machine_id,
+            process_id,
+            CASE WHEN activity_type = 'start' THEN timestamp 
+            WHEN activity_type='end' THEN timestamp END AS time
+        FROM Activity
+        )
+        , process_2 AS (
+        SELECT 
+        machine_id,process_id,
+        MAX(time) - MIN(time) AS process_time
+        FROM process
+        GROUP BY machine_id,process_id 
+        ORDER BY machine_id,process_id
+        )
+        SELECT 
+        machine_id,
+        AVG(process_time)
+        FROM process_2
+        GROUP BY machine_id 
 
 
 
 
--- Solution Using  Window Function Sub Query 
+-- Solution Using 4 Window Function Sub Query 
     SELECT 
     machine_id,
     ROUND(AVG(process_time)::numeric, 3) AS processing_time
@@ -162,7 +203,7 @@ WHERE process_time IS NOT NULL
 GROUP BY machine_id;
 
 
- -- Solution Using  Window Function CTE 
+ -- Solution Using 4  Window Function CTE 
    WITH time_con AS (
       SELECT 
          machine_id,
@@ -181,29 +222,6 @@ GROUP BY machine_id;
 
 
 
- --- Solution 3 
- 
-    WITH process AS (
-    SELECT 
-        machine_id,
-        process_id,
-        CASE WHEN activity_type = 'start' THEN timestamp 
-        WHEN activity_type='end' THEN timestamp END AS time
-    FROM Activity
-    )
-    , process_2 AS (
-    SELECT 
-    machine_id,process_id,
-    MAX(time) - MIN(time) AS process_time
-    FROM process
-    GROUP BY machine_id,process_id 
-    ORDER BY machine_id,process_id
-    )
-    SELECT 
-     machine_id,
-     AVG(process_time)
-    FROM process_2
-    GROUP BY machine_id 
 
 
 
