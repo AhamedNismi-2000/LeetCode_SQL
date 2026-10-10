@@ -1,88 +1,91 @@
-/*
-1693. Daily Leads and Partners     
+    /*
+    1693. Daily Leads and Partners     
 
-Table: DailySales
-+-------------+---------+
-| Column Name | Type    |
-+-------------+---------+
-| date_id     | date    |
-| make_name   | varchar |
-| lead_id     | int     |
-| partner_id  | int     |
-+-------------+---------+
-There is no primary key (column with unique values) for this table. It may contain duplicates.
-This table contains the date and the name of the product sold and the IDs of the lead and partner it was sold to.
-The name consists of only lowercase English letters.
- 
+    Table: DailySales
+    +-------------+---------+
+    | Column Name | Type    |
+    +-------------+---------+
+    | date_id     | date    |
+    | make_name   | varchar |
+    | lead_id     | int     |
+    | partner_id  | int     |
+    +-------------+---------+
+    There is no primary key (column with unique values) for this table. It may contain duplicates.
+    This table contains the date and the name of the product sold and the IDs of the lead and partner it was sold to.
+    The name consists of only lowercase English letters.
+    
 
-For each date_id and make_name, find the number of distinct lead_id's and distinct partner_id's.
+    For each date_id and make_name, find the number of distinct lead_id's and distinct partner_id's.
 
-Return the result table in any order.
+    Return the result table in any order.
 
-The result format is in the following example.
+    The result format is in the following example.
 
- 
+    
 
-Example 1:
+    Example 1:
 
-Input: 
-DailySales table:
-+-----------+-----------+---------+------------+
-| date_id   | make_name | lead_id | partner_id |
-+-----------+-----------+---------+------------+
-| 2020-12-8 | toyota    | 0       | 1          |
-| 2020-12-8 | toyota    | 1       | 0          |
-| 2020-12-8 | toyota    | 1       | 2          |
-| 2020-12-7 | toyota    | 0       | 2          |
-| 2020-12-7 | toyota    | 0       | 1          |
-| 2020-12-8 | honda     | 1       | 2          |
-| 2020-12-8 | honda     | 2       | 1          |
-| 2020-12-7 | honda     | 0       | 1          |
-| 2020-12-7 | honda     | 1       | 2          |
-| 2020-12-7 | honda     | 2       | 1          |
-+-----------+-----------+---------+------------+
-Output: 
-+-----------+-----------+--------------+-----------------+
-| date_id   | make_name | unique_leads | unique_partners |
-+-----------+-----------+--------------+-----------------+
-| 2020-12-8 | toyota    | 2            | 3               |
-| 2020-12-7 | toyota    | 1            | 2               |
-| 2020-12-8 | honda     | 2            | 2               |
-| 2020-12-7 | honda     | 3            | 2               |
-+-----------+-----------+--------------+-----------------+
-Explanation: 
-For 2020-12-8, toyota gets leads = [0, 1] and partners = [0, 1, 2] while honda gets leads = [1, 2] and partners = [1, 2].
-For 2020-12-7, toyota gets leads = [0] and partners = [1, 2] while honda gets leads = [0, 1, 2] and partners = [1, 2].
+    Input: 
+    DailySales table:
+    +-----------+-----------+---------+------------+
+    | date_id   | make_name | lead_id | partner_id |
+    +-----------+-----------+---------+------------+
+    | 2020-12-8 | toyota    | 0       | 1          |
+    | 2020-12-8 | toyota    | 1       | 0          |
+    | 2020-12-8 | toyota    | 1       | 2          |
+    | 2020-12-7 | toyota    | 0       | 2          |
+    | 2020-12-7 | toyota    | 0       | 1          |
+    | 2020-12-8 | honda     | 1       | 2          |
+    | 2020-12-8 | honda     | 2       | 1          |
+    | 2020-12-7 | honda     | 0       | 1          |
+    | 2020-12-7 | honda     | 1       | 2          |
+    | 2020-12-7 | honda     | 2       | 1          |
+    +-----------+-----------+---------+------------+
+    Output: 
+    +-----------+-----------+--------------+-----------------+
+    | date_id   | make_name | unique_leads | unique_partners |
+    +-----------+-----------+--------------+-----------------+
+    | 2020-12-8 | toyota    | 2            | 3               |
+    | 2020-12-7 | toyota    | 1            | 2               |
+    | 2020-12-8 | honda     | 2            | 2               |
+    | 2020-12-7 | honda     | 3            | 2               |
+    +-----------+-----------+--------------+-----------------+
+    Explanation: 
+    For 2020-12-8, toyota gets leads = [0, 1] and partners = [0, 1, 2] while honda gets leads = [1, 2] and partners = [1, 2].
+    For 2020-12-7, toyota gets leads = [0] and partners = [1, 2] while honda gets leads = [0, 1, 2] and partners = [1, 2].
 
-*/
+    */ 
+    DROP TABLE IF EXISTS DailySales CASCADE;
 
-CREATE TABLE DailySales (
-    date_id DATE,
-    make_name VARCHAR(50),
-    lead_id INT,
-    partner_id INT
-);
+    
 
-INSERT INTO DailySales (date_id, make_name, lead_id, partner_id) VALUES
-('2020-12-08', 'toyota', 0, 1),
-('2020-12-08', 'toyota', 1, 0),
-('2020-12-08', 'toyota', 1, 2),
-('2020-12-07', 'toyota', 0, 2),
-('2020-12-07', 'toyota', 0, 1),
-('2020-12-08', 'honda', 1, 2),
-('2020-12-08', 'honda', 2, 1),
-('2020-12-07', 'honda', 0, 1),
-('2020-12-07', 'honda', 1, 2),
-('2020-12-07', 'honda', 2, 1);
+    CREATE TABLE DailySales (
+        date_id DATE,
+        make_name VARCHAR(50),
+        lead_id INT,
+        partner_id INT
+    );
+
+    INSERT INTO DailySales (date_id, make_name, lead_id, partner_id) VALUES
+    ('2020-12-08', 'toyota', 0, 1),
+    ('2020-12-08', 'toyota', 1, 0),
+    ('2020-12-08', 'toyota', 1, 2),
+    ('2020-12-07', 'toyota', 0, 2),
+    ('2020-12-07', 'toyota', 0, 1),
+    ('2020-12-08', 'honda', 1, 2),
+    ('2020-12-08', 'honda', 2, 1),
+    ('2020-12-07', 'honda', 0, 1),
+    ('2020-12-07', 'honda', 1, 2),
+    ('2020-12-07', 'honda', 2, 1);
 
 
 
--- Soultion 
-   SELECT
-       date_id,
-       make_name,
-       COUNT(DISTINCT lead_id) AS unique_leads,
-       COUNT(DISTINCT  partner_id) AS unique_partners
-       FROM dailysales
-       GROUP BY date_id, make_name
-       ORDER BY  date_id , make_name
+    -- Soultion 1
+    SELECT
+        date_id,
+        make_name,
+        COUNT(DISTINCT lead_id) AS unique_leads,
+        COUNT(DISTINCT  partner_id) AS unique_partners
+        FROM dailysales
+        GROUP BY date_id, make_name
+        ORDER BY  date_id , make_name

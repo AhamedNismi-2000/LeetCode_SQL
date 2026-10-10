@@ -1,112 +1,148 @@
-/*
+        /*
 
-1731. The Number of Employees Which Report to Each Employee
-
-
-Table: Employees
-+-------------+----------+
-| Column Name | Type     |
-+-------------+----------+
-| employee_id | int      |
-| name        | varchar  |
-| reports_to  | int      |
-| age         | int      |
-+-------------+----------+
-employee_id is the column with unique values for this table.
-This table contains information about the employees and the id of the manager they report to. Some employees do not report to anyone (reports_to is null). 
- 
-
-For this problem, we will consider a manager an employee who has at least 1 other employee reporting to them.
-
-Write a solution to report the ids and the names of all managers, the number of employees who report directly to them, and the average age of the reports rounded to the nearest integer.
-
-Return the result table ordered by employee_id.
-
-The result format is in the following example.
-
- 
-
-Example 1:
-
-Input: 
-Employees table:
-+-------------+---------+------------+-----+
-| employee_id | name    | reports_to | age |
-+-------------+---------+------------+-----+
-| 9           | Hercy   | null       | 43  |
-| 6           | Alice   | 9          | 41  |
-| 4           | Bob     | 9          | 36  |
-| 2           | Winston | null       | 37  |
-+-------------+---------+------------+-----+
-Output: 
-+-------------+-------+---------------+-------------+
-| employee_id | name  | reports_count | average_age |
-+-------------+-------+---------------+-------------+
-| 9           | Hercy | 2             | 39          |
-+-------------+-------+---------------+-------------+
-Explanation: Hercy has 2 people report directly to him, Alice and Bob. Their average age is (41+36)/2 = 38.5, which is 39 after rounding it to the nearest integer.
-Example 2:
-
-Input: 
-Employees table:
-+-------------+---------+------------+-----+ 
-| employee_id | name    | reports_to | age |
-|-------------|---------|------------|-----|
-| 1           | Michael | null       | 45  |
-| 2           | Alice   | 1          | 38  |
-| 3           | Bob     | 1          | 42  |
-| 4           | Charlie | 2          | 34  |
-| 5           | David   | 2          | 40  |
-| 6           | Eve     | 3          | 37  |
-| 7           | Frank   | null       | 50  |
-| 8           | Grace   | null       | 48  |
-+-------------+---------+------------+-----+ 
-Output: 
-+-------------+---------+---------------+-------------+
-| employee_id | name    | reports_count | average_age |
-| ----------- | ------- | ------------- | ----------- |
-| 1           | Michael | 2             | 40          |
-| 2           | Alice   | 2             | 37          |
-| 3           | Bob     | 1             | 37          |
-+-------------+---------+---------------+-------------+
+        1731. The Number of Employees Which Report to Each Employee
 
 
-*/
-DROP TABLE IF EXISTS Employees
-CREATE TABLE Employees (
-    employee_id INT PRIMARY KEY,
-    name VARCHAR(100),
-    reports_to INT,
-    age INT
-);
+        Table: Employees
+        +-------------+----------+
+        | Column Name | Type     |
+        +-------------+----------+
+        | employee_id | int      |
+        | name        | varchar  |
+        | reports_to  | int      |
+        | age         | int      |
+        +-------------+----------+
+        employee_id is the column with unique values for this table.
+        This table contains information about the employees and the id of the manager they report to. Some employees do not report to anyone (reports_to is null). 
+        
 
-INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
-(9, 'Hercy', NULL, 43),
-(6, 'Alice', 9, 41),
-(4, 'Bob', 9, 36),
-(2, 'Winston', NULL, 37);
+        For this problem, we will consider a manager an employee who has at least 1 other employee reporting to them.
 
-INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
-(1, 'Michael', NULL, 45),
-(3, 'Bob', 1, 42),
-(5, 'David', 2, 40),
-(7, 'Frank', NULL, 50),
-(8, 'Grace', NULL, 48),
-(4, 'Charlie', 2, 34),
-(6, 'Eve', 3, 37);
+        Write a solution to report the ids and the names of all managers, the number of employees who report directly to them, and the average age of the reports rounded to the nearest integer.
+
+        Return the result table ordered by employee_id.
+
+        The result format is in the following example.
+
+        
+
+        Example 1:
+
+        Input: 
+        Employees table:
+        +-------------+---------+------------+-----+
+        | employee_id | name    | reports_to | age |
+        +-------------+---------+------------+-----+
+        | 9           | Hercy   | null       | 43  |
+        | 6           | Alice   | 9          | 41  |
+        | 4           | Bob     | 9          | 36  |
+        | 2           | Winston | null       | 37  |
+        +-------------+---------+------------+-----+
+        Output: 
+        +-------------+-------+---------------+-------------+
+        | employee_id | name  | reports_count | average_age |
+        +-------------+-------+---------------+-------------+
+        | 9           | Hercy | 2             | 39          |
+        +-------------+-------+---------------+-------------+
+        Explanation: Hercy has 2 people report directly to him, Alice and Bob. Their average age is (41+36)/2 = 38.5, which is 39 after rounding it to the nearest integer.
+        Example 2:
+
+        Input: 
+        Employees table:
+        +-------------+---------+------------+-----+ 
+        | employee_id | name    | reports_to | age |
+        |-------------|---------|------------|-----|
+        | 1           | Michael | null       | 45  |
+        | 2           | Alice   | 1          | 38  |
+        | 3           | Bob     | 1          | 42  |
+        | 4           | Charlie | 2          | 34  |
+        | 5           | David   | 2          | 40  |
+        | 6           | Eve     | 3          | 37  |
+        | 7           | Frank   | null       | 50  |
+        | 8           | Grace   | null       | 48  |
+        +-------------+---------+------------+-----+ 
+        Output: 
+        +-------------+---------+---------------+-------------+
+        | employee_id | name    | reports_count | average_age |
+        | ----------- | ------- | ------------- | ----------- |
+        | 1           | Michael | 2             | 40          |
+        | 2           | Alice   | 2             | 37          |
+        | 3           | Bob     | 1             | 37          |
+        +-------------+---------+---------------+-------------+
 
 
--- Solution 
-   
-    SELECT 
-    e1.employee_id,
-    e1.name,
-    COUNT(e2.employee_id) AS reports_count,
-    ROUND(AVG(e2.age)) AS average_age
-FROM Employees e1
-JOIN Employees e2
-ON e1.employee_id = e2.reports_to
-GROUP BY e1.employee_id, e1.name
-ORDER BY e1.employee_id;
+        */
+         
+
+
+        DROP TABLE IF EXISTS Employees CASCADE
+
+        CREATE TABLE Employees (
+            employee_id INT PRIMARY KEY,
+            name VARCHAR(100),
+            reports_to INT,
+            age INT
+        );
+
+        INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
+        (9, 'Hercy', NULL, 43),
+        (6, 'Alice', 9, 41),
+        (4, 'Bob', 9, 36),
+        (2, 'Winston', NULL, 37);
+
+        INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
+        (1, 'Michael', NULL, 45),
+        (3, 'Bob', 1, 42),
+        (5, 'David', 2, 40),
+        (7, 'Frank', NULL, 50),
+        (8, 'Grace', NULL, 48),
+        (4, 'Charlie', 2, 34),
+        (6, 'Eve', 3, 37);
+
+
+        --- Solution 1
+        
+            SELECT 
+            e1.employee_id,
+            e1.name,
+            COUNT(e2.employee_id) AS reports_count,
+            ROUND(AVG(e2.age)) AS average_age
+        FROM Employees e1
+        JOIN Employees e2
+        ON e1.employee_id = e2.reports_to
+        GROUP BY e1.employee_id, e1.name
+        ORDER BY e1.employee_id;
+
+    
+
+
+
+    --- Solution 2 
+
+
+ WITH report AS (
+    SELECT
+        employee_id,
+        reports_to,
+        name
+    FROM Employees
+    WHERE reports_to IS NOT NULL
+)
+SELECT
+    r.reports_to AS employee_id,
+    (
+        SELECT name
+        FROM Employees
+        WHERE employee_id = r.reports_to
+    ) AS name,
+    COUNT(*) AS reports_count,
+    ROUND(AVG(e.age)) AS average_age
+       FROM Employees e
+       JOIN report r
+       ON e.employee_id = r.employee_id
+       GROUP BY r.reports_to
+       ORDER BY r.reports_to;
+                    
+
 
 

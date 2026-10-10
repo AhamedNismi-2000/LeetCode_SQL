@@ -47,6 +47,7 @@ The followers of 1 are {0}
 The followers of 2 are {0,1}
 */
 
+ DROP TABLE IF EXISTS Followers CASCADE ;
 
 
 CREATE TABLE Followers (
@@ -61,7 +62,7 @@ INSERT INTO Followers (user_id, follower_id) VALUES
 (2, 0),
 (2, 1);
 
--- Solution 
+-- Solution 1
 
 SELECT user_id,
        COUNT(follower_id) AS followers_count
