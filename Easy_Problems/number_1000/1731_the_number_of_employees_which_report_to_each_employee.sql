@@ -74,7 +74,7 @@
         */
          
 
-
+ TRUNCATE TABLE Employees;
         DROP TABLE IF EXISTS Employees CASCADE
 
         CREATE TABLE Employees (
@@ -92,6 +92,7 @@
 
         INSERT INTO Employees (employee_id, name, reports_to, age) VALUES
         (1, 'Michael', NULL, 45),
+        (2,'Alice',1,38),
         (3, 'Bob', 1, 42),
         (5, 'David', 2, 40),
         (7, 'Frank', NULL, 50),
