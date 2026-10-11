@@ -13,7 +13,8 @@ Table: Logins
 Each row contains information about the login time for the user with ID user_id.
  
 
-Write a solution to report the latest login for all users in the year 2020. Do not include the users who did not login in 2020.
+Write a solution to report the latest login for all users in the year 2020. 
+Do not include the users who did not login in 2020.
 
 Return the result table in any order.
 
@@ -55,14 +56,10 @@ User 14 did not login in 2020, so we do not include them in the result table.
 */
 
 
--- filename: 1890_the_latest_login_in_2020.sql
--- LeetCode Problem 1890: The Latest Login in 2020
--- This SQL file contains only the table definition and example data.
--- The solution query is intentionally NOT included.
+  DROP TABLE IF EXISTS Logins,employee,users CASCADE ;
 
--- filename: 1890_the_latest_login_in_2020.sql
--- LeetCode Problem 1890: The Latest Login in 2020
-
+  
+  
 CREATE TABLE Logins (
     user_id INT,
     time_stamp TIMESTAMP,
@@ -80,7 +77,7 @@ INSERT INTO Logins (user_id, time_stamp) VALUES
 (14, '2019-07-14 09:00:00'),
 (14, '2021-01-06 11:59:59');
 
-  -- Solution 
+  --- Solution 1 
 
     SELECT user_id,
            MAX(time_stamp) AS last_stamp
@@ -88,5 +85,15 @@ INSERT INTO Logins (user_id, time_stamp) VALUES
     WHERE EXTRACT (YEAR FROM time_stamp) = 2020
     GROUP BY user_id
     ORDER BY user_id DESC
+
+   ---Solution 2  
+    
+  SELECT 
+    user_id,
+    MAX(time_stamp) AS last_stamp
+  FROM logins  
+  WHERE time_stamp BETWEEN '2020-01-01' AND '2020-12-31'
+  GROUP BY user_id
+  
    
    

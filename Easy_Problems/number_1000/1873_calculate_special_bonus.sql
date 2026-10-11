@@ -80,7 +80,7 @@ INSERT INTO Employees (employee_id, name, salary) VALUES
 
    SELECT 
      employee_id,
-     CASE WHEN employee_id % 2 = 1 AND name NOT LIKE 'M%'   -- m start in the name 
+     CASE WHEN employee_id % 2 <> 0 AND name NOT LIKE 'M%'   -- m start in the name 
      THEN salary ELSE 0 END AS bonus  
    FROM  employees
 
