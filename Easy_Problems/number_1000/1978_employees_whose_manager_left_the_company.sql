@@ -16,7 +16,9 @@ In SQL, employee_id is the primary key for this table.
 This table contains information about the employees, their salary, and the ID of their manager. Some employees do not have a manager (manager_id is null). 
  
 
-Find the IDs of the employees whose salary is strictly less than $30000 and whose manager left the company. When a manager leaves the company, their information is deleted from the Employees table, but the reports still have their manager_id set to the manager that left.
+Find the IDs of the employees whose salary is strictly less than $30000 and whose manager left the company.
+When a manager leaves the company, their information is deleted from the Employees table, 
+but the reports still have their manager_id set to the manager that left.
 
 Return the result table ordered by employee_id.
 
@@ -52,6 +54,9 @@ Joziah's manager is employee 6, who left the company because there is no row for
 
 */
 
+  DROP TABLE IF EXISTS Employees CASCADE;
+
+ 
 
 
 CREATE TABLE Employees (
@@ -98,3 +103,17 @@ INSERT INTO Employees (employee_id, name, manager_id, salary) VALUES
        SELECT employee_id FROM employees
     )
     ORDER BY employee_id
+
+
+--- Solution 3 
+
+  SELECT 
+   e1.employee_id
+  FROM employees e1 
+  JOIN employees e2  
+  ON e1.employee_id = e2.manager_id
+  WHERE e1.salary < 30000 AND 
+  e1.manager_id NOT IN (
+    SELECT employee_id 
+    FROM employees
+  )

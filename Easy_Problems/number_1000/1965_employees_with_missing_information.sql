@@ -26,7 +26,8 @@ employee_id is the column with unique values for this table.
 Each row of this table indicates the salary of the employee whose ID is employee_id.
  
 
-Write a solution to report the IDs of all the employees with missing information. The information of an employee is missing if:
+Write a solution to report the IDs of all the employees with missing information.
+ The information of an employee is missing if:
 
 The employee's name is missing, or
 The employee's salary is missing.
@@ -68,9 +69,8 @@ The name of employee 1 is missing.
 The salary of employee 2 is missing.
 
 
-*/
-
-
+*/ 
+  DROP TABLE IF EXISTS Employees,Salaries  CASCADE ;
 
 CREATE TABLE Employees (
     employee_id INT PRIMARY KEY,

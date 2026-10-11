@@ -56,7 +56,7 @@ User 14 did not login in 2020, so we do not include them in the result table.
 */
 
 
-  DROP TABLE IF EXISTS Logins,employee,users CASCADE ;
+  DROP TABLE IF EXISTS Logins CASCADE ;
 
   
   
