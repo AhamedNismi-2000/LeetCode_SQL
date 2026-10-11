@@ -52,7 +52,7 @@
 
     */
 
-
+    DROP TABLE IF EXISTS Products CASCADE ;
 
     
 
