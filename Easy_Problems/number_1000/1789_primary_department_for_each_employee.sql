@@ -60,7 +60,9 @@ Explanation:
 
 
 
-*/
+    */
+
+  DROP TABLE IF EXISTS Employee CASCADE ;
 
 CREATE TABLE Employee (
     employee_id INT,
@@ -91,3 +93,29 @@ WHERE primary_flag = 'Y'
         GROUP BY employee_id
         HAVING COUNT(department_id) = 1
    );
+
+
+
+
+   --- Solution 2 
+
+        SELECT 
+           employee_id,
+           department_id
+        FROM employee
+        WHERE primary_flag = 'Y'
+   
+       UNION 
+       
+         SELECT
+            employee_id,
+            department_id
+         FROM employee
+         WHERE employee_id IN (
+            SELECT 
+               employee_id
+            FROM employee 
+            GROUP BY employee_id
+            HAVING  COUNT(department_id) =1  
+         )
+         

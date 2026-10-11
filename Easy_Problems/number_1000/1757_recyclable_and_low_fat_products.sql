@@ -46,6 +46,7 @@ Explanation: Only products 1 and 3 are both low fat and recyclable.
 
 
 */
+ DROP TABLE IF EXISTS  Products CASCADE;
 
 CREATE TABLE Products (
     product_id INT PRIMARY KEY,
