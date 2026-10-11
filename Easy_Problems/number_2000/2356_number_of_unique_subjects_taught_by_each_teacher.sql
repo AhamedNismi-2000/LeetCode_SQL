@@ -58,8 +58,9 @@ Teacher 2:
 
 
 */
-  
 
+
+  DROP TABLE IF EXISTS Teacher CASCADE;
 
 CREATE TABLE Teacher (
     teacher_id INT,

@@ -84,7 +84,7 @@ INSERT INTO Employees (employee_id, name, manager_id, salary) VALUES
                SELECT employee_id
                FROM Employees
               ) 
-        ORDER BY employee_id      
+        ORDER BY employee_id     
 
 
  -- Solution 2 CTE 
@@ -117,3 +117,5 @@ INSERT INTO Employees (employee_id, name, manager_id, salary) VALUES
     SELECT employee_id 
     FROM employees
   )
+
+
