@@ -99,8 +99,17 @@ Result ordering:
 The Great Gatsby appears first with 3 current borrowers
 1984 appears second with 1 current borrower
 Output table is ordered by current_borrowers in descending order, then by book_title in ascending order.
-
++---------+------------------+---------------+-----------+------------------+-------------------+
+| book_id | title            | author        | genre     | publication_year | current_borrowers |
++---------+------------------+---------------+-----------+------------------+-------------------+
+| 1       | The Great Gatsby | F. Scott      | Fiction   | 1925             | 3                 | 
+| 3       | 1984             | George Orwell | Dystopian | 1949             | 1                 |
++---------+------------------+---------------+-----------+------------------+-------------------+
 */
+  DROP TABLE IF EXISTS library_books,borrowing_records CASCADE;
+
+
+    
 
 
 CREATE TABLE library_books (
@@ -141,60 +150,85 @@ INSERT INTO borrowing_records (record_id, book_id, borrower_name, borrow_date, r
 (9, 2, 'Ivan Clark', '2024-02-12', NULL),
 (10, 2, 'Jane Adams', '2024-02-15', NULL);
 
--- ### Solution 1 CTE 
+--- Solution 1 
 
- WITH total_books AS (
-    SELECT 
-       book_id,
-       title,
-       author,
-       genre,
-       publication_year,
-       total_copies
-    FROM library_books 
-    
- ),
- return_books AS (
-    SELECT 
+  
+    SELECT DISTINCT
+        b.book_id,
+        l.title,
+        l.author,
+        l.genre,
+        l.publication_year,
+        cnt AS current_borrowers
+    FROM ( SELECT 
         book_id,
-        COUNT(book_id) AS current_borrowers
-    FROM borrowing_records  
-    WHERE return_date IS NULL  
-    GROUP BY book_id
- )
- SELECT tb.book_id,
-        tb.title,
-        tb.author,
-        tb.genre,
-        tb.publication_year,
-        current_borrowers
- FROM   total_books tb 
- JOIN   return_books rb
- ON     tb.book_id = rb.book_id
- WHERE  rb.current_borrowers = tb.total_copies 
- ORDER BY rb.current_borrowers DESC, tb.title ASC;
-
+        SUM(CASE WHEN return_date IS NULL THEN 1 ELSE 0 END ) AS cnt
+        FROM borrowing_records
+        GROUP BY book_id ) temp  
+    JOIN borrowing_records b  
+    ON temp.book_id = b.book_id
+    JOIN library_books l
+    ON l.book_id = b.book_id
+   WHERE cnt = l.total_copies 
+   ORDER BY b.book_id
 
 
    -- ### Solution 2 
     
-SELECT 
-    lb.book_id,
-    lb.title,
-    lb.author,
-    lb.genre,
-    lb.publication_year,
-    COUNT(br.book_id) AS current_borrowers
-FROM library_books lb
-JOIN borrowing_records br
-    ON lb.book_id = br.book_id
-WHERE br.return_date IS NULL
-GROUP BY 
-    lb.book_id,
-    lb.title,
-    lb.author,
-    lb.genre,
-    lb.publication_year,
-    lb.total_copies
-HAVING COUNT(br.book_id) = lb.total_copies
-ORDER BY current_borrowers DESC, lb.title ASC;
+    SELECT 
+        lb.book_id,
+        lb.title,
+        lb.author,
+        lb.genre,
+        lb.publication_year,
+        COUNT(br.book_id) AS current_borrowers
+    FROM library_books lb
+    JOIN borrowing_records br
+        ON lb.book_id = br.book_id
+    WHERE br.return_date IS NULL
+    GROUP BY 
+        lb.book_id,
+        lb.title,
+        lb.author,
+        lb.genre,
+        lb.publication_year,
+        lb.total_copies
+    HAVING COUNT(br.book_id) = lb.total_copies
+    ORDER BY current_borrowers DESC, lb.title ASC;
+
+
+-- ### Solution 3 CTE 
+
+    WITH total_books AS (
+        SELECT 
+        book_id,
+        title,
+        author,
+        genre,
+        publication_year,
+        total_copies
+        FROM library_books 
+        
+    ),
+    return_books AS (
+        SELECT 
+            book_id,
+            COUNT(book_id) AS current_borrowers
+        FROM borrowing_records  
+        WHERE return_date IS NULL  
+        GROUP BY book_id
+    )
+    SELECT tb.book_id,
+            tb.title,
+            tb.author,
+            tb.genre,
+            tb.publication_year,
+            current_borrowers
+    FROM   total_books tb 
+    JOIN   return_books rb
+    ON     tb.book_id = rb.book_id
+    WHERE  rb.current_borrowers = tb.total_copies 
+    ORDER BY rb.current_borrowers DESC, tb.title ASC;
+
+
+

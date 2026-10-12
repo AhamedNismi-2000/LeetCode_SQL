@@ -12,7 +12,8 @@ Table: products
 +--------------+------------+
 (product_id) is the unique key for this table.
 Each row in the table represents a product with its unique ID, name, and description.
-Write a solution to find all products whose description contains a valid serial number pattern. A valid serial number follows these rules:
+Write a solution to find all products whose description contains a valid serial number pattern.
+ A valid serial number follows these rules:
 
 It starts with the letters SN (case-sensitive).
 Followed by exactly 4 digits.
@@ -61,8 +62,9 @@ The result table is ordered by product_id in ascending order.
 
 
 */
+ DROP TABLE IF EXISTS products CASCADE;
 
-
+   
 
 CREATE TABLE products (
     product_id INT PRIMARY KEY,
