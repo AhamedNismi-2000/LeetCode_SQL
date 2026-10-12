@@ -71,7 +71,7 @@ The Results table is ordered by avg_tokens in descending order, then by user_id 
 
 
 */
-
+  DROP TABLE IF EXISTS prompts CASCADE;
 
 CREATE TABLE prompts (
     user_id INT,
