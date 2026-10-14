@@ -13,7 +13,8 @@ id is the primary key (column with unique values) for this table.
 Each row of this table contains information about the salary of an employee.
  
 
-Write a solution to find the nth highest distinct salary from the Employee table. If there are less than n distinct salaries, return null.
+Write a solution to find the nth highest distinct salary from the Employee table. 
+If there are less than n distinct salaries, return null.
 
 The result format is in the following example.
 
@@ -55,6 +56,9 @@ Output:
 +------------------------+
 
 */
+
+  SELECT 
+    
   DROP TABLE employee CASCADE 
 
   CREATE TABLE Employee (
@@ -88,6 +92,27 @@ BEGIN
         ORDER BY salary DESC
         OFFSET N-1
         LIMIT 1 
+    );
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT getNthHighestSalary(2);
+
+
+--- Solution 2 
+CREATE  FUNCTION getHighestSalary(N INT)
+RETURNS INT AS $$
+BEGIN
+    RETURN (
+        SELECT 
+        FROM(
+        SELECT 
+           Salary,
+           ROW_NUMBER() OVER(ORDER BY Salary) AS rn
+        FROM employee
+        )
+        WHERE rn = N 
+
     );
 END;
 $$ LANGUAGE plpgsql;
