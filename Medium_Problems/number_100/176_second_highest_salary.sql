@@ -14,7 +14,8 @@
     Each row of this table contains information about the salary of an employee.
     
 
-    Write a solution to find the second highest distinct salary from the Employee table. If there is no second highest salary, return null (return None in Pandas).
+    Write a solution to find the second highest distinct salary from the Employee table.
+     If there is no second highest salary, return null (return None in Pandas).
 
     The result format is in the following example.
 
@@ -55,7 +56,9 @@
 
 
 */ 
-DROP TABLE IF EXISTS employee  CASCADE
+
+
+DROP TABLE IF EXISTS employee  CASCADE;
 
 CREATE TABLE Employee (
     id INT PRIMARY KEY,
@@ -68,6 +71,18 @@ INSERT INTO Employee (id, salary) VALUES
 (3, 300);
 
 
+INSERT INTO Employee (id, salary) VALUES
+(1, 100),
+(2, 200),
+(3, 200),
+(4, 200),
+(5, 300),
+(6, 400);
+
+INSERT INTO Employee (id, salary) VALUES
+(1, 100)
+
+
 -- ### Solution 1 
 SELECT DISTINCT salary AS SecondHighestSalary
 FROM Employee
@@ -78,20 +93,19 @@ LIMIT 1 OFFSET 1;
  -- ### Solution 2 
 
     WITH second_sal AS ( 
-    SELECT salary,
-    ROW_NUMBER() OVER(ORDER BY salary) AS number
+    SELECT salary AS SecondHighestSalary,
+    ROW_NUMBER() OVER(ORDER BY salary DESC) AS number
     FROM employee
     )
-    SELECT salary AS SecondHighestSalary
+    SELECT SecondHighestSalary 
     FROM second_sal
     WHERE number = 2
 
  -- ### Solution 3 
  
-       SELECT
-       (SELECT MAX(salary)
-        FROM Employee
-        WHERE salary < (SELECT MAX(salary) FROM Employee)
-        ) AS SecondHighestSalary;   
+    SELECT MAX(salary) AS SecondHighestSalary 
+    FROM employee 
+    WHERE salary < (SELECT MAX(salary) FROM employee);
+
 
 
