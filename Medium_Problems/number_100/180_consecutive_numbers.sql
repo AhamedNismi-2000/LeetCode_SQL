@@ -89,22 +89,5 @@ Explanation: 1 is the only number that appears consecutively for at least three 
    FROM consecutive
    WHERE num = prev1 AND num = prev2
 
-
-
-   --- Solution 3
-
-  SELECT 
-     num AS ConsecutiveNums
-  FROM (
-    SELECT 
-       id,
-       num,
-       LAG(num) OVER(ORDER BY id ) AS prevNum
-    FROM Logs
-    )
-    WHERE num = prevNum 
-    GROUP BY num 
-    HAVING COUNT(*) >=2 
-    
    
 
