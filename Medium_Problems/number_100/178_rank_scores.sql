@@ -51,6 +51,8 @@ Output:
 +-------+------+
  
 */
+DROP TABLE IF EXISTS Scores CASCADE;
+
 
 CREATE TABLE Scores (
     id INT PRIMARY KEY,

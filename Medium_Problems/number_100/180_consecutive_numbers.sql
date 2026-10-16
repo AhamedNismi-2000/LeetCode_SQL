@@ -46,7 +46,7 @@ Explanation: 1 is the only number that appears consecutively for at least three 
  
 
 */
-
+   DROP TABLE IF EXISTS Logs CASCADE;
 
     CREATE TABLE Logs (
         id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -64,7 +64,7 @@ Explanation: 1 is the only number that appears consecutively for at least three 
 
  
 
--- ### Solution LEAD() 
+-- ### Solution LEAD() 1
 
    WITH consecutive AS (
       SELECT num,
@@ -77,10 +77,10 @@ Explanation: 1 is the only number that appears consecutively for at least three 
    WHERE num = prev1 AND num = prev2
    
 
--- ### Solution LAG() 
+-- ### Solution LAG() 1
    WITH consecutive AS (
       SELECT num,
-       LAG(num,1) OVER(ORDER BY id)  AS prev1,
+       LAG(num) OVER(ORDER BY id)  AS prev1,
        LAG(num,2) OVER(ORDER BY id)  AS prev2
       FROM logs
 
@@ -88,5 +88,23 @@ Explanation: 1 is the only number that appears consecutively for at least three 
    SELECT num 
    FROM consecutive
    WHERE num = prev1 AND num = prev2
+
+
+
+   --- Solution 3
+
+  SELECT 
+     num AS ConsecutiveNums
+  FROM (
+    SELECT 
+       id,
+       num,
+       LAG(num) OVER(ORDER BY id ) AS prevNum
+    FROM Logs
+    )
+    WHERE num = prevNum 
+    GROUP BY num 
+    HAVING COUNT(*) >=2 
+    
    
 
