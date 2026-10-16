@@ -67,17 +67,18 @@ Explanation: 1 is the only number that appears consecutively for at least three 
 -- ### Solution LEAD() 1
 
    WITH consecutive AS (
-      SELECT num,
+      SELECT num AS ConsecutiveNums,
       LEAD(num,1) OVER(ORDER BY id)  AS prev1,
       LEAD(num,2) OVER(ORDER BY id)  AS prev2
       FROM logs
    )
-   SELECT num 
+   SELECT DISTINCT ConsecutiveNums 
    FROM consecutive
-   WHERE num = prev1 AND num = prev2
+   WHERE ConsecutiveNums = prev1 AND ConsecutiveNums = prev2
    
 
 -- ### Solution LAG() 1
+
    WITH consecutive AS (
       SELECT num,
        LAG(num) OVER(ORDER BY id)  AS prev1,
@@ -85,9 +86,9 @@ Explanation: 1 is the only number that appears consecutively for at least three 
       FROM logs
 
    )
-   SELECT num 
+   SELECT DISTINCT num AS ConsecutiveNums
    FROM consecutive
    WHERE num = prev1 AND num = prev2
 
-   
+
 
